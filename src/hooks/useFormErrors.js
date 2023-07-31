@@ -19,11 +19,13 @@ const useFormErrors = (initialErrors = {}, formattedFieldNames = {}) => {
   }
 
   const clearError = (field) => {
-    setErrors((prevErrors) => {
-      const newErrors = { ...prevErrors }
-      delete newErrors[field]
-      return newErrors
-    })
+    if (errors[field]) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors[field]
+        return newErrors
+      })
+    }
   }
 
   const hasErrors = () => Object.keys(errors).length > 0

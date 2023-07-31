@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { departments } from '../../data/departments'
 import styles from './EmployeeForm.module.css'
 import InputField from './InputField'
@@ -9,31 +8,27 @@ import { validateEmployeeForm } from './validation'
 import { formattedFieldNames } from '../../utils/formatFieldNames'
 import { initialEmployeeState } from '../../config/initialState'
 import useFormErrors from '../../hooks/useFormErrors'
-import { debounce } from '../../utils/debounce'
+import useFormData from '../../hooks/useFormData'
+import useDebouncedValidation from '../../hooks/useDebouncedValidation'
 
 const EmployeeForm = () => {
-  const [formData, setFormData] = useState(initialEmployeeState)
+  const [formData, originalHandleChange] = useFormData(initialEmployeeState)
+
   const { errors, setError, clearError, hasErrors, validateField } =
     useFormErrors({}, formattedFieldNames)
 
-  const debouncedValidation = debounce((name, value) => {
-    const error = validateField(name, value)
-    if (error) {
-      setError(name, error)
-    } else {
-      clearError(name)
-    }
-  }, 300)
+  const debouncedValidation = useDebouncedValidation(
+    validateField,
+    300,
+    setError,
+    clearError,
+  )
 
   const handleChange = (event) => {
+    originalHandleChange(event)
+
     const { name, value } = event.target
-
     clearError(name)
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }))
-
     debouncedValidation(name, value)
   }
 
