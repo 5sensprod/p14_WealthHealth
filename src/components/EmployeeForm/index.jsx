@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { states } from '../../data/cityCodes.js'
 import styles from './EmployeeForm.module.css'
+import InputField from './InputField'
+import SelectField from './SelectField'
 
 const EmployeeForm = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ const EmployeeForm = () => {
     department: '',
   })
 
+  const [errors, setErrors] = useState({}) // Nouveau state pour la gestion des erreurs
+
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData((prevData) => ({
@@ -25,115 +29,131 @@ const EmployeeForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(formData)
+
+    // Ici, ajoutez une validation pour chaque champ,
+    // et si un champ est vide, ajoutez une erreur correspondante dans le state "errors".
+    let fieldErrors = {}
+
+    for (let field in formData) {
+      if (!formData[field]) {
+        fieldErrors[field] = `${field} is required`
+      }
+    }
+
+    setErrors(fieldErrors)
+    console.log('Detected errors:', fieldErrors)
+    setErrors(fieldErrors)
+    if (Object.keys(fieldErrors).length === 0) {
+      console.log(formData)
+      // Ici, vous pouvez traiter le formData, par exemple l'envoyer à une API.
+    }
   }
 
   return (
-    <form className={styles.formContainer} onSubmit={handleSubmit}>
-      <label className={styles.label}>
-        First Name
-        <input
-          type="text"
+    <div className={styles.container}>
+      <h2 className={styles.title}>Create Employee</h2>
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
+        <InputField
           name="firstName"
+          label="First Name"
+          type="text"
           value={formData.firstName}
           onChange={handleChange}
+          error={errors.firstName}
         />
-      </label>
 
-      <label>
-        Last Name
-        <input
-          type="text"
+        <InputField
           name="lastName"
+          label="Last Name"
+          type="text"
           value={formData.lastName}
           onChange={handleChange}
+          error={errors.lastName}
         />
-      </label>
 
-      <label>
-        Date of Birth
-        <input
-          type="text"
+        <InputField
           name="dateOfBirth"
+          label="Date of Birth"
+          type="text"
           value={formData.dateOfBirth}
           onChange={handleChange}
+          error={errors.dateOfBirth}
         />
-      </label>
 
-      <label>
-        Start Date
-        <input
-          type="text"
+        <InputField
           name="startDate"
+          label="Start Date"
+          type="text"
           value={formData.startDate}
           onChange={handleChange}
+          error={errors.startDate}
         />
-      </label>
 
-      <fieldset>
-        <legend>Address</legend>
+        <fieldset className={styles.fieldsetContainer}>
+          <legend>Address</legend>
 
-        <label>
-          Street
-          <input
-            type="text"
+          <InputField
             name="street"
+            label="Street"
+            type="text"
             value={formData.street}
             onChange={handleChange}
+            error={errors.street}
           />
-        </label>
 
-        <label>
-          City
-          <input
-            type="text"
+          <InputField
             name="city"
+            label="City"
+            type="text"
             value={formData.city}
             onChange={handleChange}
+            error={errors.city}
           />
-        </label>
 
-        <label>
-          State
-          <select name="state" value={formData.state} onChange={handleChange}>
-            {states.map((state) => (
-              <option key={state.abbreviation} value={state.abbreviation}>
-                {state.name}
-              </option>
-            ))}
-          </select>
-        </label>
+          <SelectField
+            name="state"
+            label="State"
+            value={formData.state}
+            onChange={handleChange}
+            options={[
+              { value: '', label: 'Please select a state' }, // Option de placeholder
+              ...states.map((state) => ({
+                value: state.abbreviation,
+                label: state.name,
+              })),
+            ]}
+          />
 
-        <label>
-          Zip Code
-          <input
-            type="number"
+          <InputField
             name="zipCode"
+            label="Zip Code"
+            type="number"
             value={formData.zipCode}
             onChange={handleChange}
+            error={errors.zipCode}
           />
-        </label>
-      </fieldset>
+        </fieldset>
 
-      <label>
-        Department
-        <select
+        <SelectField
           name="department"
+          label="Department"
           value={formData.department}
           onChange={handleChange}
-        >
-          <option value="Sales">Sales</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Human Resources">Human Resources</option>
-          <option value="Legal">Legal</option>
-        </select>
-      </label>
+          options={[
+            { value: '', label: 'Please select a department' }, // Option de placeholder
+            { value: 'Sales', label: 'Sales' },
+            { value: 'Marketing', label: 'Marketing' },
+            { value: 'Engineering', label: 'Engineering' },
+            { value: 'Human Resources', label: 'Human Resources' },
+            { value: 'Legal', label: 'Legal' },
+          ]}
+        />
 
-      <button className={styles.submitButton} type="submit">
-        Save
-      </button>
-    </form>
+        <button className={styles.submitButton} type="submit">
+          Save
+        </button>
+      </form>
+    </div>
   )
 }
 
