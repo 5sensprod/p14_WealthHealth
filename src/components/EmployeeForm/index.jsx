@@ -3,6 +3,7 @@ import { states } from '../../data/cityCodes.js'
 import styles from './EmployeeForm.module.css'
 import InputField from './InputField'
 import SelectField from './SelectField'
+import DateInputField from './DateInputField'
 
 const EmployeeForm = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,19 @@ const EmployeeForm = () => {
     department: '',
   })
 
-  const [errors, setErrors] = useState({}) // Nouveau state pour la gestion des erreurs
+  const formattedFieldNames = {
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    dateOfBirth: 'Date of Birth',
+    startDate: 'Start Date',
+    street: 'Street',
+    city: 'City',
+    state: 'State',
+    zipCode: 'Zip Code',
+    department: 'Department',
+  }
+
+  const [errors, setErrors] = useState({})
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -30,13 +43,12 @@ const EmployeeForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    // Ici, ajoutez une validation pour chaque champ,
-    // et si un champ est vide, ajoutez une erreur correspondante dans le state "errors".
     let fieldErrors = {}
 
     for (let field in formData) {
       if (!formData[field]) {
-        fieldErrors[field] = `${field} is required`
+        let formattedField = formattedFieldNames[field] || field
+        fieldErrors[field] = `${formattedField} is required`
       }
     }
 
@@ -45,7 +57,6 @@ const EmployeeForm = () => {
     setErrors(fieldErrors)
     if (Object.keys(fieldErrors).length === 0) {
       console.log(formData)
-      // Ici, vous pouvez traiter le formData, par exemple l'envoyer à une API.
     }
   }
 
@@ -71,7 +82,7 @@ const EmployeeForm = () => {
           error={errors.lastName}
         />
 
-        <InputField
+        <DateInputField
           name="dateOfBirth"
           label="Date of Birth"
           type="text"
@@ -80,7 +91,7 @@ const EmployeeForm = () => {
           error={errors.dateOfBirth}
         />
 
-        <InputField
+        <DateInputField
           name="startDate"
           label="Start Date"
           type="text"
