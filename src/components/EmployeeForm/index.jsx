@@ -1,61 +1,52 @@
 import React, { useState } from 'react'
-import { states } from '../../data/cityCodes.js'
+import { departments } from '../../data/departments'
 import styles from './EmployeeForm.module.css'
 import InputField from './InputField'
 import SelectField from './SelectField'
 import DateInputField from './DateInputField'
+import AddressFields from './AddressFields'
+import { validateEmployeeForm } from './validation'
+import { formattedFieldNames } from '../../utils/formatFieldNames'
+import { initialEmployeeState } from '../../config/initialState'
+import useFormErrors from '../../hooks/useFormErrors'
+import { debounce } from '../../utils/debounce'
 
 const EmployeeForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    startDate: '',
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    department: '',
-  })
+  const [formData, setFormData] = useState(initialEmployeeState)
+  const { errors, setError, clearError, hasErrors, validateField } =
+    useFormErrors({}, formattedFieldNames)
 
-  const formattedFieldNames = {
-    firstName: 'First Name',
-    lastName: 'Last Name',
-    dateOfBirth: 'Date of Birth',
-    startDate: 'Start Date',
-    street: 'Street',
-    city: 'City',
-    state: 'State',
-    zipCode: 'Zip Code',
-    department: 'Department',
-  }
-
-  const [errors, setErrors] = useState({})
+  const debouncedValidation = debounce((name, value) => {
+    const error = validateField(name, value)
+    if (error) {
+      setError(name, error)
+    } else {
+      clearError(name)
+    }
+  }, 300)
 
   const handleChange = (event) => {
     const { name, value } = event.target
+
+    clearError(name)
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }))
+
+    debouncedValidation(name, value)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    let fieldErrors = {}
+    const fieldErrors = validateEmployeeForm(formData, formattedFieldNames)
 
-    for (let field in formData) {
-      if (!formData[field]) {
-        let formattedField = formattedFieldNames[field] || field
-        fieldErrors[field] = `${formattedField} is required`
-      }
+    for (const field in fieldErrors) {
+      setError(field, fieldErrors[field])
     }
 
-    setErrors(fieldErrors)
-    console.log('Detected errors:', fieldErrors)
-    setErrors(fieldErrors)
-    if (Object.keys(fieldErrors).length === 0) {
+    if (!hasErrors()) {
       console.log(formData)
     }
   }
@@ -100,50 +91,11 @@ const EmployeeForm = () => {
           error={errors.startDate}
         />
 
-        <fieldset className={styles.fieldsetContainer}>
-          <legend>Address</legend>
-
-          <InputField
-            name="street"
-            label="Street"
-            type="text"
-            value={formData.street}
-            onChange={handleChange}
-            error={errors.street}
-          />
-
-          <InputField
-            name="city"
-            label="City"
-            type="text"
-            value={formData.city}
-            onChange={handleChange}
-            error={errors.city}
-          />
-
-          <SelectField
-            name="state"
-            label="State"
-            value={formData.state}
-            onChange={handleChange}
-            options={[
-              { value: '', label: 'Please select a state' }, // Option de placeholder
-              ...states.map((state) => ({
-                value: state.abbreviation,
-                label: state.name,
-              })),
-            ]}
-          />
-
-          <InputField
-            name="zipCode"
-            label="Zip Code"
-            type="number"
-            value={formData.zipCode}
-            onChange={handleChange}
-            error={errors.zipCode}
-          />
-        </fieldset>
+        <AddressFields
+          formData={formData}
+          handleChange={handleChange}
+          errors={errors}
+        />
 
         <SelectField
           name="department"
@@ -152,11 +104,10 @@ const EmployeeForm = () => {
           onChange={handleChange}
           options={[
             { value: '', label: 'Please select a department' }, // Option de placeholder
-            { value: 'Sales', label: 'Sales' },
-            { value: 'Marketing', label: 'Marketing' },
-            { value: 'Engineering', label: 'Engineering' },
-            { value: 'Human Resources', label: 'Human Resources' },
-            { value: 'Legal', label: 'Legal' },
+            ...departments.map((department) => ({
+              value: department,
+              label: department,
+            })),
           ]}
         />
 
