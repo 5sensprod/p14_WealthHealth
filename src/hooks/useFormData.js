@@ -8,7 +8,11 @@ const useFormData = (initialState) => {
     setData((prevData) => ({ ...prevData, [name]: value }))
   }
 
-  return [data, handleChange]
+  const resetFormData = () => {
+    setData(initialState)
+  }
+
+  return [data, handleChange, resetFormData]
 }
 
 export default useFormData

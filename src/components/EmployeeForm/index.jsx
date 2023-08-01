@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import { departments } from '../../data/departments'
 import styles from './EmployeeForm.module.css'
 import InputField from './InputField'
@@ -12,11 +13,13 @@ import useFormData from '../../hooks/useFormData'
 import useDebouncedValidation from '../../hooks/useDebouncedValidation'
 import { useDispatch } from 'react-redux'
 import { addEmployee } from '../../slices/employeeSlice'
+import ModalComponent from '../Modal'
 
 const EmployeeForm = () => {
   const dispatch = useDispatch()
 
-  const [formData, originalHandleChange] = useFormData(initialEmployeeState)
+  const [formData, originalHandleChange, resetFormData] =
+    useFormData(initialEmployeeState)
 
   const { errors, setError, clearError, hasErrors, validateField } =
     useFormErrors({}, formattedFieldNames)
@@ -34,6 +37,12 @@ const EmployeeForm = () => {
     const { name, value } = event.target
     clearError(name)
     debouncedValidation(name, value)
+  }
+
+  const [isModalOpen, setModalOpen] = useState(false)
+
+  const closeModal = () => {
+    setModalOpen(false)
   }
 
   const handleSubmit = (event) => {
@@ -55,7 +64,12 @@ const EmployeeForm = () => {
 
       dispatch(addEmployee(processedData))
       console.log('Employé sauvegardé avec succès!')
-      // ... Réinitialiser le formulaire ici
+
+      // Réinitialiser le formulaire
+      resetFormData()
+
+      // Ouvrir la modal
+      setModalOpen(true)
     }
   }
 
@@ -123,6 +137,10 @@ const EmployeeForm = () => {
           Save
         </button>
       </form>
+      <ModalComponent isOpen={isModalOpen} onRequestClose={closeModal}>
+        <h2>Employee Created!</h2>
+        <button onClick={closeModal}>Close</button>
+      </ModalComponent>
     </div>
   )
 }
