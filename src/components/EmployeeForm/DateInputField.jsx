@@ -16,6 +16,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
           },
         })
       }
+      showYearDropdown
     />
     {error && <span className={styles.errorMessage}>{error}</span>}
   </div>

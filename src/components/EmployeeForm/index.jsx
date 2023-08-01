@@ -56,7 +56,6 @@ const EmployeeForm = () => {
     }
 
     if (!hasErrors()) {
-      // Convertit les objets Date en chaînes ISO avant de les envoyer à Redux
       const processedData = {
         ...formData,
         dateOfBirth: formatDate(formData.dateOfBirth),
@@ -66,10 +65,8 @@ const EmployeeForm = () => {
       dispatch(addEmployee(processedData))
       console.log('Employé sauvegardé avec succès!')
 
-      // Réinitialiser le formulaire
       resetFormData()
 
-      // Ouvrir la modal
       setModalOpen(true)
     }
   }
@@ -126,7 +123,7 @@ const EmployeeForm = () => {
           value={formData.department}
           onChange={handleChange}
           options={[
-            { value: '', label: 'Please select a department' }, // Option de placeholder
+            { value: '', label: 'Please select a department' },
             ...departments.map((department) => ({
               value: department,
               label: department,
