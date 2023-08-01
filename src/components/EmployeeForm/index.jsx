@@ -7,6 +7,7 @@ import DateInputField from './DateInputField'
 import AddressFields from './AddressFields'
 import { validateEmployeeForm } from './validation'
 import { formattedFieldNames } from '../../utils/formatFieldNames'
+import { formatDate } from '../../utils/formatDate'
 import { initialEmployeeState } from '../../config/initialState'
 import useFormErrors from '../../hooks/useFormErrors'
 import useFormData from '../../hooks/useFormData'
@@ -58,8 +59,8 @@ const EmployeeForm = () => {
       // Convertit les objets Date en chaînes ISO avant de les envoyer à Redux
       const processedData = {
         ...formData,
-        dateOfBirth: formData.dateOfBirth.toISOString(),
-        startDate: formData.startDate.toISOString(),
+        dateOfBirth: formatDate(formData.dateOfBirth),
+        startDate: formatDate(formData.startDate),
       }
 
       dispatch(addEmployee(processedData))
