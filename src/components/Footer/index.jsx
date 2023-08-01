@@ -9,10 +9,14 @@ import styles from './Footer.module.css'
  * @returns {React.ReactNode} The rendered footer with the copyright notice.
  */
 
-const Footer = () => (
-  <footer className={styles.footer}>
-    <p className={styles.footerText}>Copyright 2020 Wealth Health</p>
-  </footer>
-)
+const Footer = () => {
+  const currentYear = new Date().getFullYear()
+
+  return (
+    <footer className={styles.footer}>
+      <p className={styles.footerText}>Copyright {currentYear} Wealth Health</p>
+    </footer>
+  )
+}
 
 export default Footer
