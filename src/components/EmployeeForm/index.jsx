@@ -10,8 +10,12 @@ import { initialEmployeeState } from '../../config/initialState'
 import useFormErrors from '../../hooks/useFormErrors'
 import useFormData from '../../hooks/useFormData'
 import useDebouncedValidation from '../../hooks/useDebouncedValidation'
+import { useDispatch } from 'react-redux'
+import { addEmployee } from '../../slices/employeeSlice'
 
 const EmployeeForm = () => {
+  const dispatch = useDispatch()
+
   const [formData, originalHandleChange] = useFormData(initialEmployeeState)
 
   const { errors, setError, clearError, hasErrors, validateField } =
@@ -42,7 +46,16 @@ const EmployeeForm = () => {
     }
 
     if (!hasErrors()) {
-      console.log(formData)
+      // Convertit les objets Date en chaînes ISO avant de les envoyer à Redux
+      const processedData = {
+        ...formData,
+        dateOfBirth: formData.dateOfBirth.toISOString(),
+        startDate: formData.startDate.toISOString(),
+      }
+
+      dispatch(addEmployee(processedData))
+      console.log('Employé sauvegardé avec succès!')
+      // ... Réinitialiser le formulaire ici
     }
   }
 

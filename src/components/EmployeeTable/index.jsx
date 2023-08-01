@@ -1,8 +1,12 @@
 import React from 'react'
 import { useTable } from 'react-table'
+import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
 
-const EmployeeTable = ({ data }) => {
+const EmployeeTable = () => {
+  // Récupére les employés depuis le store Redux
+  const employees = useSelector((state) => state.employee.employees)
+
   const columns = React.useMemo(
     () => [
       { Header: 'First Name', accessor: 'firstName' },
@@ -19,7 +23,7 @@ const EmployeeTable = ({ data }) => {
   )
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data })
+    useTable({ columns, data: employees }) // Remplace data par employees
 
   return (
     <table {...getTableProps()} className={styles.table}>
