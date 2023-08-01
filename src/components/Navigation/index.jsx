@@ -5,13 +5,13 @@ import styles from './Navigation.module.css'
 const Navigation = () => {
   return (
     <div>
-      <Link className={styles.mainNavItem} to="/">
-        <i className="fa fa-sign-out"></i>
-        <span className={styles.mainNavItemText}> Inscription</span>
+      <Link className={styles.mainNavItem} to="/add-employee">
+        <i className="fa fa-pencil"></i>
+        <span className={styles.mainNavItemText}>Create</span>
       </Link>
       <Link className={styles.mainNavItem} to="/employees-list">
-        <i className="fa fa-user-circle"></i>
-        <span className={styles.mainNavItemText}>Employees list</span>
+        <i className="fa fa-search"></i>
+        <span className={styles.mainNavItemText}>View</span>
       </Link>
     </div>
   )
