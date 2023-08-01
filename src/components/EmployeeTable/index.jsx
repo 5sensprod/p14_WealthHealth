@@ -2,6 +2,7 @@ import React from 'react'
 import { useTable } from 'react-table'
 import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
+import { formatDateWithSlashes } from '../../utils/formatDate'
 
 const EmployeeTable = () => {
   // Récupére les employés depuis le store Redux
@@ -11,9 +12,17 @@ const EmployeeTable = () => {
     () => [
       { Header: 'First Name', accessor: 'firstName' },
       { Header: 'Last Name', accessor: 'lastName' },
-      { Header: 'Start Date', accessor: 'startDate' },
+      {
+        Header: 'Start Date',
+        accessor: 'startDate',
+        Cell: ({ value }) => formatDateWithSlashes(value),
+      },
       { Header: 'Department', accessor: 'department' },
-      { Header: 'Date of Birth', accessor: 'dateOfBirth' },
+      {
+        Header: 'Date of Birth',
+        accessor: 'dateOfBirth',
+        Cell: ({ value }) => formatDateWithSlashes(value),
+      },
       { Header: 'Street', accessor: 'street' },
       { Header: 'City', accessor: 'city' },
       { Header: 'State', accessor: 'state' },
