@@ -7,7 +7,7 @@ const useFormErrors = (initialErrors = {}, formattedFieldNames = {}) => {
     if (!value) {
       return `${formattedFieldNames[name] || name} is required`
     }
-    // Ajoutez d'autres validations
+    // Ajout de validations
     return null
   }
 
