@@ -22,8 +22,10 @@ const EmployeeForm = () => {
   const [formData, originalHandleChange, resetFormData] =
     useFormData(initialEmployeeState)
 
-  const { errors, setError, clearError, hasErrors, validateField } =
-    useFormErrors({}, formattedFieldNames)
+  const { errors, setError, clearError, validateField } = useFormErrors(
+    {},
+    formattedFieldNames,
+  )
 
   const debouncedValidation = useDebouncedValidation(
     validateField,
@@ -51,11 +53,13 @@ const EmployeeForm = () => {
 
     const fieldErrors = validateEmployeeForm(formData, formattedFieldNames)
 
+    // mise à jour de l'état des erreurs
     for (const field in fieldErrors) {
       setError(field, fieldErrors[field])
     }
 
-    if (!hasErrors()) {
+    // vérifier si l'objet des erreurs est vide
+    if (Object.keys(fieldErrors).length === 0) {
       const processedData = {
         ...formData,
         dateOfBirth: formatDate(formData.dateOfBirth),
