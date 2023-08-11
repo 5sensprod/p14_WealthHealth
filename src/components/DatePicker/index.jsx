@@ -12,10 +12,12 @@ function DatePicker() {
 
   return (
     <div className={styles.container}>
-      <input type="text" value={selectedDate || ''} readOnly />
-      <button onClick={toggleCalendar} className={styles.calendarButton}>
-        📅
-      </button>
+      <div className={styles.containerInput}>
+        <input type="text" value={selectedDate || ''} readOnly />
+        <button onClick={toggleCalendar} className={styles.calendarButton}>
+          📅
+        </button>
+      </div>
       {showCalendar && (
         <Calendar selectDate={setSelectedDate} closeCalendar={toggleCalendar} />
       )}
