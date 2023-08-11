@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTable, usePagination } from 'react-table'
+import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
 import { formatDateWithSlashes } from '../../utils/formatDate'
@@ -35,6 +35,40 @@ const EmployeeTable = () => {
     pageSize: 2,
   }
 
+  // filterTypes
+  const filterTypes = React.useMemo(
+    () => ({
+      global: (rows, ids, filterValue) => {
+        return rows.filter((row) => {
+          return ids.some((id) => {
+            const rowValue = row.values[id]
+            return (
+              rowValue &&
+              String(rowValue)
+                .toLowerCase()
+                .includes(String(filterValue).toLowerCase())
+            )
+          })
+        })
+      },
+    }),
+    [],
+  )
+  const [filterValue, setFilterValue] = React.useState('')
+
+  const filteredData = React.useMemo(() => {
+    if (!filterValue) return employees
+
+    return employees.filter((row) => {
+      return columns.some((column) => {
+        const rowValue = row[column.accessor]
+        return rowValue
+          ? String(rowValue).toLowerCase().includes(filterValue.toLowerCase())
+          : false
+      })
+    })
+  }, [employees, filterValue, columns])
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -50,17 +84,39 @@ const EmployeeTable = () => {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize },
-  } = useTable({ columns, data: employees, initialState }, usePagination)
+  } = useTable(
+    { columns, data: filteredData, initialState, filterTypes },
+    useFilters,
+    useSortBy,
+    usePagination,
+  )
 
   return (
     <>
+      <input
+        value={filterValue}
+        onChange={(e) => {
+          setFilterValue(e.target.value)
+        }}
+        placeholder={'Search...'}
+      />
       <table {...getTableProps()} className={styles.table}>
         <thead className={styles.thead}>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()} className={styles.tr}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className={styles.th}>
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className={styles.th}
+                >
                   {column.render('Header')}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
                 </th>
               ))}
             </tr>
@@ -81,6 +137,10 @@ const EmployeeTable = () => {
           })}
         </tbody>
       </table>
+
+      {filteredData.length === 0 && filterValue && (
+        <div className={styles.noDataMessage}>No matching records found</div>
+      )}
       <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
