@@ -1,11 +1,10 @@
 import React from 'react'
-import { useTable } from 'react-table'
+import { useTable, usePagination } from 'react-table'
 import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
 import { formatDateWithSlashes } from '../../utils/formatDate'
 
 const EmployeeTable = () => {
-  // Récupére les employés depuis le store Redux
   const employees = useSelector((state) => state.employee.employees)
 
   const columns = React.useMemo(
@@ -31,37 +30,102 @@ const EmployeeTable = () => {
     [],
   )
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: employees }) // Remplace data par employees
+  const initialState = {
+    pageIndex: 0,
+    pageSize: 2,
+  }
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable({ columns, data: employees, initialState }, usePagination)
 
   return (
-    <table {...getTableProps()} className={styles.table}>
-      <thead className={styles.thead}>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} className={styles.tr}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()} className={styles.th}>
-                {column.render('Header')}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()} className={styles.tbody}>
-        {rows.map((row) => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()} className={styles.tr}>
-              {row.cells.map((cell) => (
-                <td {...cell.getCellProps()} className={styles.td}>
-                  {cell.render('Cell')}
-                </td>
+    <>
+      <table {...getTableProps()} className={styles.table}>
+        <thead className={styles.thead}>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()} className={styles.tr}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()} className={styles.th}>
+                  {column.render('Header')}
+                </th>
               ))}
             </tr>
-          )
-        })}
-      </tbody>
-    </table>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()} className={styles.tbody}>
+          {page.map((row) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()} className={styles.tr}>
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()} className={styles.td}>
+                    {cell.render('Cell')}
+                  </td>
+                ))}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      <div className="pagination">
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {'<<'}
+        </button>{' '}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          {'<'}
+        </button>{' '}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          {'>'}
+        </button>{' '}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {'>>'}
+        </button>{' '}
+        <span>
+          Page{' '}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>{' '}
+        </span>
+        <span>
+          | Go to page:{' '}
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              gotoPage(page)
+            }}
+            style={{ width: '100px' }}
+          />
+        </span>{' '}
+        <select
+          value={pageSize}
+          onChange={(e) => {
+            setPageSize(Number(e.target.value))
+          }}
+        >
+          {[2, 4, 6, 8, 10].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
+    </>
   )
 }
 
