@@ -5,7 +5,6 @@ import styles from './Calendar.module.css'
 import useCalendarLogic from './useCalendarLogic'
 import useDateLogic from './useDateLogic'
 import NavSelector from './NavSelector'
-import ChevronButtons from './ChevronButtons'
 import DateGrid from './DateGrid'
 import useChooseDate from './useChooseDate'
 import { START_YEAR, END_YEAR } from './utils'
@@ -38,20 +37,11 @@ function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
           view={view}
           setView={setView}
           yearsBlock={yearsBlock}
-        />
-
-        <ChevronButtons
-          setCurrentMonth={setCurrentMonth}
-          useIcons={useIcons}
-          view={view}
-          setView={setView}
-          yearsBlock={yearsBlock}
           setYearsBlock={setYearsBlock}
           animationKey={animationKey}
           setAnimationKey={setAnimationKey}
         />
       </div>
-
       <DateGrid
         key={`${currentMonth.getMonth()}-${currentMonth.getFullYear()}`}
         totalSlots={totalSlots}

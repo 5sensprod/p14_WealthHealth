@@ -6,6 +6,9 @@ export function abbreviateMonth(month) {
 }
 
 export const goToNextMonth = (currentDate) => {
+  if (currentDate.getMonth() === 11 && currentDate.getFullYear() === END_YEAR) {
+    return new Date(START_YEAR, 0) // Return to January of START_YEAR
+  }
   const year =
     currentDate.getMonth() === 11
       ? currentDate.getFullYear() + 1
@@ -15,11 +18,19 @@ export const goToNextMonth = (currentDate) => {
 }
 
 export const goToPreviousMonth = (currentDate) => {
+  if (
+    currentDate.getMonth() === 0 &&
+    currentDate.getFullYear() === START_YEAR
+  ) {
+    return new Date(END_YEAR, 11) // Retour à décembre de END_YEAR
+  }
+
   const year =
     currentDate.getMonth() === 0
       ? currentDate.getFullYear() - 1
       : currentDate.getFullYear()
   const month = (currentDate.getMonth() - 1 + 12) % 12
+
   return new Date(year, month)
 }
 
@@ -32,10 +43,11 @@ export const goToNextYear = (currentDate) => {
 }
 
 export const goToPreviousYear = (currentDate) => {
-  const year =
-    currentDate.getFullYear() === START_YEAR
-      ? END_YEAR
-      : currentDate.getFullYear() - 1
+  if (currentDate.getFullYear() === START_YEAR) {
+    return new Date(END_YEAR, currentDate.getMonth())
+  }
+
+  const year = currentDate.getFullYear() - 1
   return new Date(year, currentDate.getMonth())
 }
 

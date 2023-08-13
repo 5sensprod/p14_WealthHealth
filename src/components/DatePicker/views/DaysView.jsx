@@ -13,7 +13,10 @@ function DaysView({ totalSlots, chooseDate, translations }) {
         <div
           key={index}
           className={day.isGrayed ? styles.grayedDay : styles.day}
-          onClick={() => !day.isGrayed && chooseDate(day.number)}
+          onClick={(event) => {
+            event.stopPropagation()
+            if (!day.isGrayed) chooseDate(day.number)
+          }}
         >
           {day.number}
         </div>

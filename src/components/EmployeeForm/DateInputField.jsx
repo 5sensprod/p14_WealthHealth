@@ -12,7 +12,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
       value={value}
       onChange={onChange}
       useIcons={true}
-      language="fr"
+      language="en"
     />
     {error && <span className={styles.errorMessage}>{error}</span>}
   </div>

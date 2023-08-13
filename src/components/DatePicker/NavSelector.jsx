@@ -1,53 +1,62 @@
 import React from 'react'
 import HomeIcon from './HomeIcon'
+import ChevronButtons from './ChevronButtons'
 import styles from './Calendar.module.css'
 
-function NavSelector({
-  setCurrentMonth,
-  currentMonth,
-  months,
-  view,
-  setView,
-  yearsBlock,
-}) {
-  const handleMonthClick = () => {
-    if (view === 'days') {
-      setView('months')
-    } else if (view === 'months') {
-      setView('days')
-    }
-  }
+const VIEWS = {
+  DAYS: 'days',
+  MONTHS: 'months',
+  YEARS: 'years',
+}
 
-  const handleYearClick = () => {
-    if (view === 'days' || view === 'months') {
-      setView('years')
-    } else if (view === 'years') {
-      setView('months')
-    }
-  }
-  const handleHomeClick = () => {
-    setCurrentMonth(new Date()) // Réglage sur le mois/année actuels
-    setView('days') // Changer la vue pour montrer le jour
-  }
+function MonthSelector({ currentMonth, months, view, setView }) {
+  if (view !== VIEWS.DAYS) return null
+
+  return (
+    <button className={styles.navButton} onClick={() => setView(VIEWS.MONTHS)}>
+      {months[currentMonth.getMonth()]}
+    </button>
+  )
+}
+
+function YearSelector({ currentMonth, view, setView, yearsBlock }) {
+  return (
+    <button
+      className={styles.navButton}
+      onClick={() => setView(view === VIEWS.YEARS ? VIEWS.MONTHS : VIEWS.YEARS)}
+    >
+      {view === VIEWS.YEARS
+        ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
+        : currentMonth.getFullYear()}
+    </button>
+  )
+}
+
+function HomeButton({ setCurrentMonth, setView }) {
+  return (
+    <button
+      className={styles.navButton}
+      onClick={() => {
+        setCurrentMonth(new Date())
+        setView(VIEWS.DAYS)
+      }}
+    >
+      <HomeIcon />
+    </button>
+  )
+}
+
+function NavSelector(props) {
   return (
     <>
       <div className={styles.NavSelector}>
-        {view === 'days' && (
-          <button className={styles.navButton} onClick={handleMonthClick}>
-            {months[currentMonth.getMonth()]}
-          </button>
-        )}
-        <button className={styles.navButton} onClick={handleYearClick}>
-          {view === 'years'
-            ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
-            : currentMonth.getFullYear()}
-        </button>
+        <MonthSelector {...props} />
+        <YearSelector {...props} />
       </div>
       <div className={styles.homeSelector}>
-        <button className={styles.navButton} onClick={handleHomeClick}>
-          <HomeIcon />
-        </button>
+        <HomeButton {...props} />
       </div>
+      <ChevronButtons {...props} />
     </>
   )
 }
