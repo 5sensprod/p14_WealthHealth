@@ -15,22 +15,7 @@
   cursor: pointer;
 }
 
-select{
+select {
   background: transparent;
   border: none;
-}
-.monthsContainer {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes pour les mois */
-  gap: 10px; /* Espacement entre les mois */
-}
-
-.month {
-  display: flex;
-  justify-content: center; /* Centrer horizontalement */
-  align-items: center; /* Centrer verticalement */
-  height: 60px; /* Hauteur de chaque cellule du mois */
-  background-color: #e5e5e5; /* Couleur de fond pour chaque cellule du mois */
-  border-radius: 5px; /* Arrondir les coins */
-  cursor: pointer; /* Style de curseur pour indiquer la cliquabilité */
 }

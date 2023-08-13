@@ -6,8 +6,9 @@ import useCalendarLogic from './useCalendarLogic'
 import useDateLogic from './useDateLogic'
 import NavSelector from './NavSelector'
 import ChevronButtons from './ChevronButtons'
-import DayGrid from './DayGrid'
+import DateGrid from './DateGrid'
 import useChooseDate from './useChooseDate'
+import { START_YEAR, END_YEAR } from './utils'
 
 function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
   const translations = language === 'fr' ? frTranslations : enTranslations
@@ -18,19 +19,13 @@ function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
 
   const [view, setView] = useState('days') // 'days', 'months', or 'years'
 
-  // Ajoutez ces lignes ici :
-  const startYear = 1930
-  const currentYear = new Date().getFullYear()
   const [yearsBlock, setYearsBlock] = useState(() => {
-    const yearBlockStart = currentYear - ((currentYear - startYear) % 16)
+    const yearBlockStart = END_YEAR - ((END_YEAR - START_YEAR) % 16)
     return Array.from({ length: 16 }, (_, i) => yearBlockStart + i)
   })
 
-  const handleChangeView = (newView) => {
-    if (view !== newView) {
-      setView(newView)
-    }
-  }
+  const [animationKey, setAnimationKey] = useState(0)
+
   return (
     <div className={styles.calendar}>
       <div className={styles.calendarNav}>
@@ -41,31 +36,33 @@ function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
           years={years}
           useIcons={useIcons}
           view={view}
-          setView={handleChangeView}
-          yearsBlock={yearsBlock} // Ajouté ceci
+          setView={setView}
+          yearsBlock={yearsBlock}
         />
-        <div className={styles.chevronContainer}>
-          <ChevronButtons
-            setCurrentMonth={setCurrentMonth}
-            useIcons={useIcons}
-            view={view}
-            setView={handleChangeView}
-            yearsBlock={yearsBlock} // Ajouté ceci
-            setYearsBlock={setYearsBlock}
-          />
-        </div>
+
+        <ChevronButtons
+          setCurrentMonth={setCurrentMonth}
+          useIcons={useIcons}
+          view={view}
+          setView={setView}
+          yearsBlock={yearsBlock}
+          setYearsBlock={setYearsBlock}
+          animationKey={animationKey}
+          setAnimationKey={setAnimationKey}
+        />
       </div>
 
-      <DayGrid
+      <DateGrid
         key={`${currentMonth.getMonth()}-${currentMonth.getFullYear()}`}
         totalSlots={totalSlots}
         chooseDate={chooseDate}
         translations={translations}
         view={view}
-        setView={handleChangeView}
+        setView={setView}
         currentMonth={currentMonth}
         setCurrentMonth={setCurrentMonth}
-        yearsBlock={yearsBlock} // Ajouté ceci
+        yearsBlock={yearsBlock}
+        animationKey={animationKey}
       />
     </div>
   )

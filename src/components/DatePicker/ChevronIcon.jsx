@@ -15,8 +15,8 @@ function ChevronIcon({ direction = 'down' }) {
     <img
       src={ChevronDownSVG}
       alt="Chevron Icon"
-      width="28"
-      height="28"
+      width="30"
+      height="30"
       style={{ transform: `rotate(${rotation}deg)` }}
     />
   )

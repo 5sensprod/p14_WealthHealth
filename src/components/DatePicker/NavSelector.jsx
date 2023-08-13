@@ -30,21 +30,25 @@ function NavSelector({
     setView('days') // Changer la vue pour montrer le jour
   }
   return (
-    <div className={styles.NavSelector}>
-      {view === 'days' && (
-        <button className={styles.navButton} onClick={handleMonthClick}>
-          {months[currentMonth.getMonth()]}
+    <>
+      <div className={styles.NavSelector}>
+        {view === 'days' && (
+          <button className={styles.navButton} onClick={handleMonthClick}>
+            {months[currentMonth.getMonth()]}
+          </button>
+        )}
+        <button className={styles.navButton} onClick={handleYearClick}>
+          {view === 'years'
+            ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
+            : currentMonth.getFullYear()}
         </button>
-      )}
-      <button className={styles.navButton} onClick={handleYearClick}>
-        {view === 'years'
-          ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
-          : currentMonth.getFullYear()}
-      </button>
-      <button className={styles.navButton} onClick={handleHomeClick}>
-        <HomeIcon />
-      </button>
-    </div>
+      </div>
+      <div className={styles.homeSelector}>
+        <button className={styles.navButton} onClick={handleHomeClick}>
+          <HomeIcon />
+        </button>
+      </div>
+    </>
   )
 }
 

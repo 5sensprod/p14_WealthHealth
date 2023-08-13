@@ -1,23 +1,22 @@
-import { startYear } from './constants' // Si startYear est défini dans un autre fichier
+import { START_YEAR, END_YEAR } from './utils'
 
 const useDateLogic = () => {
   const today = new Date()
   const thisYear = today.getFullYear()
   const initialMonth = new Date(thisYear, today.getMonth())
-  const currentYear = new Date().getFullYear()
-  const endYear = currentYear + 2 // L'année actuelle + 2
+
   // Bloc actuel de 16 ans basé sur l'année courante
-  const yearBlockStart = currentYear - ((currentYear - startYear) % 16)
+  const yearBlockStart = END_YEAR - ((END_YEAR - START_YEAR) % 16)
 
   const yearsBlock = Array.from({ length: 16 }, (_, i) => yearBlockStart + i)
 
   // Génération du tableau des années
   const years = Array.from(
-    { length: endYear - startYear + 1 },
-    (_, i) => startYear + i,
+    { length: END_YEAR - START_YEAR + 1 },
+    (_, i) => START_YEAR + i,
   )
 
-  return { today, thisYear, initialMonth, currentYear, years, yearsBlock }
+  return { today, thisYear, initialMonth, years, yearsBlock }
 }
 
 export default useDateLogic
