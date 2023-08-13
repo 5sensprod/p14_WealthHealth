@@ -1,19 +1,22 @@
 import React from 'react'
-import HomeIcon from './HomeIcon'
+import { HomeIcon } from './Icons'
 import ChevronButtons from './ChevronButtons'
 import styles from './Calendar.module.css'
-
-const VIEWS = {
-  DAYS: 'days',
-  MONTHS: 'months',
-  YEARS: 'years',
-}
+import {
+  VIEWS,
+  switchToMonthView,
+  toggleYearView,
+  resetToCurrentDate,
+} from './utils'
 
 function MonthSelector({ currentMonth, months, view, setView }) {
   if (view !== VIEWS.DAYS) return null
 
   return (
-    <button className={styles.navButton} onClick={() => setView(VIEWS.MONTHS)}>
+    <button
+      className={styles.navButton}
+      onClick={() => setView(switchToMonthView(view))}
+    >
       {months[currentMonth.getMonth()]}
     </button>
   )
@@ -23,7 +26,7 @@ function YearSelector({ currentMonth, view, setView, yearsBlock }) {
   return (
     <button
       className={styles.navButton}
-      onClick={() => setView(view === VIEWS.YEARS ? VIEWS.MONTHS : VIEWS.YEARS)}
+      onClick={() => setView(toggleYearView(view))}
     >
       {view === VIEWS.YEARS
         ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
@@ -37,7 +40,7 @@ function HomeButton({ setCurrentMonth, setView }) {
     <button
       className={styles.navButton}
       onClick={() => {
-        setCurrentMonth(new Date())
+        setCurrentMonth(resetToCurrentDate())
         setView(VIEWS.DAYS)
       }}
     >

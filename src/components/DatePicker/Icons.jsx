@@ -1,7 +1,17 @@
 import React from 'react'
+import HomeSVG from './assets/home-house.svg'
+import CalendarSVG from './assets/calendar-alt.svg'
 import ChevronDownSVG from './assets/chevron-down.svg'
 
-function ChevronIcon({ direction = 'down' }) {
+export function HomeIcon() {
+  return <img src={HomeSVG} alt="Home Icon" width="18" height="18" />
+}
+
+export function CalendarIcon() {
+  return <img src={CalendarSVG} alt="Calendar Icon" width="18" height="18" />
+}
+
+export function ChevronIcon({ direction = 'down' }) {
   const rotationMap = {
     up: '0',
     right: '90',
@@ -21,5 +31,3 @@ function ChevronIcon({ direction = 'down' }) {
     />
   )
 }
-
-export default ChevronIcon

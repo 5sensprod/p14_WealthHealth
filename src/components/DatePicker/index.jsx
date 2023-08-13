@@ -1,8 +1,17 @@
 import React, { useState } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
-import enTranslations from './translations/en.json'
-import frTranslations from './translations/fr.json'
+import getTranslations from './translate'
+import { formatDate } from './utils'
+import { CalendarIcon } from './Icons'
+
+function CalendarButton({ onClick }) {
+  return (
+    <button onClick={onClick} className={styles.calendarButton}>
+      <CalendarIcon />
+    </button>
+  )
+}
 
 function DatePicker({
   name,
@@ -12,42 +21,29 @@ function DatePicker({
   language = 'en',
 }) {
   const [showCalendar, setShowCalendar] = useState(false)
-
+  const translations = getTranslations(language)
   const toggleCalendar = () => {
     setShowCalendar(!showCalendar)
   }
 
-  const handleDateChange = (date) => {
-    // Fermer le calendrier une fois la date sélectionnée
-    setShowCalendar(false)
-
-    // Créer un événement standardisé
-    const event = {
-      target: {
-        name: name,
-        value: date,
-      },
-    }
-    onChange(event)
-  }
-
-  const dateValue =
-    value instanceof Date ? value.toISOString().split('T')[0] : value
-
-  const translations = language === 'fr' ? frTranslations : enTranslations
-
   return (
     <div className={styles.container}>
       <div className={styles.containerInput}>
-        <input type="text" value={dateValue || ''} readOnly />
-        <button onClick={toggleCalendar} className={styles.calendarButton}>
-          📅
-        </button>
+        <input type="text" value={formatDate(value) || ''} readOnly />
+        <CalendarButton onClick={toggleCalendar} />
       </div>
       {showCalendar && (
         <Calendar
-          selectDate={handleDateChange}
-          closeCalendar={toggleCalendar}
+          selectDate={(date) => {
+            setShowCalendar(false)
+            onChange({
+              target: {
+                name,
+                value: date,
+              },
+            })
+          }}
+          closeCalendar={() => setShowCalendar(false)}
           useIcons={useIcons}
           translations={translations}
           language={language}

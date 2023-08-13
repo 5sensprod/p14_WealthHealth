@@ -19,3 +19,15 @@ select {
   background: transparent;
   border: none;
 }
+
+.calendarButton {
+  background: transparent;
+  border: none;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+  padding: 0;
+}
+
+.calendarButton:hover {
+  opacity: .8;
+}

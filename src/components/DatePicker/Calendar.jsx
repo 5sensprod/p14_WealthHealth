@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import enTranslations from './translations/en.json'
-import frTranslations from './translations/fr.json'
 import styles from './Calendar.module.css'
 import useCalendarLogic from './useCalendarLogic'
 import useDateLogic from './useDateLogic'
@@ -8,9 +6,10 @@ import NavSelector from './NavSelector'
 import DateGrid from './DateGrid'
 import useChooseDate from './useChooseDate'
 import { START_YEAR, END_YEAR } from './utils'
+import getTranslations from './translate'
 
 function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
-  const translations = language === 'fr' ? frTranslations : enTranslations
+  const translations = getTranslations(language) //
   const { initialMonth, years } = useDateLogic()
   const { currentMonth, setCurrentMonth, totalSlots } =
     useCalendarLogic(initialMonth)

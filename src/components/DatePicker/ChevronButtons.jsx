@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import styles from './Calendar.module.css'
-import ChevronIcon from './ChevronIcon'
+import { ChevronIcon } from './Icons'
 import {
   goToNextMonth,
   goToPreviousMonth,

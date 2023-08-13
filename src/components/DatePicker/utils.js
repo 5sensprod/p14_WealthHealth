@@ -1,6 +1,10 @@
 export const START_YEAR = 1930
 export const END_YEAR = new Date().getFullYear() + 2
 
+export function formatDate(value) {
+  return value instanceof Date ? value.toISOString().split('T')[0] : value
+}
+
 export function abbreviateMonth(month) {
   return month.length > 5 ? month.substring(0, 4) + '.' : month
 }
@@ -65,4 +69,23 @@ export const goToPreviousYearBlock = (yearsBlock) => {
 
 export function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate()
+}
+
+// NavSelector
+export const VIEWS = {
+  DAYS: 'days',
+  MONTHS: 'months',
+  YEARS: 'years',
+}
+
+export function switchToMonthView(view) {
+  return view === VIEWS.DAYS ? VIEWS.MONTHS : view
+}
+
+export function toggleYearView(view) {
+  return view === VIEWS.YEARS ? VIEWS.MONTHS : VIEWS.YEARS
+}
+
+export function resetToCurrentDate() {
+  return new Date()
 }
