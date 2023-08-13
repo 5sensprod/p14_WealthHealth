@@ -25,9 +25,9 @@ function DayGrid({
   }
 
   return (
-    <div className={styles.gridContainer}>
+    <>
       {view === 'days' && (
-        <>
+        <div className={styles.daysContainer}>
           {translations.days.map((day) => (
             <div className={styles.header} key={day}>
               {day}
@@ -42,13 +42,17 @@ function DayGrid({
               {day.number}
             </div>
           ))}
-        </>
+        </div>
       )}
 
       {view === 'months' && (
         <div className={styles.monthsContainer}>
           {translations.shortMonths.map((month, index) => (
-            <div key={month} onClick={() => handleMonthClick(index)}>
+            <div
+              key={month}
+              className={styles.month}
+              onClick={() => handleMonthClick(index)}
+            >
               {abbreviateMonth(month)}
             </div>
           ))}
@@ -68,7 +72,7 @@ function DayGrid({
           ))}
         </div>
       )}
-    </div> // Fermeture de la balise gridContainer
+    </>
   )
 }
 

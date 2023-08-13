@@ -1,11 +1,11 @@
 import React from 'react'
+import HomeIcon from './HomeIcon'
+import styles from './Calendar.module.css'
 
 function NavSelector({
-  currentMonth,
   setCurrentMonth,
+  currentMonth,
   months,
-  years,
-  useIcons,
   view,
   setView,
   yearsBlock,
@@ -22,44 +22,28 @@ function NavSelector({
     if (view === 'days' || view === 'months') {
       setView('years')
     } else if (view === 'years') {
-      setView('months') // ou 'days' si vous voulez revenir directement à la vue des jours
+      setView('months')
     }
   }
-
-  ;<button onClick={handleYearClick}>
-    {view === 'years'
-      ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
-      : currentMonth.getFullYear()}
-  </button>
-
+  const handleHomeClick = () => {
+    setCurrentMonth(new Date()) // Réglage sur le mois/année actuels
+    setView('days') // Changer la vue pour montrer le jour
+  }
   return (
-    <div>
-      <span>
-        {view === 'days' && (
-          <button onClick={handleMonthClick}>
-            {months[currentMonth.getMonth()]}
-          </button>
-        )}
-        <select
-          value={currentMonth.getFullYear()}
-          onChange={(e) =>
-            setCurrentMonth(
-              new Date(Number(e.target.value), currentMonth.getMonth()),
-            )
-          }
-        >
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-        {view !== 'years' && (
-          <button onClick={handleYearClick}>
-            {useIcons ? '📅' : 'Voir les années'}
-          </button>
-        )}
-      </span>
+    <div className={styles.NavSelector}>
+      {view === 'days' && (
+        <button className={styles.navButton} onClick={handleMonthClick}>
+          {months[currentMonth.getMonth()]}
+        </button>
+      )}
+      <button className={styles.navButton} onClick={handleYearClick}>
+        {view === 'years'
+          ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
+          : currentMonth.getFullYear()}
+      </button>
+      <button className={styles.navButton} onClick={handleHomeClick}>
+        <HomeIcon />
+      </button>
     </div>
   )
 }
