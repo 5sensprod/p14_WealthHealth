@@ -1,7 +1,9 @@
 import React from 'react'
 import { HomeIcon } from './Icons'
-import ChevronButtons from './ChevronButtons'
+import ChevronButtons from './ChevronSelector'
 import styles from './Calendar.module.css'
+import Button from './Button'
+
 import {
   VIEWS,
   switchToMonthView,
@@ -13,39 +15,38 @@ function MonthSelector({ currentMonth, months, view, setView }) {
   if (view !== VIEWS.DAYS) return null
 
   return (
-    <button
-      className={styles.navButton}
+    <Button
       onClick={() => setView(switchToMonthView(view))}
+      className={styles.navButton}
     >
       {months[currentMonth.getMonth()]}
-    </button>
+    </Button>
   )
 }
 
 function YearSelector({ currentMonth, view, setView, yearsBlock }) {
   return (
-    <button
-      className={styles.navButton}
+    <Button
       onClick={() => setView(toggleYearView(view))}
+      className={styles.navButton}
     >
       {view === VIEWS.YEARS
         ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
         : currentMonth.getFullYear()}
-    </button>
+    </Button>
   )
 }
 
 function HomeButton({ setCurrentMonth, setView }) {
   return (
-    <button
-      className={styles.navButton}
+    <Button
       onClick={() => {
         setCurrentMonth(resetToCurrentDate())
         setView(VIEWS.DAYS)
       }}
-    >
-      <HomeIcon />
-    </button>
+      icon={HomeIcon}
+      className={styles.navButton}
+    />
   )
 }
 

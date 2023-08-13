@@ -4,15 +4,17 @@ import Calendar from './Calendar'
 import getTranslations from './translate'
 import { formatDate } from './utils'
 import { CalendarIcon } from './Icons'
+import Button from './Button'
 
 function CalendarButton({ onClick }) {
   return (
-    <button onClick={onClick} className={styles.calendarButton}>
-      <CalendarIcon />
-    </button>
+    <Button
+      onClick={onClick}
+      className={styles.calendarButton}
+      icon={CalendarIcon}
+    />
   )
 }
-
 function DatePicker({
   name,
   value,

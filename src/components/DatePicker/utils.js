@@ -1,5 +1,9 @@
+// ========== CONSTANTS ==========
+
 export const START_YEAR = 1930
 export const END_YEAR = new Date().getFullYear() + 2
+
+// ========== DATE UTILITIES ==========
 
 export function formatDate(value) {
   return value instanceof Date ? value.toISOString().split('T')[0] : value
@@ -8,6 +12,12 @@ export function formatDate(value) {
 export function abbreviateMonth(month) {
   return month.length > 5 ? month.substring(0, 4) + '.' : month
 }
+
+export function getDaysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+// ========== MONTH NAVIGATION ==========
 
 export const goToNextMonth = (currentDate) => {
   if (currentDate.getMonth() === 11 && currentDate.getFullYear() === END_YEAR) {
@@ -28,15 +38,15 @@ export const goToPreviousMonth = (currentDate) => {
   ) {
     return new Date(END_YEAR, 11) // Retour à décembre de END_YEAR
   }
-
   const year =
     currentDate.getMonth() === 0
       ? currentDate.getFullYear() - 1
       : currentDate.getFullYear()
   const month = (currentDate.getMonth() - 1 + 12) % 12
-
   return new Date(year, month)
 }
+
+// ========== YEAR NAVIGATION ==========
 
 export const goToNextYear = (currentDate) => {
   const year =
@@ -50,7 +60,6 @@ export const goToPreviousYear = (currentDate) => {
   if (currentDate.getFullYear() === START_YEAR) {
     return new Date(END_YEAR, currentDate.getMonth())
   }
-
   const year = currentDate.getFullYear() - 1
   return new Date(year, currentDate.getMonth())
 }
@@ -67,11 +76,8 @@ export const goToPreviousYearBlock = (yearsBlock) => {
   return Array.from({ length: 16 }, (_, i) => baseYear + i)
 }
 
-export function getDaysInMonth(year, month) {
-  return new Date(year, month + 1, 0).getDate()
-}
+// ========== VIEW HELPERS ==========
 
-// NavSelector
 export const VIEWS = {
   DAYS: 'days',
   MONTHS: 'months',
@@ -88,4 +94,23 @@ export function toggleYearView(view) {
 
 export function resetToCurrentDate() {
   return new Date()
+}
+
+export function getNewDate(view, direction, yearsBlock, prev) {
+  if (view === 'months') {
+    return direction === 'prev'
+      ? goToPreviousYear(prev, START_YEAR, END_YEAR)
+      : goToNextYear(prev, END_YEAR)
+  }
+  if (view === 'days') {
+    return direction === 'prev' ? goToPreviousMonth(prev) : goToNextMonth(prev)
+  }
+  return prev // default
+}
+
+export function getNewYearBlock(view, direction, yearsBlock) {
+  if (view !== 'years') return yearsBlock
+  return direction === 'prev'
+    ? goToPreviousYearBlock(yearsBlock, new Date().getFullYear())
+    : goToNextYearBlock(yearsBlock, new Date().getFullYear())
 }
