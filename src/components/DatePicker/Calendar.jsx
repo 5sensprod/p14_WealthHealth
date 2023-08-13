@@ -1,144 +1,72 @@
-import React from 'react'
-import styles from './DatePicker.module.css'
-import { startYear, months } from './constants'
+import React, { useState } from 'react'
+import enTranslations from './translations/en.json'
+import frTranslations from './translations/fr.json'
+import styles from './Calendar.module.css'
 import useCalendarLogic from './useCalendarLogic'
+import useDateLogic from './useDateLogic'
+import NavSelector from './NavSelector'
+import ChevronButtons from './ChevronButtons'
+import DayGrid from './DayGrid'
+import useChooseDate from './useChooseDate'
 
-function Calendar({ selectDate, closeCalendar }) {
-  const today = new Date()
-  const thisYear = today.getFullYear()
-  const initialMonth = new Date(thisYear, today.getMonth())
-
-  // Utilisation du hook personnalisé pour gérer la logique du calendrier
+function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
+  const translations = language === 'fr' ? frTranslations : enTranslations
+  const { initialMonth, years } = useDateLogic()
   const { currentMonth, setCurrentMonth, totalSlots } =
     useCalendarLogic(initialMonth)
+  const chooseDate = useChooseDate(selectDate, closeCalendar, currentMonth)
 
-  // Logique pour générer les années
+  const [view, setView] = useState('days') // 'days', 'months', or 'years'
+
+  // Ajoutez ces lignes ici :
+  const startYear = 1930
   const currentYear = new Date().getFullYear()
-  const years = Array.from(
-    { length: currentYear - startYear + 1 },
-    (_, i) => startYear + i,
-  )
-
-  const rows = []
-  let cells = []
-
-  totalSlots.forEach((day, index) => {
-    if (index % 7 !== 0 || index === 0) {
-      cells.push(
-        <td
-          key={index}
-          className={day.isGrayed ? styles.grayedDay : styles.day}
-          onClick={() => {
-            if (!day.isGrayed) {
-              chooseDate(day.number)
-            }
-          }}
-        >
-          {day.number}
-        </td>,
-      )
-    } else {
-      rows.push(cells)
-      cells = []
-      cells.push(
-        <td
-          key={index}
-          className={day.isGrayed ? styles.grayedDay : styles.day}
-          onClick={() => {
-            if (!day.isGrayed) {
-              chooseDate(day.number)
-            }
-          }}
-        >
-          {day.number}
-        </td>,
-      )
-    }
-    if (index === totalSlots.length - 1) {
-      // Pour le dernier élément
-      rows.push(cells)
-    }
+  const [yearsBlock, setYearsBlock] = useState(() => {
+    const yearBlockStart = currentYear - ((currentYear - startYear) % 16)
+    return Array.from({ length: 16 }, (_, i) => yearBlockStart + i)
   })
 
-  const chooseDate = (day) => {
-    selectDate(
-      `${currentMonth.getFullYear()}-${String(
-        currentMonth.getMonth() + 1,
-      ).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
-    )
-    closeCalendar()
+  const handleChangeView = (newView) => {
+    if (view !== newView) {
+      setView(newView)
+    }
   }
-
   return (
     <div className={styles.calendar}>
       <div className={styles.calendarNav}>
-        <button
-          onClick={() =>
-            setCurrentMonth(
-              (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1),
-            )
-          }
-        >
-          Previous
-        </button>
-        <span>
-          <select
-            value={currentMonth.getMonth()}
-            onChange={(e) =>
-              setCurrentMonth(
-                new Date(currentMonth.getFullYear(), Number(e.target.value)),
-              )
-            }
-          >
-            {months.map((month, index) => (
-              <option key={month} value={index}>
-                {month}
-              </option>
-            ))}
-          </select>
-          <select
-            value={currentMonth.getFullYear()}
-            onChange={(e) =>
-              setCurrentMonth(
-                new Date(Number(e.target.value), currentMonth.getMonth()),
-              )
-            }
-          >
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </span>
-        <button
-          onClick={() =>
-            setCurrentMonth(
-              (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1),
-            )
-          }
-        >
-          Next
-        </button>
+        <NavSelector
+          currentMonth={currentMonth}
+          setCurrentMonth={setCurrentMonth}
+          months={translations.shortMonths}
+          years={years}
+          useIcons={useIcons}
+          view={view}
+          setView={handleChangeView}
+          yearsBlock={yearsBlock} // Ajouté ceci
+        />
+        <div className={styles.chevronContainer}>
+          <ChevronButtons
+            setCurrentMonth={setCurrentMonth}
+            useIcons={useIcons}
+            view={view}
+            setView={handleChangeView}
+            yearsBlock={yearsBlock} // Ajouté ceci
+            setYearsBlock={setYearsBlock}
+          />
+        </div>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Sun</th>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((d, index) => (
-            <tr key={index}>{d}</tr>
-          ))}
-        </tbody>
-      </table>
+
+      <DayGrid
+        key={`${currentMonth.getMonth()}-${currentMonth.getFullYear()}`}
+        totalSlots={totalSlots}
+        chooseDate={chooseDate}
+        translations={translations}
+        view={view}
+        setView={handleChangeView}
+        currentMonth={currentMonth}
+        setCurrentMonth={setCurrentMonth}
+        yearsBlock={yearsBlock} // Ajouté ceci
+      />
     </div>
   )
 }

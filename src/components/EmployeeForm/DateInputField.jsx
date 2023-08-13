@@ -8,15 +8,11 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
   <div className={styles.label}>
     <p>{label}</p>
     <DatePicker
-      value={value ? new Date(value).toISOString().split('T')[0] : ''}
-      onChange={(date) =>
-        onChange({
-          target: {
-            name: name,
-            value: date,
-          },
-        })
-      }
+      name={name}
+      value={value}
+      onChange={onChange}
+      useIcons={true}
+      language="fr"
     />
     {error && <span className={styles.errorMessage}>{error}</span>}
   </div>

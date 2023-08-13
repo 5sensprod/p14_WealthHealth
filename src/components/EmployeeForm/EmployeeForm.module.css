@@ -43,3 +43,13 @@
     font-size: 12px;
     margin-top: 4px;
   }
+
+  .month {
+    /* Ajoutez vos styles ici pour afficher les mois sous forme de grille */
+    width: calc(100% / 7); /* Pour 7 colonnes par semaine */
+    height: 50px; /* ou toute autre hauteur que vous préférez */
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+    /* ... tout autre style que vous souhaitez ajouter */
+  }

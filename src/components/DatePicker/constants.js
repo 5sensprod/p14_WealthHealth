@@ -13,4 +13,4 @@ export const months = [
   'December',
 ]
 
-export const startYear = 1920
+export const startYear = 1930

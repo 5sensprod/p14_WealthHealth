@@ -1,0 +1,31 @@
+{
+  "months": [
+    "Janvier",
+    "Février",
+    "Mars",
+    "Avril",
+    "Mai",
+    "Juin",
+    "Juillet",
+    "Août",
+    "Septembre",
+    "Octobre",
+    "Novembre",
+    "Décembre"
+  ],
+  "shortMonths": [
+    "Janv.",
+    "Févr.",
+    "Mars",
+    "Avr.",
+    "Mai",
+    "Juin",
+    "Juil.",
+    "Août",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Déc."
+  ],
+  "days": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
+}

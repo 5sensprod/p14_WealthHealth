@@ -94,54 +94,56 @@ const EmployeeTable = () => {
   return (
     <>
       <input
+        className={styles.filterInput}
         value={filterValue}
         onChange={(e) => {
           setFilterValue(e.target.value)
         }}
         placeholder={'Search...'}
       />
-      <table {...getTableProps()} className={styles.table}>
-        <thead className={styles.thead}>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()} className={styles.tr}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={styles.th}
-                >
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()} className={styles.tbody}>
-          {page.map((row) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()} className={styles.tr}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} className={styles.td}>
-                    {cell.render('Cell')}
-                  </td>
+      <div className={styles.tableWrapper}>
+        <table {...getTableProps()} className={styles.table}>
+          <thead className={styles.thead}>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()} className={styles.tr}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    className={styles.th}
+                  >
+                    {column.render('Header')}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' 🔽'
+                          : ' 🔼'
+                        : ''}
+                    </span>
+                  </th>
                 ))}
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
-
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()} className={styles.tbody}>
+            {page.map((row) => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()} className={styles.tr}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()} className={styles.td}>
+                      {cell.render('Cell')}
+                    </td>
+                  ))}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
       {filteredData.length === 0 && filterValue && (
         <div className={styles.noDataMessage}>No matching records found</div>
       )}
-      <div className="pagination">
+      <div className={styles.pagination}>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
