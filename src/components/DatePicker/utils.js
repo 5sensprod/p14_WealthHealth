@@ -5,8 +5,35 @@ export const END_YEAR = new Date().getFullYear() + 2
 
 // ========== DATE UTILITIES ==========
 
-export function formatDate(value) {
-  return value instanceof Date ? value.toISOString().split('T')[0] : value
+export function formatDatePickerDate(value, dateFormat = 'DD-MM-YYYY') {
+  console.log('Format utilisé dans formatDate:', dateFormat)
+  if (!(value instanceof Date)) {
+    console.log("La valeur n'est pas une instance de Date:", value)
+    return value
+  }
+
+  const day = value.getDate()
+  const month = value.getMonth() + 1
+  const year = value.getFullYear()
+
+  console.log('Jour:', day, 'Mois:', month, 'Année:', year)
+
+  switch (dateFormat) {
+    case 'YYYY-MM-DD':
+      return `${year}/${month.toString().padStart(2, '0')}/${day
+        .toString()
+        .padStart(2, '0')}`
+    case 'MM-DD-YYYY':
+      return `${month.toString().padStart(2, '0')}/${day
+        .toString()
+        .padStart(2, '0')}/${year}`
+    case 'DD-MM-YYYY':
+      return `${day.toString().padStart(2, '0')}/${month
+        .toString()
+        .padStart(2, '0')}/${year}`
+    default:
+      return value
+  }
 }
 
 export function abbreviateMonth(month) {

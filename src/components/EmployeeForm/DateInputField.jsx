@@ -11,6 +11,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
       onChange={onChange}
       useIcons={true}
       language="en"
+      dateFormat="YYYY-MM-DD"
     />
     {error && <span className={styles.errorMessage}>{error}</span>}
   </div>

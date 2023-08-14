@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
-import { formatDate } from './utils'
+import { formatDatePickerDate } from './utils'
 import { CalendarIcon } from './Icons'
 import Button from './Button'
 
@@ -15,12 +15,14 @@ function CalendarButton({ onClick }) {
     />
   )
 }
+
 function DatePicker({
   name,
   value,
   onChange,
   useIcons = false,
   language = 'en',
+  dateFormat = 'DD-MM-YYYY', // Valeur par défaut pour le format de date
 }) {
   const [showCalendar, setShowCalendar] = useState(false)
   const translations = getTranslations(language)
@@ -31,17 +33,27 @@ function DatePicker({
   return (
     <div className={styles.container}>
       <div className={styles.containerInput}>
-        <input type="text" value={formatDate(value) || ''} readOnly />
+        <input
+          type="text"
+          value={formatDatePickerDate(value, dateFormat) || ''}
+          readOnly
+        />
         <CalendarButton onClick={toggleCalendar} />
       </div>
       {showCalendar && (
         <Calendar
           selectDate={(date) => {
+            const actualDate = typeof date === 'string' ? new Date(date) : date
+            const formattedDate = formatDatePickerDate(actualDate, dateFormat)
+
+            console.log('Date sélectionnée (brute):', actualDate)
+            console.log('Date sélectionnée (formatée):', formattedDate)
+
             setShowCalendar(false)
             onChange({
               target: {
                 name,
-                value: date,
+                value: formattedDate, // Assurez-vous d'utiliser la date formatée ici
               },
             })
           }}
