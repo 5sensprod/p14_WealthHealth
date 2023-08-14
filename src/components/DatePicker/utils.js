@@ -186,27 +186,70 @@ export function handleNavigationKeys(
       break
   }
 }
-export function isValidDate(dateString, format = 'DD-MM-YYYY') {
-  const dateParts = dateString.split('-')
-  if (dateParts.length !== 3) return false
 
-  const day = parseInt(dateParts[0], 10)
-  const month = parseInt(dateParts[1], 10)
-  const year = parseInt(dateParts[2], 10)
+function isLeapYear(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+}
+
+export function isValidDate(
+  dateString,
+  format = 'DD-MM-YYYY',
+  minYear = 1900,
+  maxYear = 2100,
+) {
+  let day, month, year
+
+  const separator = dateString.includes('/') ? '/' : '-'
+
+  switch (format) {
+    case 'DD-MM-YYYY':
+      ;[day, month, year] = dateString
+        .split(separator)
+        .map((part) => parseInt(part, 10))
+      if (
+        !new RegExp(`^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`).test(
+          dateString,
+        )
+      )
+        return false
+      break
+    case 'MM-DD-YYYY':
+      ;[month, day, year] = dateString
+        .split(separator)
+        .map((part) => parseInt(part, 10))
+      if (
+        !new RegExp(`^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`).test(
+          dateString,
+        )
+      )
+        return false
+      break
+    case 'YYYY-MM-DD':
+      ;[year, month, day] = dateString
+        .split(separator)
+        .map((part) => parseInt(part, 10))
+      if (
+        !new RegExp(`^(\\d{4})${separator}(\\d{2})${separator}(\\d{2})$`).test(
+          dateString,
+        )
+      )
+        return false
+      break
+    default:
+      return false // format non pris en charge
+  }
 
   if (isNaN(day) || isNaN(month) || isNaN(year)) return false
 
   if (day < 1 || day > 31) return false
   if (month < 1 || month > 12) return false
-  if (year < 1900 || year > 2100) return false // Ici, j'ai mis une plage de 1900 à 2100, mais vous pouvez la modifier comme vous le souhaitez.
+  if (year < minYear || year > maxYear) return false
+
+  if (month === 2 && isLeapYear(year) && day > 29) return false // Validation pour le mois de février lors des années bissextiles.
+  if (month === 2 && !isLeapYear(year) && day > 28) return false // Validation pour le mois de février hors des années bissextiles.
 
   const daysInMonth = new Date(year, month, 0).getDate()
   if (day > daysInMonth) return false
-
-  if (format === 'DD-MM-YYYY') {
-    return /^(\d{2})-(\d{2})-(\d{4})$/.test(dateString)
-  }
-  // Vous pouvez ajouter d'autres formats si nécessaire
 
   return true
 }

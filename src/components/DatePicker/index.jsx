@@ -29,6 +29,8 @@ function DatePicker({
   onClose,
   startOfWeek = 'Monday',
   manualInputEnabled = true,
+  minYear = 1900,
+  maxYear = 2100,
 }) {
   const [showCalendar, setShowCalendar] = useState(false)
   const [inputValue, setInputValue] = useState(
@@ -38,16 +40,17 @@ function DatePicker({
 
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
+
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
 
   useOutsideClick(calendarRef, buttonRef, closeCalendar)
 
   function toggleCalendar() {
+    setShowCalendar(true)
     if (showCalendar && onClose) {
       onClose()
     }
-    setShowCalendar((prev) => !prev)
   }
 
   function closeCalendar() {
@@ -71,7 +74,7 @@ function DatePicker({
     const newValue = e.target.value
     setInputValue(newValue)
 
-    if (isValidDate(newValue)) {
+    if (isValidDate(newValue, dateFormat, minYear, maxYear)) {
       setError(null)
       onChange({
         target: {
@@ -109,13 +112,10 @@ function DatePicker({
           aria-label="Selected date"
           readOnly={!manualInputEnabled} // Si manualInputEnabled est false, l'input est en mode readOnly
           className={error ? styles.errorInput : ''}
+          onClick={toggleCalendar}
         />
         {error && <p className={styles.errorMessage}>{error}</p>}
-        <CalendarButton
-          ref={buttonRef}
-          onClick={toggleCalendar}
-          showCalendar={showCalendar}
-        />
+        <CalendarButton ref={buttonRef} onClick={toggleCalendar} />
       </div>
       {showCalendar && (
         <Calendar

@@ -12,12 +12,12 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
       onChange={onChange}
       useIcons={true}
       language="fr"
-      dateFormat="YYYY-MM-DD"
+      dateFormat="MM-DD-YYYY"
       customStyles={{
         backgroundColor: 'transparent',
         borderRadius: '0',
       }}
-      manualInputEnabled={false}
+      manualInputEnabled={true}
     />
 
     {error && <span className={styles.errorMessage}>{error}</span>}
