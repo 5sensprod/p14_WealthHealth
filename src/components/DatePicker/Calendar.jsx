@@ -8,7 +8,13 @@ import useChooseDate from './useChooseDate'
 import { START_YEAR, END_YEAR } from './utils'
 import getTranslations from './translate'
 
-function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
+function Calendar({
+  selectDate,
+  closeCalendar,
+  useIcons,
+  language = 'en',
+  reorderedDays,
+}) {
   const translations = getTranslations(language) //
   const { initialMonth, years } = useDateLogic()
   const { currentMonth, setCurrentMonth, totalSlots } =
@@ -52,6 +58,7 @@ function Calendar({ selectDate, closeCalendar, useIcons, language = 'en' }) {
         setCurrentMonth={setCurrentMonth}
         yearsBlock={yearsBlock}
         animationKey={animationKey}
+        reorderedDays={reorderedDays}
       />
     </div>
   )

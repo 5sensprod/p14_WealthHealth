@@ -6,17 +6,13 @@ export const END_YEAR = new Date().getFullYear() + 2
 // ========== DATE UTILITIES ==========
 
 export function formatDatePickerDate(value, dateFormat = 'DD-MM-YYYY') {
-  console.log('Format utilisé dans formatDate:', dateFormat)
   if (!(value instanceof Date)) {
-    console.log("La valeur n'est pas une instance de Date:", value)
     return value
   }
 
   const day = value.getDate()
   const month = value.getMonth() + 1
   const year = value.getFullYear()
-
-  console.log('Jour:', day, 'Mois:', month, 'Année:', year)
 
   switch (dateFormat) {
     case 'YYYY-MM-DD':
@@ -140,4 +136,17 @@ export function getNewYearBlock(view, direction, yearsBlock) {
   return direction === 'prev'
     ? goToPreviousYearBlock(yearsBlock, new Date().getFullYear())
     : goToNextYearBlock(yearsBlock, new Date().getFullYear())
+}
+
+export function reorderDays(days, startDay) {
+  // Convert full day name to abbreviation if needed
+  const startDayAbbr = startDay.length > 3 ? startDay.slice(0, 3) : startDay
+
+  const startIndex = days.findIndex(
+    (day) => day.toLowerCase() === startDayAbbr.toLowerCase(),
+  )
+
+  if (startIndex === -1) return days
+
+  return [...days.slice(startIndex), ...days.slice(0, startIndex)]
 }

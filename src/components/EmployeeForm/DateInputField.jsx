@@ -6,13 +6,19 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
   <div className={styles.label}>
     <p>{label}</p>
     <DatePicker
+      startOfWeek="mer"
       name={name}
       value={value}
       onChange={onChange}
       useIcons={true}
-      language="en"
+      language="fr"
       dateFormat="YYYY-MM-DD"
+      customStyles={{
+        backgroundColor: 'transparent',
+        borderRadius: '0',
+      }}
     />
+
     {error && <span className={styles.errorMessage}>{error}</span>}
   </div>
 )

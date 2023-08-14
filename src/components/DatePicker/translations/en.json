@@ -27,5 +27,6 @@
     "Nov.",
     "Dec."
   ],
-  "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  "placeholder": "Select a date"
 }

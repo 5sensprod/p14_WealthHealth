@@ -5,6 +5,7 @@ import getTranslations from './translate'
 import { formatDatePickerDate } from './utils'
 import { CalendarIcon } from './Icons'
 import Button from './Button'
+import { reorderDays } from './utils'
 
 function CalendarButton({ onClick }) {
   return (
@@ -22,21 +23,31 @@ function DatePicker({
   onChange,
   useIcons = false,
   language = 'en',
-  dateFormat = 'DD-MM-YYYY', // Valeur par défaut pour le format de date
+  dateFormat = 'DD-MM-YYYY',
+  customStyles = {},
+  onClose,
+  startOfWeek = 'Monday',
 }) {
   const [showCalendar, setShowCalendar] = useState(false)
   const translations = getTranslations(language)
-  const toggleCalendar = () => {
-    setShowCalendar(!showCalendar)
-  }
 
+  const reorderedDays = reorderDays(translations.days, startOfWeek)
+
+  const toggleCalendar = () => {
+    const newState = !showCalendar
+    setShowCalendar(newState)
+    if (!newState && onClose) {
+      onClose()
+    }
+  }
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={customStyles}>
       <div className={styles.containerInput}>
         <input
           type="text"
           value={formatDatePickerDate(value, dateFormat) || ''}
           readOnly
+          placeholder={translations.placeholder || 'Select a date'}
         />
         <CalendarButton onClick={toggleCalendar} />
       </div>
@@ -46,14 +57,11 @@ function DatePicker({
             const actualDate = typeof date === 'string' ? new Date(date) : date
             const formattedDate = formatDatePickerDate(actualDate, dateFormat)
 
-            console.log('Date sélectionnée (brute):', actualDate)
-            console.log('Date sélectionnée (formatée):', formattedDate)
-
             setShowCalendar(false)
             onChange({
               target: {
                 name,
-                value: formattedDate, // Assurez-vous d'utiliser la date formatée ici
+                value: formattedDate,
               },
             })
           }}
@@ -61,6 +69,7 @@ function DatePicker({
           useIcons={useIcons}
           translations={translations}
           language={language}
+          reorderedDays={reorderedDays}
         />
       )}
     </div>

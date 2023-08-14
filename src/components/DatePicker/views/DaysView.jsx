@@ -1,14 +1,16 @@
 import React from 'react'
 import styles from '../Calendar.module.css'
 
-function DaysView({ totalSlots, chooseDate, translations }) {
+function DaysView({ totalSlots, chooseDate, reorderedDays }) {
   return (
     <div className={styles.daysContainer}>
-      {translations.days.map((day) => (
+      {/* Utiliser reorderedDays pour afficher les jours dans l'ordre souhaité */}
+      {reorderedDays.map((day) => (
         <div className={styles.header} key={day}>
           {day}
         </div>
       ))}
+
       {totalSlots.map((day, index) => (
         <div
           key={index}

@@ -27,5 +27,6 @@
     "Nov.",
     "Déc."
   ],
-  "days": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"]
+  "days": ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+  "placeholder": "Sélectionnez une date"
 }
