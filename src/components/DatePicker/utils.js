@@ -150,3 +150,33 @@ export function reorderDays(days, startDay) {
 
   return [...days.slice(startIndex), ...days.slice(0, startIndex)]
 }
+
+export function handleNavigationKeys(
+  e,
+  index,
+  maxIndex,
+  action,
+  refsArray,
+  getItem,
+) {
+  switch (e.key) {
+    case 'ArrowRight':
+      if (index < maxIndex) {
+        refsArray[index + 1].focus()
+      }
+      break
+    case 'ArrowLeft':
+      if (index > 0) {
+        refsArray[index - 1].focus()
+      }
+      break
+    case 'Enter':
+    case 'Space':
+      const item = getItem ? getItem(index) : index
+      action(item)
+      e.preventDefault() // Pour éviter le comportement par défaut de la touche 'Space'
+      break
+    default:
+      break
+  }
+}
