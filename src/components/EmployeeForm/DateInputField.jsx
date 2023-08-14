@@ -17,6 +17,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
         backgroundColor: 'transparent',
         borderRadius: '0',
       }}
+      manualInputEnabled={true}
     />
 
     {error && <span className={styles.errorMessage}>{error}</span>}

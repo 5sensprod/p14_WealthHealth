@@ -2,7 +2,7 @@ import React, { useState, useRef, forwardRef } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
-import { formatDatePickerDate, reorderDays } from './utils'
+import { formatDatePickerDate, reorderDays, isValidDate } from './utils'
 import { CalendarIcon } from './Icons'
 import Button from './Button'
 import useOutsideClick from './useOutsideClick'
@@ -17,6 +17,7 @@ const CalendarButton = forwardRef(({ onClick, showCalendar }, ref) => (
     aria-label="Toggle date picker"
   />
 ))
+
 function DatePicker({
   name,
   value,
@@ -27,8 +28,14 @@ function DatePicker({
   customStyles = {},
   onClose,
   startOfWeek = 'Monday',
+  manualInputEnabled = true,
 }) {
   const [showCalendar, setShowCalendar] = useState(false)
+  const [inputValue, setInputValue] = useState(
+    formatDatePickerDate(value, dateFormat),
+  )
+  const [error, setError] = useState(null)
+
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
   const calendarRef = useRef(null)
@@ -50,6 +57,7 @@ function DatePicker({
   function handleDateSelect(date) {
     const actualDate = typeof date === 'string' ? new Date(date) : date
     const formattedDate = formatDatePickerDate(actualDate, dateFormat)
+    setInputValue(formattedDate)
     closeCalendar()
     onChange({
       target: {
@@ -59,16 +67,36 @@ function DatePicker({
     })
   }
 
+  function handleInputChange(e) {
+    const newValue = e.target.value
+    setInputValue(newValue)
+
+    if (isValidDate(newValue)) {
+      setError(null)
+      onChange({
+        target: {
+          name,
+          value: newValue,
+        },
+      })
+    } else {
+      setError('Date format is invalid')
+    }
+  }
+
   return (
     <div className={styles.container} style={customStyles}>
       <div className={styles.containerInput}>
         <input
           type="text"
-          value={formatDatePickerDate(value, dateFormat)}
-          readOnly
+          value={inputValue}
+          onChange={manualInputEnabled ? handleInputChange : null} // N'appeler handleInputChange que si manualInputEnabled est true
           placeholder={translations.placeholder}
-          aria-label="Selected date" // Étiquette descriptive pour le champ de date
+          aria-label="Selected date"
+          readOnly={!manualInputEnabled} // Si manualInputEnabled est false, l'input est en mode readOnly
+          className={error ? styles.errorInput : ''}
         />
+        {error && <p className={styles.errorMessage}>{error}</p>}
         <CalendarButton
           ref={buttonRef}
           onClick={toggleCalendar}
@@ -84,7 +112,7 @@ function DatePicker({
           language={language}
           reorderedDays={reorderedDays}
           ref={calendarRef}
-          role="grid" // Role pour le calendrier
+          role="grid"
         />
       )}
     </div>

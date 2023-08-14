@@ -180,3 +180,27 @@ export function handleNavigationKeys(
       break
   }
 }
+export function isValidDate(dateString, format = 'DD-MM-YYYY') {
+  const dateParts = dateString.split('-')
+  if (dateParts.length !== 3) return false
+
+  const day = parseInt(dateParts[0], 10)
+  const month = parseInt(dateParts[1], 10)
+  const year = parseInt(dateParts[2], 10)
+
+  if (isNaN(day) || isNaN(month) || isNaN(year)) return false
+
+  if (day < 1 || day > 31) return false
+  if (month < 1 || month > 12) return false
+  if (year < 1900 || year > 2100) return false // Ici, j'ai mis une plage de 1900 à 2100, mais vous pouvez la modifier comme vous le souhaitez.
+
+  const daysInMonth = new Date(year, month, 0).getDate()
+  if (day > daysInMonth) return false
+
+  if (format === 'DD-MM-YYYY') {
+    return /^(\d{2})-(\d{2})-(\d{4})$/.test(dateString)
+  }
+  // Vous pouvez ajouter d'autres formats si nécessaire
+
+  return true
+}
