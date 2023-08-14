@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils'
 
-function DaysView({ totalSlots, chooseDate, reorderedDays }) {
+function DaysView({ totalSlots, chooseDate, reorderedDays, closeCalendar }) {
   const daysRefs = useRef([])
 
   const handleDayKeyDown = (e, index) => {
@@ -10,8 +10,9 @@ function DaysView({ totalSlots, chooseDate, reorderedDays }) {
       e,
       index,
       totalSlots.length - 1,
-      chooseDate,
+      (selectedIndex) => chooseDate(totalSlots[selectedIndex].number),
       daysRefs.current,
+      closeCalendar,
     )
   }
 

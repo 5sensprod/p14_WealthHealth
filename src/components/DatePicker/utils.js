@@ -158,6 +158,7 @@ export function handleNavigationKeys(
   action,
   refsArray,
   getItem,
+  closeCalendar,
 ) {
   switch (e.key) {
     case 'ArrowRight':
@@ -168,6 +169,11 @@ export function handleNavigationKeys(
     case 'ArrowLeft':
       if (index > 0) {
         refsArray[index - 1].focus()
+      }
+      break
+    case 'Escape':
+      if (typeof closeCalendar === 'function') {
+        closeCalendar()
       }
       break
     case 'Enter':
