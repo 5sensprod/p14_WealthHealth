@@ -1,13 +1,14 @@
-import React, { useState, useRef, forwardRef, useEffect } from 'react'
+import React, { useState, useRef, forwardRef } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
-import { isValidDate } from './utils'
+import useDateValidation from './useDateValidation'
 import { reorderDays } from './utils/viewUtils'
 import { formatDatePickerDate } from './utils/dateFunctions'
 import { CalendarIcon } from './Icons'
 import Button from './Button'
 import useOutsideClick from './useOutsideClick'
+import useEscapeKey from './useEscapeKey'
 
 const CalendarButton = forwardRef(({ onClick, showCalendar }, ref) => (
   <Button
@@ -38,7 +39,12 @@ function DatePicker({
   const [inputValue, setInputValue] = useState(
     formatDatePickerDate(value, dateFormat),
   )
-  const [error, setError] = useState(null)
+  const [error, validateDate] = useDateValidation(
+    inputValue,
+    dateFormat,
+    minYear,
+    maxYear,
+  )
 
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
@@ -76,32 +82,17 @@ function DatePicker({
     const newValue = e.target.value
     setInputValue(newValue)
 
-    if (isValidDate(newValue, dateFormat, minYear, maxYear)) {
-      setError(null)
+    if (validateDate(newValue)) {
       onChange({
         target: {
           name,
           value: newValue,
         },
       })
-    } else {
-      setError('Date format is invalid')
     }
   }
 
-  useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === 'Escape') {
-        closeCalendar()
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
+  useEscapeKey(closeCalendar)
 
   return (
     <div className={styles.container} style={customStyles}>
