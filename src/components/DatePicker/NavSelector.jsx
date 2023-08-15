@@ -5,14 +5,16 @@ import styles from './Calendar.module.css'
 import Button from './Button'
 
 import {
-  VIEWS,
+  DAYS,
+  YEARS,
   switchToMonthView,
   toggleYearView,
   resetToCurrentDate,
-} from './utils'
+} from './utils/viewUtils'
 
+// Selecteur de mois
 function MonthSelector({ currentMonth, months, view, setView }) {
-  if (view !== VIEWS.DAYS) return null
+  if (view !== DAYS) return null
 
   return (
     <Button
@@ -24,25 +26,27 @@ function MonthSelector({ currentMonth, months, view, setView }) {
   )
 }
 
+// Selecteur d'année
 function YearSelector({ currentMonth, view, setView, yearsBlock }) {
   return (
     <Button
       onClick={() => setView(toggleYearView(view))}
       className={styles.navButton}
     >
-      {view === VIEWS.YEARS
+      {view === YEARS
         ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
         : currentMonth.getFullYear()}
     </Button>
   )
 }
 
+// Bouton pour revenir au mois courant
 function HomeButton({ setCurrentMonth, setView }) {
   return (
     <Button
       onClick={() => {
         setCurrentMonth(resetToCurrentDate())
-        setView(VIEWS.DAYS)
+        setView(DAYS)
       }}
       icon={HomeIcon}
       className={styles.navButton}

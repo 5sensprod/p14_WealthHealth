@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import styles from '../Calendar.module.css'
-import { abbreviateMonth } from '../utils'
+import { abbreviateMonth } from '../utils/dateFunctions'
 import { handleNavigationKeys } from '../utils'
 
 function MonthsView({ handleMonthClick, currentMonth, translations }) {
