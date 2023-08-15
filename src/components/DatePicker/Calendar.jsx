@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react'
 import styles from './Calendar.module.css'
 import useCalendarLogic from './useCalendarLogic'
-import useDateLogic from './useDateLogic'
+import useYearLogic from './useYearLogic'
 import NavSelector from './NavSelector'
 import DateGrid from './DateGrid'
 import useChooseDate from './useChooseDate'
@@ -14,7 +14,7 @@ const Calendar = forwardRef(
     ref,
   ) => {
     const translations = getTranslations(language)
-    const { initialMonth, years } = useDateLogic()
+    const { initialMonth, years } = useYearLogic()
     const { currentMonth, setCurrentMonth, totalSlots } =
       useCalendarLogic(initialMonth)
     const chooseDate = useChooseDate(selectDate, closeCalendar, currentMonth)
