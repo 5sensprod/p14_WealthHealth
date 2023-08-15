@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import styles from './Calendar.module.css'
 import { ChevronIcon } from './Icons'
-import { getNewDate, getNewYearBlock } from './utils'
+import { getNewDate, getNewYearBlock } from './utils/dateNavigations'
 import Button from './Button'
 
 function ChevronButton({ direction, onClick, useIcons, label }) {
