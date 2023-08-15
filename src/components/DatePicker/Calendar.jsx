@@ -5,7 +5,6 @@ import useYearLogic from './useYearLogic'
 import NavSelector from './NavSelector'
 import DateGrid from './DateGrid'
 import useChooseDate from './useChooseDate'
-import { START_YEAR, END_YEAR } from './utils'
 import getTranslations from './translate'
 
 const Calendar = forwardRef(
@@ -14,18 +13,15 @@ const Calendar = forwardRef(
     ref,
   ) => {
     const translations = getTranslations(language)
-    const { initialMonth, years } = useYearLogic()
+
+    // Intégration du hook useYearLogic
+    const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic()
+
     const { currentMonth, setCurrentMonth, totalSlots } =
       useCalendarLogic(initialMonth)
     const chooseDate = useChooseDate(selectDate, closeCalendar, currentMonth)
 
-    const [view, setView] = useState('days') // 'days', 'months', or 'years'
-
-    const [yearsBlock, setYearsBlock] = useState(() => {
-      const yearBlockStart = END_YEAR - ((END_YEAR - START_YEAR) % 16)
-      return Array.from({ length: 16 }, (_, i) => yearBlockStart + i)
-    })
-
+    const [view, setView] = useState('days')
     const [animationKey, setAnimationKey] = useState(0)
 
     return (
