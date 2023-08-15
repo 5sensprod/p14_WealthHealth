@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import styles from './Calendar.module.css'
 import { ChevronIcon } from './Icons'
-import { getNewDate, getNewYearBlock } from './utils/dateNavigations'
+import { getNewData } from './utils/dateNavigations'
 import Button from './Button'
 
 function ChevronButton({ direction, onClick, useIcons, label }) {
@@ -26,13 +26,20 @@ function ChevronButtons({
 }) {
   const handleDateChange = useCallback(
     (direction) => {
-      setCurrentMonth((prev) => getNewDate(view, direction, yearsBlock, prev))
-      setYearsBlock((prev) => getNewYearBlock(view, direction, prev))
-      setAnimationKey((prevKey) => prevKey + 1)
+      setCurrentMonth((prev) => {
+        const { newDate, newYearBlock } = getNewData(
+          view,
+          direction,
+          yearsBlock,
+          prev,
+        )
+        setYearsBlock(newYearBlock)
+        setAnimationKey((prevKey) => prevKey + 1)
+        return newDate
+      })
     },
-    [view, setCurrentMonth, setYearsBlock, yearsBlock, setAnimationKey],
+    [view, setYearsBlock, yearsBlock, setAnimationKey, setCurrentMonth],
   )
-
   const handlePrevClick = useCallback(() => {
     handleDateChange('prev')
   }, [handleDateChange])

@@ -58,21 +58,30 @@ export const goToPreviousYearBlock = (yearsBlock) => {
   return Array.from({ length: YEAR_BLOCK_SIZE }, (_, i) => baseYear + i)
 }
 
-export function getNewDate(view, direction, yearsBlock, prev) {
-  if (view === 'months') {
-    return direction === 'prev'
-      ? goToPreviousYear(prev, START_YEAR, END_YEAR)
-      : goToNextYear(prev, END_YEAR)
-  }
-  if (view === 'days') {
-    return direction === 'prev' ? goToPreviousMonth(prev) : goToNextMonth(prev)
-  }
-  return prev // default
-}
+export function getNewData(view, direction, yearsBlock, prev) {
+  let newDate = prev
+  let newYearBlock = yearsBlock
 
-export function getNewYearBlock(view, direction, yearsBlock) {
-  if (view !== 'years') return yearsBlock
-  return direction === 'prev'
-    ? goToPreviousYearBlock(yearsBlock, new Date().getFullYear())
-    : goToNextYearBlock(yearsBlock, new Date().getFullYear())
+  switch (view) {
+    case 'months':
+      newDate =
+        direction === 'prev'
+          ? goToPreviousYear(prev, START_YEAR, END_YEAR)
+          : goToNextYear(prev, END_YEAR)
+      break
+    case 'days':
+      newDate =
+        direction === 'prev' ? goToPreviousMonth(prev) : goToNextMonth(prev)
+      break
+    case 'years':
+      newYearBlock =
+        direction === 'prev'
+          ? goToPreviousYearBlock(yearsBlock, new Date().getFullYear())
+          : goToNextYearBlock(yearsBlock, new Date().getFullYear())
+      break
+    default:
+      break
+  }
+
+  return { newDate, newYearBlock }
 }
