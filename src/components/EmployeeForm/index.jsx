@@ -75,10 +75,20 @@ const EmployeeForm = () => {
     }
   }
 
+  const handleFormKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+    }
+  }
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Create Employee</h1>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
+      <form
+        className={styles.formContainer}
+        onSubmit={handleSubmit}
+        onKeyDown={handleFormKeyDown}
+      >
         <InputField
           name="firstName"
           label="First Name"
