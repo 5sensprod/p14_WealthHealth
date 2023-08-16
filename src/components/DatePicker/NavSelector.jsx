@@ -16,10 +16,23 @@ import {
 function MonthSelector({ currentMonth, months, view, setView }) {
   if (view !== DAYS) return null
 
+  const handleMonthSelect = () => {
+    setView(switchToMonthView(view))
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === 'Space') {
+      handleMonthSelect()
+      e.preventDefault()
+    }
+  }
+
   return (
     <Button
-      onClick={() => setView(switchToMonthView(view))}
+      onClick={handleMonthSelect}
+      onKeyDown={handleKeyDown}
       className={styles.navButton}
+      tabIndex={0}
     >
       {months[currentMonth.getMonth()]}
     </Button>
@@ -28,10 +41,23 @@ function MonthSelector({ currentMonth, months, view, setView }) {
 
 // Selecteur d'année
 function YearSelector({ currentMonth, view, setView, yearsBlock }) {
+  const handleYearSelect = () => {
+    setView(toggleYearView(view))
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === 'Space') {
+      handleYearSelect()
+      e.preventDefault()
+    }
+  }
+
   return (
     <Button
-      onClick={() => setView(toggleYearView(view))}
+      onClick={handleYearSelect}
+      onKeyDown={handleKeyDown}
       className={styles.navButton}
+      tabIndex={0}
     >
       {view === YEARS
         ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
@@ -42,14 +68,25 @@ function YearSelector({ currentMonth, view, setView, yearsBlock }) {
 
 // Bouton pour revenir au mois courant
 function HomeButton({ setCurrentMonth, setView }) {
+  const handleHomeClick = () => {
+    setCurrentMonth(resetToCurrentDate())
+    setView(DAYS)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === 'Space') {
+      handleHomeClick()
+      e.preventDefault() // Pour éviter le comportement par défaut de la touche 'Space'
+    }
+  }
+
   return (
     <Button
-      onClick={() => {
-        setCurrentMonth(resetToCurrentDate())
-        setView(DAYS)
-      }}
+      onClick={handleHomeClick}
+      onKeyDown={handleKeyDown}
       icon={HomeIcon}
       className={styles.navButton}
+      tabIndex={0}
     />
   )
 }

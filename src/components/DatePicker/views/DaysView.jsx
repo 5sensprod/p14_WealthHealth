@@ -4,7 +4,6 @@ import { handleNavigationKeys } from '../utils'
 
 function DaysView({ totalSlots, chooseDate, reorderedDays, closeCalendar }) {
   const daysRefs = useRef([])
-  console.log(closeCalendar)
   const handleDayKeyDown = (e, index) => {
     handleNavigationKeys(
       e,

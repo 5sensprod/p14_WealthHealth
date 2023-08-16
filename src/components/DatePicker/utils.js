@@ -25,9 +25,10 @@ export function handleNavigationKeys(
       break
     case 'Enter':
     case 'Space':
+      // console.log('Enter or Space pressed')
       const item = getItem ? getItem(index) : index
       action(item)
-      e.preventDefault() // Pour éviter le comportement par défaut de la touche 'Space'
+      e.preventDefault()
       break
     default:
       break

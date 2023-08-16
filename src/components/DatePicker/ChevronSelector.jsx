@@ -32,10 +32,6 @@ function ChevronButtons({
   const chevronRefs = useRef([])
 
   const handleChevronKeyDown = (e, index) => {
-    console.log('Key pressed:', e.key)
-    if (e.key === 'Enter') {
-      e.preventDefault()
-    }
     handleNavigationKeys(
       e,
       index,
