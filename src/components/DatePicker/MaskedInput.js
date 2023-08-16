@@ -3,9 +3,6 @@ import { isValidDate } from './utils'
 
 function MaskedInput({ value, onChange, format = 'DD-MM-YYYY' }) {
   const [displayValue, setDisplayValue] = useState(formatToMask(value, format))
-  const [previousValueLength, setPreviousValueLength] = useState(
-    value ? value.length : 0,
-  )
 
   useEffect(() => {
     setDisplayValue(formatToMask(value, format))
@@ -44,20 +41,10 @@ function MaskedInput({ value, onChange, format = 'DD-MM-YYYY' }) {
   }
 
   function handleChange(e) {
-    const rawValue = e.target.value.replace(/\D/g, '') // Retire tout sauf les chiffres
-
-    let newValue
-    if (rawValue.length < previousValueLength) {
-      newValue = rawValue
-    } else {
-      newValue = formatToMask(rawValue, format)
-    }
-
-    setPreviousValueLength(rawValue.length)
+    const newValue = formatToMask(e.target.value, format)
     setDisplayValue(newValue)
-
     const isValid = isValidDate(newValue, format)
-    onChange && onChange(newValue, isValid) // Passez la valeur et l'état de validation
+    onChange && onChange(newValue, isValid)
   }
 
   return <input value={displayValue} onChange={handleChange} />
