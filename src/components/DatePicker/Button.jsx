@@ -3,15 +3,10 @@ import styles from './Button.module.css'
 
 const Button = forwardRef(
   ({ onClick, children, icon: Icon, className, ...props }, ref) => {
-    const handleClick = (event) => {
-      event.stopPropagation()
-      if (onClick) onClick(event)
-    }
-
     return (
       <button
         ref={ref}
-        onClick={handleClick}
+        onClick={onClick}
         className={`${styles.button} ${className ? className : ''}`}
         {...props}
       >

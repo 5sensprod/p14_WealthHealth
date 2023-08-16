@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
@@ -8,16 +8,10 @@ import { formatDatePickerDate } from './utils/dateFunctions'
 import useEscapeKey from './useEscapeKey'
 import CalendarButton from './CalendarButton'
 import useDatePickerState from './useDatePickerState'
+import useOutsideClick from './useOutsideClick' // Assurez-vous de mettre à jour le chemin vers votre hook
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
-function DatePicker({
-  name,
-  value,
-  onChange,
-  language,
-  onClose,
-  ...props // Décomposition pour tous les autres props
-}) {
+function DatePicker({ name, value, onChange, language, onClose, ...props }) {
   const {
     useIcons,
     dateFormat,
@@ -42,22 +36,11 @@ function DatePicker({
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
 
-  useEffect(() => {
-    const handleDocumentClick = (event) => {
-      const inputRef = event.target.closest(`.${styles.containerInput}`)
-      if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target) &&
-        !inputRef
-      ) {
-        closeCalendar()
-      }
-    }
-    document.addEventListener('click', handleDocumentClick)
-    return () => document.removeEventListener('click', handleDocumentClick)
-  }, [closeCalendar])
+  const setClickedInside = useOutsideClick(
+    calendarRef,
+    buttonRef,
+    closeCalendar,
+  )
 
   const handleDateSelect = (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
@@ -97,11 +80,20 @@ function DatePicker({
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
-          onClick={toggleCalendar}
+          onClick={() => {
+            setClickedInside(true)
+            toggleCalendar()
+          }}
           onChange={(e) => setInput(e.target.value)}
         />
         {error && <p className={styles.errorMessage}>{error}</p>}
-        <CalendarButton ref={buttonRef} onClick={toggleCalendar} />
+        <CalendarButton
+          ref={buttonRef}
+          onClick={() => {
+            setClickedInside(true)
+            toggleCalendar()
+          }}
+        />
       </div>
       {showCalendar && (
         <Calendar

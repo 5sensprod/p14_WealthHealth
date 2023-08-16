@@ -12,7 +12,7 @@ function DaysView({ totalSlots, chooseDate, reorderedDays, closeCalendar }) {
       totalSlots.length - 1,
       (selectedIndex) => chooseDate(totalSlots[selectedIndex].number),
       daysRefs.current,
-      null, // Ajoutez ceci pour le paramètre getItem
+      null,
       closeCalendar,
     )
   }

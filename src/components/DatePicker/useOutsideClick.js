@@ -1,27 +1,43 @@
 import { useEffect, useState } from 'react'
 
 function useOutsideClick(ref, buttonRef, callback) {
-  const [clickedInside, setClickedInside] = useState(false)
+  const [isNextClickInside, setIsNextClickInside] = useState(false)
+
   useEffect(() => {
+    function handleMouseDown(event) {
+      if (
+        (ref.current && ref.current.contains(event.target)) ||
+        (buttonRef &&
+          buttonRef.current &&
+          buttonRef.current.contains(event.target))
+      ) {
+        setIsNextClickInside(true)
+      } else {
+        setIsNextClickInside(false)
+      }
+    }
+
     function handleClickOutside(event) {
       if (
-        !clickedInside &&
+        !isNextClickInside &&
         ref.current &&
         !ref.current.contains(event.target) &&
-        (!buttonRef.current || !buttonRef.current.contains(event.target))
+        (!buttonRef ||
+          (buttonRef.current && !buttonRef.current.contains(event.target)))
       ) {
         callback()
       }
-      setClickedInside(false) // Réinitialisez la valeur ici
     }
 
+    document.addEventListener('mousedown', handleMouseDown)
     document.addEventListener('click', handleClickOutside)
     return () => {
+      document.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('click', handleClickOutside)
     }
-  }, [ref, buttonRef, callback, clickedInside])
+  }, [ref, buttonRef, callback, isNextClickInside])
 
-  return setClickedInside // Retournez le setter ici
+  return setIsNextClickInside // Retournez le setter ici
 }
 
 export default useOutsideClick

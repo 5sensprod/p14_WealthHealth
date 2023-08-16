@@ -17,7 +17,7 @@ function MonthsView({ handleMonthClick, currentMonth, translations }) {
           key={month}
           className={styles.month}
           onClick={(event) => {
-            event.stopPropagation()
+            // event.stopPropagation()
             handleMonthClick(index)
           }}
           onKeyDown={(e) => handleMonthKeyDown(e, index)}
