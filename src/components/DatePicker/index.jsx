@@ -1,25 +1,14 @@
-import React, { useState, useRef, forwardRef } from 'react'
+import React, { useRef } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
 import useDateValidation from './useDateValidation'
 import { reorderDays } from './utils/viewUtils'
-import { formatDatePickerDate } from './utils/dateFunctions'
-import { CalendarIcon } from './Icons'
-import Button from './Button'
 import useOutsideClick from './useOutsideClick'
+import { formatDatePickerDate } from './utils/dateFunctions'
 import useEscapeKey from './useEscapeKey'
-
-const CalendarButton = forwardRef(({ onClick, showCalendar }, ref) => (
-  <Button
-    onClick={onClick}
-    className={styles.calendarButton}
-    icon={CalendarIcon}
-    ref={ref}
-    aria-expanded={showCalendar}
-    aria-label="Toggle date picker"
-  />
-))
+import CalendarButton from './CalendarButton'
+import useDatePickerState from './useDatePickerState'
 
 function DatePicker({
   name,
@@ -35,10 +24,9 @@ function DatePicker({
   minYear = 1900,
   maxYear = 2100,
 }) {
-  const [showCalendar, setShowCalendar] = useState(false)
-  const [inputValue, setInputValue] = useState(
-    formatDatePickerDate(value, dateFormat),
-  )
+  const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
+    useDatePickerState(value, dateFormat, onClose)
+
   const [error, validateDate] = useDateValidation(
     inputValue,
     dateFormat,
@@ -54,33 +42,20 @@ function DatePicker({
 
   useOutsideClick(calendarRef, buttonRef, closeCalendar)
 
-  function toggleCalendar() {
-    setShowCalendar(true)
-    if (showCalendar && onClose) {
-      onClose()
-    }
-  }
-
-  function closeCalendar() {
-    setShowCalendar(false)
-  }
-
   function handleDateSelect(date) {
     const actualDate = typeof date === 'string' ? new Date(date) : date
-    const formattedDate = formatDatePickerDate(actualDate, dateFormat)
-    setInputValue(formattedDate)
+    setInput(actualDate)
     closeCalendar()
     onChange({
       target: {
         name,
-        value: formattedDate,
+        value: formatDatePickerDate(actualDate, dateFormat, onClose),
       },
     })
   }
 
   function handleInputChange(e) {
     const newValue = e.target.value
-    setInputValue(newValue)
 
     if (validateDate(newValue)) {
       onChange({
@@ -100,10 +75,10 @@ function DatePicker({
         <input
           type="text"
           value={inputValue}
-          onChange={manualInputEnabled ? handleInputChange : null} // N'appeler handleInputChange que si manualInputEnabled est true
+          onChange={manualInputEnabled ? handleInputChange : null}
           placeholder={translations.placeholder}
           aria-label="Selected date"
-          readOnly={!manualInputEnabled} // Si manualInputEnabled est false, l'input est en mode readOnly
+          readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
           onClick={toggleCalendar}
         />
