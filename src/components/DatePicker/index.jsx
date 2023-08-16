@@ -40,6 +40,11 @@ function DatePicker({
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
 
+  const setClickedInside = useOutsideClick(calendarRef, buttonRef, () => {
+    closeCalendar()
+    setClosedByOutsideClick(true)
+  })
+
   function handleDateSelect(date) {
     const actualDate = typeof date === 'string' ? new Date(date) : date
     setInput(actualDate)
@@ -98,6 +103,7 @@ function DatePicker({
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
           onClick={() => {
+            setClickedInside(true) // Mise à jour ici
             if (closedByOutsideClick) {
               setClosedByOutsideClick(false)
             } else {
