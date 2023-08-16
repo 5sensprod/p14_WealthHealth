@@ -35,6 +35,8 @@ function DateGrid({
           translations={translations}
           reorderedDays={reorderedDays}
           closeCalendar={closeCalendar}
+          setCurrentMonth={setCurrentMonth}
+          currentMonth={currentMonth} // Ajoutez cette ligne
         />
       )}
 
