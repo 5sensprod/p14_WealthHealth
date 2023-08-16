@@ -10,6 +10,7 @@ import useEscapeKey from './useEscapeKey'
 import CalendarButton from './CalendarButton'
 import useDatePickerState from './useDatePickerState'
 import { DEFAULT_CONFIG } from './config/defaultConfig'
+import MaskedInput from './MaskedInput'
 
 function DatePicker({
   name,
@@ -73,8 +74,13 @@ function DatePicker({
       setError(null)
     }
   }
-  function handleInputTyping(e) {
-    setInput(e.target.value)
+  function handleInputTyping(newValue, isValid) {
+    setInput(newValue)
+    if (!isValid) {
+      setError('Format de date invalide')
+    } else {
+      setError(null)
+    }
   }
 
   useEscapeKey(closeCalendar)
@@ -83,9 +89,9 @@ function DatePicker({
   return (
     <div className={styles.container} style={customStyles}>
       <div className={styles.containerInput}>
-        <input
-          type="text"
+        <MaskedInput
           value={inputValue}
+          format={dateFormat}
           onBlur={manualInputEnabled ? handleInputChange : null}
           placeholder={translations.placeholder}
           aria-label="Selected date"

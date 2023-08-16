@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { isValidDate } from './utils'
 
-function useDateValidation(dateFormat, minYear, maxYear) {
+function useDateValidation(
+  dateFormat,
+  minYear,
+  maxYear,
+  errorMessage = 'Date format is invalid',
+) {
   const [error, setError] = useState(null)
 
   function validate(value) {
@@ -9,7 +14,7 @@ function useDateValidation(dateFormat, minYear, maxYear) {
       setError(null)
       return true
     } else {
-      setError('Date format is invalid')
+      setError(errorMessage)
       return false
     }
   }
