@@ -4,20 +4,16 @@ import { handleNavigationKeys } from '../utils'
 
 function DaysView({ totalSlots, chooseDate, reorderedDays, closeCalendar }) {
   const daysRefs = useRef([])
-
+  console.log(closeCalendar)
   const handleDayKeyDown = (e, index) => {
-    if (e.key === 'Enter') {
-      chooseDate(totalSlots[index].number)
-      closeCalendar() // Fermez le calendrier lorsque l'utilisateur appuie sur "Entrée"
-      return
-    }
     handleNavigationKeys(
       e,
       index,
       totalSlots.length - 1,
       (selectedIndex) => chooseDate(totalSlots[selectedIndex].number),
       daysRefs.current,
-      closeCalendar, // Retirez cette fonction de `handleNavigationKeys`
+      null, // Ajoutez ceci pour le paramètre getItem
+      closeCalendar,
     )
   }
 
