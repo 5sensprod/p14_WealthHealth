@@ -15,20 +15,9 @@ function DaysView({
 
   useEffect(() => {
     if (focusedDay !== null) {
-      setTimeout(() => {
-        daysRefs.current[focusedDay]?.focus()
-        setFocusedDay(null) // Reset pour la prochaine utilisation
-      }, 0)
+      daysRefs.current[focusedDay]?.focus()
     }
   }, [focusedDay])
-
-  useEffect(() => {
-    if (focusedDay === 0) {
-      setTimeout(() => {
-        daysRefs.current[0]?.focus()
-      }, 0)
-    }
-  }, [currentMonth, focusedDay])
 
   const handleDayKeyDown = (e, index) => {
     console.log(`Touche ${e.key} pressée sur le jour ${index}`)
@@ -79,18 +68,11 @@ function DaysView({
           newMonth.setMonth(prevMonth.getMonth() - 1)
           return newMonth
         })
-
         const daysInPrevMonth = getDaysInMonth(
           currentMonth.getFullYear(),
           currentMonth.getMonth() - 1,
         )
-        // Trouvez le dernier jour non-grisé du mois précédent
-        for (let i = daysInPrevMonth - 1; i >= 0; i--) {
-          if (!totalSlots[i].isGrayed) {
-            setFocusedDay(i)
-            break
-          }
-        }
+        setFocusedDay(daysInPrevMonth - 1) // Focus sur le dernier jour du mois précédent
       } else {
         for (let i = index - 1; i >= 0; i--) {
           if (!totalSlots[i].isGrayed) {
