@@ -3,6 +3,7 @@ import { HomeIcon } from './Icons'
 import ChevronButtons from './ChevronSelector'
 import styles from './Calendar.module.css'
 import Button from './Button'
+import useKeyboardAccessibility from './useKeyboardAccessibility'
 
 import {
   DAYS,
@@ -14,23 +15,18 @@ import {
 
 // Selecteur de mois
 function MonthSelector({ currentMonth, months, view, setView }) {
-  if (view !== DAYS) return null
-
   const handleMonthSelect = () => {
     setView(switchToMonthView(view))
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === 'Space') {
-      handleMonthSelect()
-      e.preventDefault()
-    }
-  }
+  const ref = useKeyboardAccessibility(handleMonthSelect)
+
+  if (view !== DAYS) return null
 
   return (
     <Button
+      ref={ref}
       onClick={handleMonthSelect}
-      onKeyDown={handleKeyDown}
       className={styles.navButton}
       tabIndex={0}
     >
@@ -45,17 +41,12 @@ function YearSelector({ currentMonth, view, setView, yearsBlock }) {
     setView(toggleYearView(view))
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === 'Space') {
-      handleYearSelect()
-      e.preventDefault()
-    }
-  }
+  const ref = useKeyboardAccessibility(handleYearSelect)
 
   return (
     <Button
+      ref={ref}
       onClick={handleYearSelect}
-      onKeyDown={handleKeyDown}
       className={styles.navButton}
       tabIndex={0}
     >
@@ -73,17 +64,13 @@ function HomeButton({ setCurrentMonth, setView }) {
     setView(DAYS)
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === 'Space') {
-      handleHomeClick()
-      e.preventDefault() // Pour éviter le comportement par défaut de la touche 'Space'
-    }
-  }
+  // Utilisez le hook ici
+  const ref = useKeyboardAccessibility(handleHomeClick)
 
   return (
     <Button
+      ref={ref} // Attachez la référence au bouton
       onClick={handleHomeClick}
-      onKeyDown={handleKeyDown}
       icon={HomeIcon}
       className={styles.navButton}
       tabIndex={0}

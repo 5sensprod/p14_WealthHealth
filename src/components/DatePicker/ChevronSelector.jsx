@@ -1,9 +1,9 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback } from 'react'
 import styles from './Calendar.module.css'
 import { ChevronIcon } from './Icons'
-import { getNewData } from './utils/dateNavigations'
 import Button from './Button'
-import { handleNavigationKeys } from './utils'
+import { getNewData } from './utils/dateNavigations'
+import useKeyboardAccessibility from './useKeyboardAccessibility'
 
 const ChevronButton = React.forwardRef(
   ({ direction, onClick, useIcons, label, ...props }, ref) => {
@@ -29,23 +29,6 @@ function ChevronButtons({
   yearsBlock,
   setAnimationKey,
 }) {
-  const chevronRefs = useRef([])
-
-  const handleChevronKeyDown = (e, index) => {
-    handleNavigationKeys(
-      e,
-      index,
-      1, // Il y a deux boutons, donc l'index maximum est 1
-      (selectedIndex) => {
-        if (selectedIndex === 0) {
-          handleDateChange('prev')
-        } else if (selectedIndex === 1) {
-          handleDateChange('next')
-        }
-      },
-      chevronRefs.current,
-    )
-  }
   const handleDateChange = useCallback(
     (direction) => {
       setCurrentMonth((prev) => {
@@ -62,6 +45,7 @@ function ChevronButtons({
     },
     [view, setYearsBlock, yearsBlock, setAnimationKey, setCurrentMonth],
   )
+
   const handlePrevClick = useCallback(() => {
     handleDateChange('prev')
   }, [handleDateChange])
@@ -70,6 +54,9 @@ function ChevronButtons({
     handleDateChange('next')
   }, [handleDateChange])
 
+  const handlePrevClickRef = useKeyboardAccessibility(handlePrevClick)
+  const handleNextClickRef = useKeyboardAccessibility(handleNextClick)
+
   return (
     <div className={styles.chevronContainer}>
       <ChevronButton
@@ -77,8 +64,7 @@ function ChevronButtons({
         onClick={handlePrevClick}
         useIcons={useIcons}
         label="Previous"
-        onKeyDown={(e) => handleChevronKeyDown(e, 0)}
-        ref={(el) => (chevronRefs.current[0] = el)}
+        ref={handlePrevClickRef}
         tabIndex={0}
       />
       <ChevronButton
@@ -86,8 +72,7 @@ function ChevronButtons({
         onClick={handleNextClick}
         useIcons={useIcons}
         label="Next"
-        onKeyDown={(e) => handleChevronKeyDown(e, 1)}
-        ref={(el) => (chevronRefs.current[1] = el)}
+        ref={handleNextClickRef}
         tabIndex={0}
       />
     </div>
