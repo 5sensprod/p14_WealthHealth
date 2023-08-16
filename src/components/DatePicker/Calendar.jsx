@@ -9,7 +9,14 @@ import getTranslations from './translate'
 
 const Calendar = forwardRef(
   (
-    { selectDate, closeCalendar, useIcons, language = 'en', reorderedDays },
+    {
+      selectDate,
+      closeCalendar,
+      useIcons,
+      language = 'en',
+      reorderedDays,
+      startOfWeek,
+    },
     ref,
   ) => {
     const translations = getTranslations(language)
@@ -17,8 +24,12 @@ const Calendar = forwardRef(
     // Intégration du hook useYearLogic
     const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic()
 
-    const { currentMonth, setCurrentMonth, totalSlots } =
-      useCalendarLogic(initialMonth)
+    // Passez `startOfWeek` au hook useCalendarLogic
+    const { currentMonth, setCurrentMonth, totalSlots } = useCalendarLogic(
+      initialMonth,
+      startOfWeek,
+    )
+
     const chooseDate = useChooseDate(selectDate, closeCalendar, currentMonth)
 
     const [view, setView] = useState('days')

@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { generateTotalSlots } from './utils/calendarUtils'
 
-function useCalendarLogic(initialMonth) {
+function useCalendarLogic(initialMonth, startOfWeek = 0) {
   const [currentMonth, setCurrentMonth] = useState(initialMonth)
 
-  const totalSlots = generateTotalSlots(currentMonth)
+  const totalSlots = generateTotalSlots(currentMonth, startOfWeek)
 
   return {
     currentMonth,

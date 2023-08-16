@@ -97,6 +97,7 @@ function DatePicker({ name, value, onChange, language, onClose, ...props }) {
       </div>
       {showCalendar && (
         <Calendar
+          startOfWeek={startOfWeek}
           selectDate={handleDateSelect}
           closeCalendar={closeCalendar}
           useIcons={useIcons}

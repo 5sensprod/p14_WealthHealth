@@ -14,11 +14,7 @@ export function resetToCurrentDate() {
   return new Date()
 }
 
-export function reorderDays(days, startDay) {
-  const startDayAbbr = startDay.length > 3 ? startDay.slice(0, 3) : startDay
-  const startIndex = days.findIndex(
-    (day) => day.toLowerCase() === startDayAbbr.toLowerCase(),
-  )
-  if (startIndex === -1) return days
-  return [...days.slice(startIndex), ...days.slice(0, startIndex)]
+export function reorderDays(days, startDayIndex) {
+  if (startDayIndex < 0 || startDayIndex > 6) return days // Validation de l'indice
+  return [...days.slice(startDayIndex), ...days.slice(0, startDayIndex)]
 }
