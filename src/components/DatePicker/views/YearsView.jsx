@@ -22,7 +22,10 @@ function YearsView({ handleYearClick, yearsBlock }) {
         <div
           key={year}
           className={styles.year}
-          onClick={() => handleYearClick(year)}
+          onClick={(event) => {
+            event.stopPropagation()
+            handleYearClick(year)
+          }}
           onKeyDown={(e) => handleYearKeyDown(e, index)}
           ref={(el) => (yearsRefs.current[index] = el)}
           tabIndex={0}

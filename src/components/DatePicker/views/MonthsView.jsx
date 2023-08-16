@@ -16,7 +16,10 @@ function MonthsView({ handleMonthClick, currentMonth, translations }) {
         <div
           key={month}
           className={styles.month}
-          onClick={() => handleMonthClick(index)}
+          onClick={(event) => {
+            event.stopPropagation()
+            handleMonthClick(index)
+          }}
           onKeyDown={(e) => handleMonthKeyDown(e, index)}
           ref={(el) => (monthsRefs.current[index] = el)}
           tabIndex={0}

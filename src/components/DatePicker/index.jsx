@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
 import useDateValidation from './useDateValidation'
 import { reorderDays } from './utils/viewUtils'
-import useOutsideClick from './useOutsideClick'
 import { formatDatePickerDate } from './utils/dateFunctions'
 import useEscapeKey from './useEscapeKey'
 import CalendarButton from './CalendarButton'
@@ -15,16 +14,20 @@ function DatePicker({
   name,
   value,
   onChange,
-  useIcons = DEFAULT_CONFIG.USE_ICONS,
-  language = DEFAULT_CONFIG.LANGUAGE,
-  dateFormat = DEFAULT_CONFIG.DATE_FORMAT,
-  customStyles = DEFAULT_CONFIG.CUSTOM_STYLES,
+  language,
   onClose,
-  startOfWeek = DEFAULT_CONFIG.START_OF_WEEK,
-  manualInputEnabled = DEFAULT_CONFIG.MANUAL_INPUT_ENABLED,
-  minYear = DEFAULT_CONFIG.MIN_YEAR,
-  maxYear = DEFAULT_CONFIG.MAX_YEAR,
+  ...props // Décomposition pour tous les autres props
 }) {
+  const {
+    useIcons,
+    dateFormat,
+    customStyles,
+    startOfWeek,
+    manualInputEnabled,
+    minYear,
+    maxYear,
+  } = { ...DEFAULT_CONFIG, ...props }
+
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
     useDatePickerState(value, dateFormat, onClose)
 
@@ -33,19 +36,30 @@ function DatePicker({
     minYear,
     maxYear,
   )
-
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
 
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
 
-  const setClickedInside = useOutsideClick(calendarRef, buttonRef, () => {
-    closeCalendar()
-    setClosedByOutsideClick(true)
-  })
+  useEffect(() => {
+    const handleDocumentClick = (event) => {
+      const inputRef = event.target.closest(`.${styles.containerInput}`)
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target) &&
+        !inputRef
+      ) {
+        closeCalendar()
+      }
+    }
+    document.addEventListener('click', handleDocumentClick)
+    return () => document.removeEventListener('click', handleDocumentClick)
+  }, [closeCalendar])
 
-  function handleDateSelect(date) {
+  const handleDateSelect = (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
     setInput(actualDate)
     closeCalendar()
@@ -57,39 +71,20 @@ function DatePicker({
     })
   }
 
-  function handleInputChange(e) {
+  const handleInputChange = (e) => {
     const newValue = e.target.value
-
-    // Si la valeur est vide, réinitialisez l'erreur et sortez de la fonction
     if (!newValue) {
       setError(null)
       return
     }
-
-    if (!validate(newValue)) {
-      setError('Format de date invalide')
-    } else {
-      onChange({
-        target: {
-          name,
-          value: newValue,
-        },
-      })
+    if (!validate(newValue)) setError('Format de date invalide')
+    else {
+      onChange({ target: { name, value: newValue } })
       setError(null)
     }
   }
-  function handleInputTyping(e) {
-    setInput(e.target.value)
-  }
 
   useEscapeKey(closeCalendar)
-
-  const [closedByOutsideClick, setClosedByOutsideClick] = useState(false)
-
-  useOutsideClick(calendarRef, buttonRef, () => {
-    closeCalendar()
-    setClosedByOutsideClick(true)
-  })
 
   return (
     <div className={styles.container} style={customStyles}>
@@ -102,15 +97,8 @@ function DatePicker({
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
-          onClick={() => {
-            setClickedInside(true) // Mise à jour ici
-            if (closedByOutsideClick) {
-              setClosedByOutsideClick(false)
-            } else {
-              toggleCalendar()
-            }
-          }}
-          onChange={handleInputTyping}
+          onClick={toggleCalendar}
+          onChange={(e) => setInput(e.target.value)}
         />
         {error && <p className={styles.errorMessage}>{error}</p>}
         <CalendarButton ref={buttonRef} onClick={toggleCalendar} />
