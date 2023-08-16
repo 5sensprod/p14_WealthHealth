@@ -1,7 +1,11 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from '../Calendar.module.css'
-import { handleNavigationKeys } from '../utils'
-import { getDaysInMonth } from '../utils/dateFunctions'
+import { handleNavigationKeys } from '../utils/handleNavigationKeys'
+import { updateMonth, handleTabKey } from '../utils/DaysViewUtils'
+import {
+  useInitialFocusEffect,
+  useNavigationDirectionEffect,
+} from '../hooks/daysViewHooks'
 
 function DaysView({
   totalSlots,
@@ -11,17 +15,17 @@ function DaysView({
   currentMonth,
 }) {
   const daysRefs = useRef([])
-  const [focusedDay, setFocusedDay] = useState(null)
+  const [navigationDirection, setNavigationDirection] = useState(null)
 
-  useEffect(() => {
-    if (focusedDay !== null) {
-      daysRefs.current[focusedDay]?.focus()
-    }
-  }, [focusedDay])
+  useInitialFocusEffect(currentMonth, totalSlots, daysRefs)
+  useNavigationDirectionEffect(
+    navigationDirection,
+    currentMonth,
+    daysRefs,
+    setNavigationDirection,
+  )
 
   const handleDayKeyDown = (e, index) => {
-    console.log(`Touche ${e.key} pressée sur le jour ${index}`)
-
     handleNavigationKeys(
       e,
       index,
@@ -30,56 +34,17 @@ function DaysView({
       daysRefs.current,
     )
 
-    const day = totalSlots[index]
-    const daysInCurrentMonth = getDaysInMonth(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-    )
-
-    const isLastDayOfCurrentMonth =
-      day.number === daysInCurrentMonth && !day.isGrayed
-    const isFirstDayOfCurrentMonth = day.number === 1 && !day.isGrayed
-
-    if (e.key === 'Tab' && !e.shiftKey) {
-      if (isLastDayOfCurrentMonth) {
-        e.preventDefault()
-        setCurrentMonth((prevMonth) => {
-          const newMonth = new Date(prevMonth)
-          newMonth.setMonth(prevMonth.getMonth() + 1)
-          return newMonth
-        })
-        setFocusedDay(0) // Focus sur le premier jour du mois suivant
-      } else {
-        // Navigate to the next non-grayed day
-        for (let i = index + 1; i < totalSlots.length; i++) {
-          if (!totalSlots[i].isGrayed) {
-            e.preventDefault()
-            setFocusedDay(i)
-            break
-          }
-        }
-      }
-    } else if (e.key === 'Tab' && e.shiftKey) {
-      e.preventDefault() // Pour empêcher le comportement par défaut
-
-      if (isFirstDayOfCurrentMonth) {
-        setCurrentMonth((prevMonth) => {
-          const newMonth = new Date(prevMonth)
-          newMonth.setMonth(prevMonth.getMonth() - 1)
-          return newMonth
-        })
-        const daysInPrevMonth = getDaysInMonth(
-          currentMonth.getFullYear(),
-          currentMonth.getMonth() - 1,
-        )
-        setFocusedDay(daysInPrevMonth - 1) // Focus sur le dernier jour du mois précédent
-      } else {
-        for (let i = index - 1; i >= 0; i--) {
-          if (!totalSlots[i].isGrayed) {
-            setFocusedDay(i)
-            break
-          }
-        }
+    if (e.key === 'Tab') {
+      const { direction } = handleTabKey(
+        e,
+        totalSlots[index],
+        index,
+        currentMonth,
+      )
+      if (direction) {
+        const newMonth = updateMonth(currentMonth, direction)
+        setCurrentMonth(newMonth)
+        setNavigationDirection(direction)
       }
     }
   }
@@ -87,26 +52,39 @@ function DaysView({
   return (
     <div className={styles.daysContainer}>
       {reorderedDays.map((day) => (
-        <div className={styles.header} key={day}>
-          {day}
-        </div>
+        <DayHeader key={day} day={day} />
       ))}
-
       {totalSlots.map((day, index) => (
-        <div
+        <Day
           key={index}
-          className={day.isGrayed ? styles.grayedDay : styles.day}
-          onClick={(event) => {
+          day={day}
+          onDayClick={(event) => {
             event.stopPropagation()
             if (!day.isGrayed) chooseDate(day.number)
           }}
-          onKeyDown={(e) => handleDayKeyDown(e, index)}
-          ref={(el) => (daysRefs.current[index] = el)}
-          tabIndex={day.isGrayed ? -1 : 0}
-        >
-          {day.number}
-        </div>
+          onDayKeyDown={(e) => handleDayKeyDown(e, index)}
+          refElement={(el) => (daysRefs.current[index] = el)}
+        />
       ))}
+    </div>
+  )
+}
+
+function DayHeader({ day }) {
+  return <div className={styles.header}>{day}</div>
+}
+
+function Day({ day, onDayClick, onDayKeyDown, refElement }) {
+  const className = day.isGrayed ? styles.grayedDay : styles.day
+  return (
+    <div
+      className={className}
+      onClick={onDayClick}
+      onKeyDown={onDayKeyDown}
+      ref={refElement}
+      tabIndex={day.isGrayed ? -1 : 0}
+    >
+      {day.number}
     </div>
   )
 }

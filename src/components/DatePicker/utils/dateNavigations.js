@@ -1,7 +1,7 @@
 import { START_YEAR, END_YEAR, YEAR_BLOCK_SIZE } from '../config/defaultConfig'
 
 // Utilisation :
-console.log(START_YEAR)
+// console.log(START_YEAR)
 // ========== MONTH NAVIGATION ==========
 
 export const goToNextMonth = (currentDate) => {

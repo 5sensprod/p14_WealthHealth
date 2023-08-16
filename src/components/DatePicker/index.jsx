@@ -106,6 +106,7 @@ function DatePicker({ name, value, onChange, language, onClose, ...props }) {
           reorderedDays={reorderedDays}
           ref={calendarRef}
           role="grid"
+          isCalendarVisible={showCalendar}
         />
       )}
     </div>
