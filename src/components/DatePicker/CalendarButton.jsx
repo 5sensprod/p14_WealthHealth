@@ -6,6 +6,7 @@ import styles from './DatePicker.module.css'
 const CalendarButton = forwardRef(
   ({ onClick, showCalendar, ...props }, ref) => (
     <Button
+      type="button"
       onClick={onClick}
       className={styles.calendarButton}
       icon={CalendarIcon}
