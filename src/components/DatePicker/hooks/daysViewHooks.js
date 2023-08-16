@@ -3,12 +3,12 @@ import { getDaysInMonth } from '../utils/dateFunctions'
 
 export function useInitialFocusEffect(currentMonth, totalSlots, daysRefs) {
   useEffect(() => {
-    const firstNonGrayedDayIndex = totalSlots.findIndex((day) => !day.isGrayed)
-    if (firstNonGrayedDayIndex !== -1) {
-      setTimeout(() => {
-        daysRefs.current[firstNonGrayedDayIndex]?.focus()
-      }, 0)
-    }
+    // const firstNonGrayedDayIndex = totalSlots.findIndex((day) => !day.isGrayed)
+    // if (firstNonGrayedDayIndex !== -1) {
+    //   setTimeout(() => {
+    //     daysRefs.current[firstNonGrayedDayIndex]?.focus()
+    //   }, 0)
+    // }
   }, [currentMonth, totalSlots, daysRefs])
 }
 
