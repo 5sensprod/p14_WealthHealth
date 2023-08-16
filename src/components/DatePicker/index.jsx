@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
@@ -78,7 +78,13 @@ function DatePicker({
   }
 
   useEscapeKey(closeCalendar)
-  useOutsideClick(calendarRef, buttonRef, closeCalendar)
+
+  const [closedByOutsideClick, setClosedByOutsideClick] = useState(false)
+
+  useOutsideClick(calendarRef, buttonRef, () => {
+    closeCalendar()
+    setClosedByOutsideClick(true)
+  })
 
   return (
     <div className={styles.container} style={customStyles}>
@@ -91,7 +97,13 @@ function DatePicker({
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
-          onClick={toggleCalendar}
+          onClick={() => {
+            if (closedByOutsideClick) {
+              setClosedByOutsideClick(false)
+            } else {
+              toggleCalendar()
+            }
+          }}
           onChange={handleInputTyping}
         />
         {error && <p className={styles.errorMessage}>{error}</p>}
