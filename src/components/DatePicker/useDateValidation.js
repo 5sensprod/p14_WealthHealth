@@ -14,7 +14,7 @@ function useDateValidation(dateFormat, minYear, maxYear) {
     }
   }
 
-  return [error, validate]
+  return [error, validate, setError]
 }
 
 export default useDateValidation
