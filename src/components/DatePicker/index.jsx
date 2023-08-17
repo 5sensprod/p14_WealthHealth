@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styles from './DatePicker.module.css'
 import Calendar from './Calendar'
 import getTranslations from './translate'
@@ -67,12 +67,21 @@ function DatePicker({ name, value, onChange, language, onClose, ...props }) {
     }
   }
 
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    if (!showCalendar && manualInputEnabled) {
+      inputRef.current?.focus()
+    }
+  }, [showCalendar, manualInputEnabled])
+
   useEscapeKey(closeCalendar)
 
   return (
     <div className={styles.container} style={customStyles}>
       <div className={styles.containerInput}>
         <input
+          ref={inputRef}
           type="text"
           value={inputValue}
           onBlur={manualInputEnabled ? handleInputChange : null}
