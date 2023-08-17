@@ -1,51 +1,73 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import { isValidDate } from './utils'
+import { DEFAULT_CONFIG } from './config/defaultConfig'
 
-function MaskedInput({ value, onChange, format = 'DD-MM-YYYY', ...props }) {
-  const [displayValue, setDisplayValue] = useState(formatToMask(value, format))
-
-  useEffect(() => {
-    setDisplayValue(formatToMask(value, format))
-  }, [value, format])
-
-  function formatToMask(value, format) {
-    const separator = format.includes('-') ? '-' : '/'
-    let maskedValue = value.replace(/\D/g, '')
-
-    const insertSeparator = (position) => {
-      if (maskedValue.length > position) {
-        maskedValue = `${maskedValue.substring(
-          0,
-          position,
-        )}${separator}${maskedValue.substring(position)}`
-      }
+// Utility function to format value to the desired mask
+function formatToMask(value, format) {
+  let maskedValue = value.replace(/\D/g, '')
+  const insertSeparator = (position) => {
+    if (maskedValue.length > position) {
+      maskedValue = `${maskedValue.substring(
+        0,
+        position,
+      )}/${maskedValue.substring(position)}`
     }
-
-    switch (format) {
-      case 'DD-MM-YYYY':
-      case 'MM-DD-YYYY':
-        insertSeparator(2)
-        insertSeparator(5)
-        break
-      case 'YYYY-MM-DD':
-        insertSeparator(4)
-        insertSeparator(7)
-        break
-      default:
-        break
-    }
-
-    return maskedValue
   }
-
-  function handleChange(e) {
-    const newValue = formatToMask(e.target.value, format)
-    setDisplayValue(newValue)
-    const isValid = isValidDate(newValue, format)
-    onChange && onChange(newValue, isValid)
+  switch (format) {
+    case DEFAULT_CONFIG.DATE_FORMATS.DEFAULT:
+    case DEFAULT_CONFIG.DATE_FORMATS.US:
+      insertSeparator(2)
+      insertSeparator(5)
+      break
+    case DEFAULT_CONFIG.DATE_FORMATS.ISO:
+      insertSeparator(4)
+      insertSeparator(7)
+      break
+    default:
+      break
   }
-
-  return <input value={displayValue} onChange={handleChange} {...props} />
+  return maskedValue
 }
+
+const MaskedInput = forwardRef(
+  ({ value, onChange, format = DEFAULT_CONFIG.DATE_FORMAT, ...props }, ref) => {
+    const [displayValue, setDisplayValue] = useState(
+      formatToMask(value, format),
+    )
+
+    useEffect(() => {
+      setDisplayValue(formatToMask(value, format))
+    }, [value, format])
+
+    function handleChange(e) {
+      let newValue = e.target.value
+
+      // If user just added a slash, keep it and format on the next change
+      if (
+        newValue.charAt(newValue.length - 1) === '/' &&
+        newValue.length > displayValue.length
+      ) {
+        setDisplayValue(newValue)
+        return
+      }
+
+      // Format the value
+      newValue = formatToMask(newValue, format)
+
+      setDisplayValue(newValue)
+      const isValid = isValidDate(newValue, format)
+      onChange && onChange(newValue, isValid)
+    }
+
+    return (
+      <input
+        ref={ref}
+        value={displayValue}
+        onChange={handleChange}
+        {...props}
+      />
+    )
+  },
+)
 
 export default MaskedInput

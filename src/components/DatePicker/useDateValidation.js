@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { isValidDate } from './utils'
+import { DEFAULT_CONFIG } from './config/defaultConfig'
 
 function useDateValidation(
   dateFormat,
@@ -10,7 +11,11 @@ function useDateValidation(
   const [error, setError] = useState(null)
 
   function validate(value) {
-    if (isValidDate(value, dateFormat, minYear, maxYear)) {
+    const formatKey =
+      dateFormat in DEFAULT_CONFIG.DATE_FORMATS
+        ? dateFormat
+        : DEFAULT_CONFIG.DATE_FORMAT
+    if (isValidDate(value, formatKey, minYear, maxYear)) {
       setError(null)
       return true
     } else {

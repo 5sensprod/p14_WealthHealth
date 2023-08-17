@@ -1,36 +1,42 @@
+import { DEFAULT_CONFIG } from './config/defaultConfig'
+
 function isLeapYear(year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 }
 
-function generateRegex(format, separator) {
+function generateRegex(formatKey, separator) {
   const formatMapping = {
-    'DD-MM-YYYY': `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
-    'MM-DD-YYYY': `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
-    'YYYY-MM-DD': `^(\\d{4})${separator}(\\d{2})${separator}(\\d{2})$`,
+    [DEFAULT_CONFIG.DATE_FORMATS
+      .DEFAULT]: `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
+    [DEFAULT_CONFIG.DATE_FORMATS
+      .US]: `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
+    [DEFAULT_CONFIG.DATE_FORMATS
+      .ISO]: `^(\\d{4})${separator}(\\d{2})${separator}(\\d{2})$`,
   }
-  return formatMapping[format]
+  return formatMapping[formatKey]
 }
 
 export function isValidDate(
   dateString,
-  format = 'DD-MM-YYYY',
-  minYear = 1900,
-  maxYear = 2100,
+  formatKey = DEFAULT_CONFIG.DATE_FORMAT,
+  minYear = DEFAULT_CONFIG.MIN_YEAR,
+  maxYear = DEFAULT_CONFIG.MAX_YEAR,
 ) {
   let day, month, year
   const separator = dateString.includes('/') ? '/' : '-'
+  const format = DEFAULT_CONFIG.DATE_FORMATS[formatKey]
 
-  const regex = generateRegex(format, separator)
+  const regex = generateRegex(formatKey, separator)
   if (!new RegExp(regex).test(dateString)) return false
 
   switch (format) {
-    case 'DD-MM-YYYY':
+    case DEFAULT_CONFIG.DATE_FORMATS.DEFAULT:
       ;[day, month, year] = dateString.split(separator).map(Number)
       break
-    case 'MM-DD-YYYY':
+    case DEFAULT_CONFIG.DATE_FORMATS.US:
       ;[month, day, year] = dateString.split(separator).map(Number)
       break
-    case 'YYYY-MM-DD':
+    case DEFAULT_CONFIG.DATE_FORMATS.ISO:
       ;[year, month, day] = dateString.split(separator).map(Number)
       break
     default:

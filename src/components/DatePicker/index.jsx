@@ -6,6 +6,7 @@ import styles from './DatePicker.module.css'
 
 import Calendar from './Calendar'
 import CalendarButton from './CalendarButton'
+import MaskedInput from './MaskedInput'
 
 import useDateValidation from './useDateValidation'
 import useEscapeKey from './useEscapeKey'
@@ -99,17 +100,24 @@ function DatePicker({
   return (
     <div className={styles.container} style={customStyles}>
       <div className={styles.containerInput}>
-        <input
+        <MaskedInput
           ref={inputRef}
-          type="text"
           value={inputValue}
+          format={dateFormat}
           onBlur={manualInputEnabled ? handleInputChange : null}
           placeholder={translations.placeholder}
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
           onClick={toggleCalendarVisibility}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(newValue, isValid) => {
+            setInput(newValue)
+            if (isValid) {
+              setError(null)
+            } else {
+              setError('Format de date invalide')
+            }
+          }}
         />
 
         <CalendarButton ref={buttonRef} onClick={toggleCalendarVisibility} />
