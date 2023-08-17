@@ -8,10 +8,15 @@ export const DEFAULT_CONFIG = {
   YEAR_BLOCK_SIZE: 16,
   USE_ICONS: false,
   LANGUAGE: 'en',
-  DATE_FORMAT: 'DD-MM-YYYY',
+  DATE_FORMAT: 'DEFAULT',
   CUSTOM_STYLES: {},
   START_OF_WEEK: 1, // 0 pour Dimanche...
   MANUAL_INPUT_ENABLED: true,
   MIN_YEAR: 1900,
   MAX_YEAR: 2100,
+  DATE_FORMATS: {
+    DEFAULT: 'DD-MM-YYYY',
+    US: 'MM-DD-YYYY',
+    ISO: 'YYYY-MM-DD',
+  },
 }

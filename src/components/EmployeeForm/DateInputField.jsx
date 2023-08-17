@@ -12,7 +12,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
       onChange={onChange}
       useIcons={true}
       language="en"
-      dateFormat="MM-DD-YYYY"
+      dateFormat="DEFAULT"
       customStyles={{
         backgroundColor: 'transparent',
         borderRadius: '0',

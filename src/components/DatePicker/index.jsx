@@ -25,7 +25,7 @@ function DatePicker({
   ...configProps
 }) {
   // 1. Destructuring & Default Props
-  const {
+  let {
     useIcons,
     dateFormat,
     customStyles,
@@ -34,6 +34,11 @@ function DatePicker({
     minYear,
     maxYear,
   } = { ...DEFAULT_CONFIG, ...configProps }
+
+  // Interprétation de la clé 'dateFormat' comme une référence aux formats définis dans DEFAULT_CONFIG.DATE_FORMATS
+  if (DEFAULT_CONFIG.DATE_FORMATS[dateFormat]) {
+    dateFormat = DEFAULT_CONFIG.DATE_FORMATS[dateFormat]
+  }
 
   // 2. State & Refs Initialization
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
@@ -75,7 +80,7 @@ function DatePicker({
     }
   }
 
-  const handleInputAndButtonClick = () => {
+  const toggleCalendarVisibility = () => {
     setClickedInside(true)
     toggleCalendar()
   }
@@ -103,11 +108,11 @@ function DatePicker({
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
-          onClick={handleInputAndButtonClick}
+          onClick={toggleCalendarVisibility}
           onChange={(e) => setInput(e.target.value)}
         />
 
-        <CalendarButton ref={buttonRef} onClick={handleInputAndButtonClick} />
+        <CalendarButton ref={buttonRef} onClick={toggleCalendarVisibility} />
       </div>
       {error && <p className={styles.errorMessage}>{error}</p>}
       {showCalendar && (

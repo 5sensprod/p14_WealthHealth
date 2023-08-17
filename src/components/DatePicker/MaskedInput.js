@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { isValidDate } from './utils'
 
-function MaskedInput({ value, onChange, format = 'DD-MM-YYYY' }) {
+function MaskedInput({ value, onChange, format = 'DD-MM-YYYY', ...props }) {
   const [displayValue, setDisplayValue] = useState(formatToMask(value, format))
 
   useEffect(() => {
@@ -9,29 +9,27 @@ function MaskedInput({ value, onChange, format = 'DD-MM-YYYY' }) {
   }, [value, format])
 
   function formatToMask(value, format) {
+    const separator = format.includes('-') ? '-' : '/'
     let maskedValue = value.replace(/\D/g, '')
+
+    const insertSeparator = (position) => {
+      if (maskedValue.length > position) {
+        maskedValue = `${maskedValue.substring(
+          0,
+          position,
+        )}${separator}${maskedValue.substring(position)}`
+      }
+    }
 
     switch (format) {
       case 'DD-MM-YYYY':
       case 'MM-DD-YYYY':
-        if (maskedValue.length > 2) {
-          maskedValue =
-            maskedValue.substring(0, 2) + '/' + maskedValue.substring(2)
-        }
-        if (maskedValue.length > 5) {
-          maskedValue =
-            maskedValue.substring(0, 5) + '/' + maskedValue.substring(5)
-        }
+        insertSeparator(2)
+        insertSeparator(5)
         break
       case 'YYYY-MM-DD':
-        if (maskedValue.length > 4) {
-          maskedValue =
-            maskedValue.substring(0, 4) + '/' + maskedValue.substring(4)
-        }
-        if (maskedValue.length > 7) {
-          maskedValue =
-            maskedValue.substring(0, 7) + '/' + maskedValue.substring(7)
-        }
+        insertSeparator(4)
+        insertSeparator(7)
         break
       default:
         break
@@ -47,7 +45,7 @@ function MaskedInput({ value, onChange, format = 'DD-MM-YYYY' }) {
     onChange && onChange(newValue, isValid)
   }
 
-  return <input value={displayValue} onChange={handleChange} />
+  return <input value={displayValue} onChange={handleChange} {...props} />
 }
 
 export default MaskedInput
