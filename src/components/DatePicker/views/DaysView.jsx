@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/handleNavigationKeys'
 import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
@@ -11,6 +11,12 @@ function DaysView({
   currentMonth,
 }) {
   const daysRefs = useRef([])
+  const today = new Date()
+  const [hasBeenHovered, setHasBeenHovered] = useState(false)
+  const resetHoveredState = () => setHasBeenHovered(false)
+  const handleDayHover = () => {
+    setHasBeenHovered(true)
+  }
 
   const handleDayKeyDown = (e, index) => {
     if (e.key === 'Tab') {
@@ -48,27 +54,42 @@ function DaysView({
   }
 
   return (
-    <div className={styles.daysContainer}>
+    <div className={styles.daysContainer} onMouseLeave={resetHoveredState}>
       {reorderedDays.map((day) => (
         <div className={styles.header} key={day}>
           {day}
         </div>
       ))}
-      {totalSlots.map((day, index) => (
-        <div
-          key={index}
-          className={day.isGrayed ? styles.grayedDay : styles.day}
-          onClick={(event) => {
-            event.stopPropagation()
-            if (!day.isGrayed) chooseDate(day.number)
-          }}
-          onKeyDown={(e) => handleDayKeyDown(e, index)}
-          ref={(el) => (daysRefs.current[index] = el)}
-          tabIndex={day.isGrayed ? -1 : 0}
-        >
-          {day.number}
-        </div>
-      ))}
+      {totalSlots.map((day, index) => {
+        const todayIsThisDay =
+          !day.isGrayed &&
+          today.getDate() === day.number &&
+          today.getMonth() === currentMonth.getMonth() &&
+          today.getFullYear() === currentMonth.getFullYear()
+
+        return (
+          <div
+            key={index}
+            className={
+              day.isGrayed
+                ? styles.grayedDay
+                : todayIsThisDay && !hasBeenHovered
+                ? `${styles.day} ${styles.active}`
+                : styles.day
+            }
+            onClick={(event) => {
+              event.stopPropagation()
+              if (!day.isGrayed) chooseDate(day.number)
+            }}
+            onKeyDown={(e) => handleDayKeyDown(e, index)}
+            onMouseEnter={handleDayHover}
+            ref={(el) => (daysRefs.current[index] = el)}
+            tabIndex={day.isGrayed ? -1 : 0}
+          >
+            {day.number}
+          </div>
+        )
+      })}
     </div>
   )
 }
