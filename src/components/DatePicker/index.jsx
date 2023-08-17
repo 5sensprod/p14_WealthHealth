@@ -70,15 +70,24 @@ function DatePicker({
 
   const handleInputChange = (e) => {
     const newValue = e.target.value
-    if (!newValue) {
+    if (!newValue || newValue.length < 10) {
       setError(null)
       return
     }
-    if (!validate(newValue)) setError('Format de date invalide')
-    else {
-      onChange({ target: { name, value: newValue } })
-      setError(null)
+
+    // Only validate if the user has typed a complete date
+    if (newValue.length >= 10) {
+      if (!validate(newValue)) {
+        setError('Format de date invalide')
+      } else {
+        setError(null)
+        closeCalendar() // ferme le calendrier
+        inputRef.current.blur() // retire le focus de l'input
+      }
     }
+
+    // Update the value regardless of its validity
+    onChange({ target: { name, value: newValue } })
   }
 
   const toggleCalendarVisibility = () => {
@@ -110,14 +119,7 @@ function DatePicker({
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
           onClick={toggleCalendarVisibility}
-          onChange={(newValue, isValid) => {
-            setInput(newValue)
-            if (isValid) {
-              setError(null)
-            } else {
-              setError('Format de date invalide')
-            }
-          }}
+          onChange={handleInputChange}
         />
 
         <CalendarButton ref={buttonRef} onClick={toggleCalendarVisibility} />

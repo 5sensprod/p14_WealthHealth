@@ -1,5 +1,5 @@
 import React, { useState, useEffect, forwardRef } from 'react'
-import { isValidDate } from './utils'
+// import { isValidDate } from './utils'
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
 // Utility function to format value to the desired mask
@@ -53,10 +53,10 @@ const MaskedInput = forwardRef(
 
       // Format the value
       newValue = formatToMask(newValue, format)
-
       setDisplayValue(newValue)
-      const isValid = isValidDate(newValue, format)
-      onChange && onChange(newValue, isValid)
+
+      // Inform the parent about the change
+      onChange && onChange({ target: { value: newValue } })
     }
 
     return (
