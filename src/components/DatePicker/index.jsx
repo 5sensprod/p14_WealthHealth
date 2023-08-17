@@ -1,17 +1,30 @@
-import React, { useRef, useEffect } from 'react'
-import styles from './DatePicker.module.css'
-import Calendar from './Calendar'
-import getTranslations from './translate'
-import useDateValidation from './useDateValidation'
-import { reorderDays } from './utils/viewUtils'
-import { formatDatePickerDate } from './utils/dateFunctions'
-import useEscapeKey from './useEscapeKey'
-import CalendarButton from './CalendarButton'
-import useDatePickerState from './useDatePickerState'
-import useOutsideClick from './useOutsideClick'
+import React, { useRef } from 'react'
+
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
-function DatePicker({ name, value, onChange, language, onClose, ...props }) {
+import styles from './DatePicker.module.css'
+
+import Calendar from './Calendar'
+import CalendarButton from './CalendarButton'
+
+import useDateValidation from './useDateValidation'
+import useEscapeKey from './useEscapeKey'
+import useDatePickerState from './useDatePickerState'
+import useOutsideClick from './useOutsideClick'
+
+import getTranslations from './translate'
+import { reorderDays } from './utils/viewUtils'
+import { formatDatePickerDate } from './utils/dateFunctions'
+
+function DatePicker({
+  name,
+  value,
+  onChange,
+  language = 'en',
+  onClose,
+  ...configProps
+}) {
+  // 1. Destructuring & Default Props
   const {
     useIcons,
     dateFormat,
@@ -20,28 +33,23 @@ function DatePicker({ name, value, onChange, language, onClose, ...props }) {
     manualInputEnabled,
     minYear,
     maxYear,
-  } = { ...DEFAULT_CONFIG, ...props }
+  } = { ...DEFAULT_CONFIG, ...configProps }
 
+  // 2. State & Refs Initialization
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
     useDatePickerState(value, dateFormat, onClose)
+
+  const calendarRef = useRef(null)
+  const buttonRef = useRef(null)
+  const inputRef = useRef(null)
 
   const [error, validate, setError] = useDateValidation(
     dateFormat,
     minYear,
     maxYear,
   )
-  const translations = getTranslations(language)
-  const reorderedDays = reorderDays(translations.days, startOfWeek)
 
-  const calendarRef = useRef(null)
-  const buttonRef = useRef(null)
-
-  const setClickedInside = useOutsideClick(
-    calendarRef,
-    buttonRef,
-    closeCalendar,
-  )
-
+  // 3. Handlers
   const handleDateSelect = (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
     setInput(actualDate)
@@ -67,16 +75,22 @@ function DatePicker({ name, value, onChange, language, onClose, ...props }) {
     }
   }
 
-  const inputRef = useRef(null)
+  const handleInputAndButtonClick = () => {
+    setClickedInside(true)
+    toggleCalendar()
+  }
 
-  useEffect(() => {
-    if (!showCalendar && manualInputEnabled) {
-      inputRef.current?.focus()
-    }
-  }, [showCalendar, manualInputEnabled])
-
+  // 4. Derived Data & Effects
+  const translations = getTranslations(language)
+  const reorderedDays = reorderDays(translations.days, startOfWeek)
+  const setClickedInside = useOutsideClick(
+    calendarRef,
+    buttonRef,
+    closeCalendar,
+  )
   useEscapeKey(closeCalendar)
 
+  // 5. Component Render
   return (
     <div className={styles.container} style={customStyles}>
       <div className={styles.containerInput}>
@@ -89,21 +103,13 @@ function DatePicker({ name, value, onChange, language, onClose, ...props }) {
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
-          onClick={() => {
-            setClickedInside(true)
-            toggleCalendar()
-          }}
+          onClick={handleInputAndButtonClick}
           onChange={(e) => setInput(e.target.value)}
         />
-        {error && <p className={styles.errorMessage}>{error}</p>}
-        <CalendarButton
-          ref={buttonRef}
-          onClick={() => {
-            setClickedInside(true)
-            toggleCalendar()
-          }}
-        />
+
+        <CalendarButton ref={buttonRef} onClick={handleInputAndButtonClick} />
       </div>
+      {error && <p className={styles.errorMessage}>{error}</p>}
       {showCalendar && (
         <Calendar
           startOfWeek={startOfWeek}
