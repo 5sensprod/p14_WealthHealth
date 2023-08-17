@@ -37,7 +37,7 @@ function useOutsideClick(ref, buttonRef, callback) {
     }
   }, [ref, buttonRef, callback, isNextClickInside])
 
-  return setIsNextClickInside // Retournez le setter ici
+  return setIsNextClickInside
 }
 
 export default useOutsideClick

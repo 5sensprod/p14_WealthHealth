@@ -3,10 +3,17 @@ import styles from './Button.module.css'
 
 const Button = forwardRef(
   ({ onClick, children, icon: Icon, className, ...props }, ref) => {
+    const handleClick = (e) => {
+      e.preventDefault()
+      if (onClick) {
+        onClick(e)
+      }
+    }
+
     return (
       <button
         ref={ref}
-        onClick={onClick}
+        onClick={handleClick}
         className={`${styles.button} ${className ? className : ''}`}
         {...props}
       >
