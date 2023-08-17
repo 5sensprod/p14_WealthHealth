@@ -21,10 +21,8 @@ const Calendar = forwardRef(
   ) => {
     const translations = getTranslations(language)
 
-    // Intégration du hook useYearLogic
     const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic()
 
-    // Passez `startOfWeek` au hook useCalendarLogic
     const { currentMonth, setCurrentMonth, totalSlots } = useCalendarLogic(
       initialMonth,
       startOfWeek,

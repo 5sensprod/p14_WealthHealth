@@ -8,7 +8,7 @@ import { formatDatePickerDate } from './utils/dateFunctions'
 import useEscapeKey from './useEscapeKey'
 import CalendarButton from './CalendarButton'
 import useDatePickerState from './useDatePickerState'
-import useOutsideClick from './useOutsideClick' // Assurez-vous de mettre à jour le chemin vers votre hook
+import useOutsideClick from './useOutsideClick'
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
 function DatePicker({ name, value, onChange, language, onClose, ...props }) {

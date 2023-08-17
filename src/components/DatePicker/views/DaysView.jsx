@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import styles from '../Calendar.module.css'
-import { handleNavigationKeys } from '../utils'
+import { handleNavigationKeys } from '../utils/handleNavigationKeys'
 import { updateMonth, handleTabKey, BACKWARD } from '../utils/DaysViewUtils'
 
 function DaysView({

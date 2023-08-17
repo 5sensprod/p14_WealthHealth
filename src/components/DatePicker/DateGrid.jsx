@@ -23,7 +23,7 @@ function DateGrid({
 
   const handleYearClick = (selectedYear) => {
     setCurrentMonth(new Date(selectedYear, currentMonth.getMonth()))
-    setView('months') // ou 'days' si vous voulez revenir directement à la vue des jours
+    setView('months')
   }
 
   return (
@@ -36,7 +36,7 @@ function DateGrid({
           reorderedDays={reorderedDays}
           closeCalendar={closeCalendar}
           setCurrentMonth={setCurrentMonth}
-          currentMonth={currentMonth} // Ajoutez cette ligne
+          currentMonth={currentMonth}
         />
       )}
 

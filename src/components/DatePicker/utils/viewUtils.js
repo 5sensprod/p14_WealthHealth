@@ -15,6 +15,6 @@ export function resetToCurrentDate() {
 }
 
 export function reorderDays(days, startDayIndex) {
-  if (startDayIndex < 0 || startDayIndex > 6) return days // Validation de l'indice
+  if (startDayIndex < 0 || startDayIndex > 6) return days
   return [...days.slice(startDayIndex), ...days.slice(0, startDayIndex)]
 }

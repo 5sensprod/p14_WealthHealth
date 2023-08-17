@@ -9,7 +9,7 @@ function MaskedInput({ value, onChange, format = 'DD-MM-YYYY' }) {
   }, [value, format])
 
   function formatToMask(value, format) {
-    let maskedValue = value.replace(/\D/g, '') // retire tout sauf les chiffres
+    let maskedValue = value.replace(/\D/g, '')
 
     switch (format) {
       case 'DD-MM-YYYY':

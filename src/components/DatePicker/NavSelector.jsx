@@ -64,12 +64,11 @@ function HomeButton({ setCurrentMonth, setView }) {
     setView(DAYS)
   }
 
-  // Utilisez le hook ici
   const ref = useKeyboardAccessibility(handleHomeClick)
 
   return (
     <Button
-      ref={ref} // Attachez la référence au bouton
+      ref={ref}
       onClick={handleHomeClick}
       icon={HomeIcon}
       className={styles.navButton}
