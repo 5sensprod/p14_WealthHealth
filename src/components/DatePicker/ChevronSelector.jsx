@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Calendar.module.css'
 import { ChevronIcon } from './Icons'
 import Button from './Button'
-import { getNewData } from './utils/dateNavigations'
+import { calculateNewDate } from './utils/dateNavigations'
 import useKeyboardAccessibility from './useKeyboardAccessibility'
 
 const ChevronButton = React.forwardRef(
@@ -29,7 +29,7 @@ function ChevronButtons({
 }) {
   const handleDateChange = (direction) => {
     setCurrentMonth((prev) => {
-      const { newDate, newYearBlock } = getNewData(
+      const { newDate, newYearBlock } = calculateNewDate(
         view,
         direction,
         yearsBlock,
