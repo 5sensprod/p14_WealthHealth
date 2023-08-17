@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils'
+import { updateMonth, handleTabKey } from '../utils/DaysViewUtils'
 import { getDaysInMonth } from '../utils/dateFunctions'
 
 function DaysView({
@@ -11,10 +12,9 @@ function DaysView({
   currentMonth,
 }) {
   const daysRefs = useRef([])
-  const [navigationDirection, setNavigationDirection] = useState(null) // 'forward' ou 'backward'
+  const [navigationDirection, setNavigationDirection] = useState(null)
 
   useEffect(() => {
-    // Si le calendrier est visible (ou vient d'être ouvert)
     const firstNonGrayedDayIndex = totalSlots.findIndex((day) => !day.isGrayed)
     if (firstNonGrayedDayIndex !== -1) {
       setTimeout(() => {
@@ -27,7 +27,7 @@ function DaysView({
     if (navigationDirection === 'forward') {
       setTimeout(() => {
         daysRefs.current[0]?.focus()
-        setNavigationDirection(null) // Réinitialisez la direction de navigation
+        setNavigationDirection(null)
       }, 0)
     } else if (navigationDirection === 'backward') {
       const daysInPrevMonth = getDaysInMonth(
@@ -36,10 +36,11 @@ function DaysView({
       )
       setTimeout(() => {
         daysRefs.current[daysInPrevMonth - 1]?.focus()
-        setNavigationDirection(null) // Réinitialisez la direction de navigation
+        setNavigationDirection(null)
       }, 0)
     }
   }, [navigationDirection, currentMonth])
+
   const handleDayKeyDown = (e, index) => {
     handleNavigationKeys(
       e,
@@ -49,32 +50,18 @@ function DaysView({
       daysRefs.current,
     )
 
-    const day = totalSlots[index]
-    const daysInCurrentMonth = getDaysInMonth(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-    )
-
-    const isLastDayOfCurrentMonth =
-      day.number === daysInCurrentMonth && !day.isGrayed
-    const isFirstDayOfCurrentMonth = day.number === 1 && !day.isGrayed
-
-    if (e.key === 'Tab' && !e.shiftKey && isLastDayOfCurrentMonth) {
-      e.preventDefault()
-      setCurrentMonth((prevMonth) => {
-        const newMonth = new Date(prevMonth)
-        newMonth.setMonth(prevMonth.getMonth() + 1)
-        return newMonth
-      })
-      setNavigationDirection('forward')
-    } else if (e.key === 'Tab' && e.shiftKey && isFirstDayOfCurrentMonth) {
-      e.preventDefault()
-      setCurrentMonth((prevMonth) => {
-        const newMonth = new Date(prevMonth)
-        newMonth.setMonth(prevMonth.getMonth() - 1)
-        return newMonth
-      })
-      setNavigationDirection('backward')
+    if (e.key === 'Tab') {
+      const { direction } = handleTabKey(
+        e,
+        totalSlots[index],
+        index,
+        currentMonth,
+      )
+      if (direction) {
+        const newMonth = updateMonth(currentMonth, direction)
+        setCurrentMonth(newMonth)
+        setNavigationDirection(direction)
+      }
     }
   }
 

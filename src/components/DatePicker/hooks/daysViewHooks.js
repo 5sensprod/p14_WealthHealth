@@ -27,7 +27,7 @@ export function useNavigationDirectionEffect(
     } else if (navigationDirection === 'backward') {
       const daysInPrevMonth = getDaysInMonth(
         currentMonth.getFullYear(),
-        currentMonth.getMonth(),
+        currentMonth.getMonth() - 1,
       )
       setTimeout(() => {
         daysRefs.current[daysInPrevMonth - 1]?.focus()
