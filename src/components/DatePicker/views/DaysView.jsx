@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/handleNavigationKeys'
-import { updateMonth, handleTabKey, BACKWARD } from '../utils/DaysViewUtils'
+import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
 
 function DaysView({
   totalSlots,
