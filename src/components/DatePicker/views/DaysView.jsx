@@ -1,8 +1,46 @@
 import React, { useRef, useState, useEffect } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils'
-import { updateMonth, handleTabKey } from '../utils/DaysViewUtils'
+import {
+  updateMonth,
+  handleTabKey,
+  FORWARD,
+  BACKWARD,
+} from '../utils/DaysViewUtils'
 import { getDaysInMonth } from '../utils/dateFunctions'
+
+function useFocusOnFirstDay(totalSlots, daysRefs) {
+  useEffect(() => {
+    const firstNonGrayedDayIndex = totalSlots.findIndex((day) => !day.isGrayed)
+    if (firstNonGrayedDayIndex !== -1) {
+      setTimeout(() => {
+        daysRefs.current[firstNonGrayedDayIndex]?.focus()
+      }, 0)
+    }
+  }, [totalSlots, daysRefs])
+}
+
+function useNavigationDirectionFocus(
+  navigationDirection,
+  currentMonth,
+  daysRefs,
+) {
+  useEffect(() => {
+    if (navigationDirection === FORWARD) {
+      setTimeout(() => {
+        daysRefs.current[0]?.focus()
+      }, 0)
+    } else if (navigationDirection === BACKWARD) {
+      const daysInPrevMonth = getDaysInMonth(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+      )
+      setTimeout(() => {
+        daysRefs.current[daysInPrevMonth - 1]?.focus()
+      }, 0)
+    }
+  }, [navigationDirection, currentMonth, daysRefs])
+}
 
 function DaysView({
   totalSlots,
@@ -14,32 +52,8 @@ function DaysView({
   const daysRefs = useRef([])
   const [navigationDirection, setNavigationDirection] = useState(null)
 
-  useEffect(() => {
-    const firstNonGrayedDayIndex = totalSlots.findIndex((day) => !day.isGrayed)
-    if (firstNonGrayedDayIndex !== -1) {
-      setTimeout(() => {
-        daysRefs.current[firstNonGrayedDayIndex]?.focus()
-      }, 0)
-    }
-  }, [currentMonth, totalSlots])
-
-  useEffect(() => {
-    if (navigationDirection === 'forward') {
-      setTimeout(() => {
-        daysRefs.current[0]?.focus()
-        setNavigationDirection(null)
-      }, 0)
-    } else if (navigationDirection === 'backward') {
-      const daysInPrevMonth = getDaysInMonth(
-        currentMonth.getFullYear(),
-        currentMonth.getMonth(),
-      )
-      setTimeout(() => {
-        daysRefs.current[daysInPrevMonth - 1]?.focus()
-        setNavigationDirection(null)
-      }, 0)
-    }
-  }, [navigationDirection, currentMonth])
+  useFocusOnFirstDay(totalSlots, daysRefs)
+  useNavigationDirectionFocus(navigationDirection, currentMonth, daysRefs)
 
   const handleDayKeyDown = (e, index) => {
     handleNavigationKeys(
