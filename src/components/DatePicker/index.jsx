@@ -71,6 +71,10 @@ function DatePicker({
   const handleInputChange = (e) => {
     const newValue = e.target.value
     setInput(newValue) // Mettez à jour la valeur de l'input
+    if (!newValue) {
+      setError(null)
+      return
+    }
     if (newValue.length >= 10) {
       if (validate(newValue)) {
         setError(null)
