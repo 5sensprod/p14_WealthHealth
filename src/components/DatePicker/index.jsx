@@ -70,26 +70,22 @@ function DatePicker({
 
   const handleInputChange = (e) => {
     const newValue = e.target.value
-    if (!newValue || newValue.length < 10) {
-      setError(null)
-      return
-    }
-
-    // Only validate if the user has typed a complete date
+    setInput(newValue) // Mettez à jour la valeur de l'input
     if (newValue.length >= 10) {
-      if (!validate(newValue)) {
-        setError('Format de date invalide')
-      } else {
+      if (validate(newValue)) {
         setError(null)
-        closeCalendar() // ferme le calendrier
-        inputRef.current.blur() // retire le focus de l'input
-      }
-    }
+        closeCalendar()
+        inputRef.current.blur()
 
-    // Update the value regardless of its validity
+        // Ajoutez cette ligne pour mettre à jour l'état du calendrier
+        // avec la nouvelle date saisie manuellement.
+        toggleCalendar()
+      }
+    } else {
+      setError(null)
+    }
     onChange({ target: { name, value: newValue } })
   }
-
   const toggleCalendarVisibility = () => {
     setClickedInside(true)
     toggleCalendar()
