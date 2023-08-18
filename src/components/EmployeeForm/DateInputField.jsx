@@ -11,7 +11,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => (
       value={value}
       onChange={onChange}
       useIcons={true}
-      language="en"
+      language="fr"
       dateFormat="DEFAULT"
       customStyles={{
         backgroundColor: 'transparent',

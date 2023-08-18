@@ -21,7 +21,7 @@ function DatePicker({
   name,
   value,
   onChange,
-  language = 'en',
+  language,
   onClose,
   ...configProps
 }) {
@@ -70,7 +70,7 @@ function DatePicker({
 
   const handleInputChange = (e) => {
     const newValue = e.target.value
-    setInput(newValue) // Mettez à jour la valeur de l'input
+    setInput(newValue)
     if (!newValue) {
       setError(null)
       return
@@ -80,9 +80,6 @@ function DatePicker({
         setError(null)
         closeCalendar()
         inputRef.current.blur()
-
-        // Ajoutez cette ligne pour mettre à jour l'état du calendrier
-        // avec la nouvelle date saisie manuellement.
         toggleCalendar()
       }
     } else {
