@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
@@ -54,6 +54,10 @@ function DatePicker({
     minYear,
     maxYear,
   )
+
+  useEffect(() => {
+    setInput(value)
+  }, [value, setInput])
 
   // 3. Handlers
   const handleDateSelect = (date) => {
