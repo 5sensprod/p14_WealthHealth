@@ -1,25 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 function useOutsideClick(ref, buttonRef, callback) {
-  const [isNextClickInside, setIsNextClickInside] = useState(false)
-
   useEffect(() => {
-    function handleMouseDown(event) {
+    const handleMouseUpOutside = (event) => {
       if (
-        (ref.current && ref.current.contains(event.target)) ||
-        (buttonRef &&
-          buttonRef.current &&
-          buttonRef.current.contains(event.target))
-      ) {
-        setIsNextClickInside(true)
-      } else {
-        setIsNextClickInside(false)
-      }
-    }
-
-    function handleClickOutside(event) {
-      if (
-        !isNextClickInside &&
         ref.current &&
         !ref.current.contains(event.target) &&
         (!buttonRef ||
@@ -29,15 +13,11 @@ function useOutsideClick(ref, buttonRef, callback) {
       }
     }
 
-    document.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('click', handleClickOutside)
+    document.addEventListener('mouseup', handleMouseUpOutside)
     return () => {
-      document.removeEventListener('mousedown', handleMouseDown)
-      document.removeEventListener('click', handleClickOutside)
+      document.removeEventListener('mouseup', handleMouseUpOutside)
     }
-  }, [ref, buttonRef, callback, isNextClickInside])
-
-  return setIsNextClickInside
+  }, [ref, buttonRef, callback])
 }
 
 export default useOutsideClick

@@ -9,18 +9,18 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
     <div className={styles.label}>
       <p>{label}</p>
       <DatePicker
-        startOfWeek="0"
         name={name}
         value={value}
         onChange={onChange}
         useIcons={true}
+        startOfWeek="0"
         language="fr"
         dateFormat="DEFAULT"
+        manualInputEnabled={true}
         customStyles={{
           backgroundColor: 'transparent',
           borderRadius: '0',
         }}
-        manualInputEnabled={true}
       />
 
       {error && <span className={styles.errorMessage}>{error}</span>}

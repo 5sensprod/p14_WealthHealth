@@ -11,11 +11,12 @@ import MaskedInput from './MaskedInput'
 import useDateValidation from './useDateValidation'
 import useEscapeKey from './useEscapeKey'
 import useDatePickerState from './useDatePickerState'
-import useOutsideClick from './useOutsideClick'
 
 import getTranslations from './translate'
 import { reorderDays } from './utils/viewUtils'
 import { formatDatePickerDate } from './utils/dateFunctions'
+
+import useOutsideClick from './useOutsideClick'
 
 function DatePicker({
   name,
@@ -47,6 +48,7 @@ function DatePicker({
 
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
+  const containerRef = useRef(null)
   const inputRef = useRef(null)
 
   const [error, validate, setError] = useDateValidation(
@@ -91,25 +93,45 @@ function DatePicker({
     }
     onChange({ target: { name, value: newValue } })
   }
-  const toggleCalendarVisibility = () => {
-    setClickedInside(true)
+  const toggleCalendarVisibility = (event) => {
+    event.stopPropagation()
     toggleCalendar()
+  }
+
+  const handleInputFocus = () => {
+    toggleCalendar()
+  }
+
+  const handleBlur = (event) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.relatedTarget)
+    ) {
+      closeCalendar()
+    }
   }
 
   // 4. Derived Data & Effects
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
-  const setClickedInside = useOutsideClick(
-    calendarRef,
-    buttonRef,
-    closeCalendar,
-  )
+  useOutsideClick(calendarRef, buttonRef, closeCalendar)
+
   useEscapeKey(closeCalendar)
 
   // 5. Component Render
   return (
-    <div className={styles.container} style={customStyles}>
-      <div className={styles.containerInput}>
+    <div
+      ref={containerRef}
+      className={styles.container}
+      style={customStyles}
+      onBlur={handleBlur}
+    >
+      <div
+        ref={containerRef}
+        className={styles.inputContainer}
+        style={customStyles}
+        onBlur={handleBlur}
+      >
         <MaskedInput
           ref={inputRef}
           value={inputValue}
@@ -121,6 +143,7 @@ function DatePicker({
           className={error ? styles.errorInput : ''}
           onClick={toggleCalendarVisibility}
           onChange={handleInputChange}
+          onFocus={handleInputFocus}
         />
 
         <CalendarButton ref={buttonRef} onClick={toggleCalendarVisibility} />
