@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { formatDatePickerDate } from './utils/dateFunctions'
+import { formatDatePickerDate } from '../utils/dateFunctions'
 
 function useDatePickerState(initialValue, dateFormat, onClose) {
   // Gestion de l'affichage du calendrier
@@ -24,9 +24,13 @@ function useDatePickerState(initialValue, dateFormat, onClose) {
   }
   // Fonction pour mettre à jour la valeur saisie
   function setInput(date) {
-    setInputValue(formatDatePickerDate(date, dateFormat))
+    console.log('setInput date:', date)
+    if (date === '') {
+      setInputValue('') // Autoriser une valeur vide
+    } else {
+      setInputValue(formatDatePickerDate(date, dateFormat))
+    }
   }
-
   return {
     showCalendar,
     inputValue,

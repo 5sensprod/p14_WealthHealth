@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG } from './config/defaultConfig'
+import { DEFAULT_CONFIG } from '../config/defaultConfig'
 
 function isLeapYear(year) {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
@@ -22,6 +22,7 @@ export function isValidDate(
   minYear = DEFAULT_CONFIG.MIN_YEAR,
   maxYear = DEFAULT_CONFIG.MAX_YEAR,
 ) {
+  console.log('isValidDate dateString:', dateString)
   let day, month, year
   const separator = dateString.includes('/') ? '/' : '-'
   const format = DEFAULT_CONFIG.DATE_FORMATS[formatKey]
@@ -53,6 +54,9 @@ export function isValidDate(
   } else {
     const daysInMonth = new Date(year, month, 0).getDate()
     if (day > daysInMonth) return false
+  }
+  if (dateString === '') {
+    return true
   }
 
   return true

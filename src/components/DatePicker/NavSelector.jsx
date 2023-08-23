@@ -3,7 +3,7 @@ import { HomeIcon } from './Icons'
 import ChevronButtons from './ChevronSelector'
 import styles from './Calendar.module.css'
 import Button from './Button'
-import useKeyboardAccessibility from './useKeyboardAccessibility'
+import useKeyboardAccessibility from './hooks/useKeyboardAccessibility'
 
 import {
   DAYS,

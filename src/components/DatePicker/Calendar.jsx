@@ -1,10 +1,10 @@
 import React, { useState, forwardRef } from 'react'
 import styles from './Calendar.module.css'
-import useCalendarLogic from './useCalendarLogic'
-import useYearLogic from './useYearLogic'
+import useCalendarLogic from './hooks/useCalendarLogic'
+import useYearLogic from './hooks/useYearLogic'
 import NavSelector from './NavSelector'
 import DateGrid from './DateGrid'
-import useChooseDate from './useChooseDate'
+import useChooseDate from './hooks/useChooseDate'
 import getTranslations from './translate'
 
 const Calendar = forwardRef(

@@ -8,15 +8,15 @@ import Calendar from './Calendar'
 import CalendarButton from './CalendarButton'
 import MaskedInput from './MaskedInput'
 
-import useDateValidation from './useDateValidation'
-import useEscapeKey from './useEscapeKey'
-import useDatePickerState from './useDatePickerState'
+import useDateValidation from './hooks/useDateValidation'
+import useEscapeKey from './hooks/useEscapeKey'
+import useDatePickerState from './hooks/useDatePickerState'
 
 import getTranslations from './translate'
 import { reorderDays } from './utils/viewUtils'
 import { formatDatePickerDate } from './utils/dateFunctions'
 
-import useOutsideClick from './useOutsideClick'
+import useOutsideClick from './hooks/useOutsideClick'
 
 function DatePicker({
   name,

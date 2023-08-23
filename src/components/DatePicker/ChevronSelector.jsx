@@ -3,7 +3,7 @@ import styles from './Calendar.module.css'
 import { ChevronIcon } from './Icons'
 import Button from './Button'
 import { calculateNewDate } from './utils/dateNavigations'
-import useKeyboardAccessibility from './useKeyboardAccessibility'
+import useKeyboardAccessibility from './hooks/useKeyboardAccessibility'
 
 const ChevronButton = React.forwardRef(
   ({ direction, onClick, useIcons, label, ...props }, ref) => (

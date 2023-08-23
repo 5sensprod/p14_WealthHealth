@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { START_YEAR, END_YEAR, YEAR_BLOCK_SIZE } from './config/defaultConfig'
+import { START_YEAR, END_YEAR, YEAR_BLOCK_SIZE } from '../config/defaultConfig'
 
 const useYearLogic = () => {
   const today = new Date()
