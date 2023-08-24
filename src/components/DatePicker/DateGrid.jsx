@@ -15,6 +15,7 @@ function DateGrid({
   animationKey,
   reorderedDays,
   closeCalendar,
+  selectedDate,
 }) {
   const handleMonthClick = (monthIndex) => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), monthIndex))
@@ -37,14 +38,15 @@ function DateGrid({
           closeCalendar={closeCalendar}
           setCurrentMonth={setCurrentMonth}
           currentMonth={currentMonth}
+          selectedDate={selectedDate}
         />
       )}
 
       {view === 'months' && (
         <MonthsView
-          currentMonth={currentMonth}
           translations={translations}
           handleMonthClick={handleMonthClick}
+          selectedDate={selectedDate}
         />
       )}
 
@@ -54,6 +56,7 @@ function DateGrid({
           yearsBlock={yearsBlock}
           animationKey={animationKey}
           handleYearClick={handleYearClick}
+          selectedDate={selectedDate}
         />
       )}
     </>

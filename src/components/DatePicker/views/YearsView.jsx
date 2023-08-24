@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/handleNavigationKeys'
 
-function YearsView({ handleYearClick, yearsBlock }) {
+function YearsView({ handleYearClick, selectedDate, yearsBlock }) {
   const yearsRefs = useRef([])
 
   const handleYearKeyDown = (e, index) => {
@@ -21,7 +21,9 @@ function YearsView({ handleYearClick, yearsBlock }) {
       {yearsBlock.map((year, index) => (
         <div
           key={year}
-          className={styles.year}
+          className={`${styles.year} ${
+            index === selectedDate.getYear() ? styles.selectedYear : ''
+          }`}
           onClick={(event) => {
             event.stopPropagation()
             handleYearClick(year)

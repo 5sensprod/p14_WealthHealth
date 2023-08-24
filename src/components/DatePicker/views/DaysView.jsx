@@ -9,14 +9,15 @@ function DaysView({
   reorderedDays,
   setCurrentMonth,
   currentMonth,
+  selectedDate,
 }) {
   const daysRefs = useRef([])
-  const today = new Date()
   const [hasBeenHovered, setHasBeenHovered] = useState(false)
   const resetHoveredState = () => setHasBeenHovered(false)
   const handleDayHover = () => {
     setHasBeenHovered(true)
   }
+  const today = new Date()
 
   const handleDayKeyDown = (e, index) => {
     if (e.key === 'Tab') {
@@ -67,14 +68,22 @@ function DaysView({
           today.getMonth() === currentMonth.getMonth() &&
           today.getFullYear() === currentMonth.getFullYear()
 
+        const isSelectedDate =
+          !day.isGrayed &&
+          selectedDate.getDate() === day.number &&
+          selectedDate.getMonth() === currentMonth.getMonth() &&
+          selectedDate.getFullYear() === currentMonth.getFullYear()
+
         return (
           <div
             key={index}
             className={
               day.isGrayed
                 ? styles.grayedDay
-                : todayIsThisDay && !hasBeenHovered
+                : isSelectedDate
                 ? `${styles.day} ${styles.active}`
+                : todayIsThisDay && !hasBeenHovered
+                ? `${styles.day} ${styles.today}`
                 : styles.day
             }
             onClick={(event) => {

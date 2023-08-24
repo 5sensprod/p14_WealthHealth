@@ -3,7 +3,7 @@ import styles from '../Calendar.module.css'
 import { abbreviateMonth } from '../utils/dateFunctions'
 import { handleNavigationKeys } from '../utils/handleNavigationKeys'
 
-function MonthsView({ handleMonthClick, currentMonth, translations }) {
+function MonthsView({ handleMonthClick, selectedDate, translations }) {
   const monthsRefs = useRef([])
 
   const handleMonthKeyDown = (e, index) => {
@@ -15,7 +15,9 @@ function MonthsView({ handleMonthClick, currentMonth, translations }) {
       {translations.shortMonths.map((month, index) => (
         <div
           key={month}
-          className={styles.month}
+          className={`${styles.month} ${
+            index === selectedDate.getMonth() ? styles.selectedMonth : ''
+          }`}
           onClick={(event) => {
             event.stopPropagation()
             handleMonthClick(index)

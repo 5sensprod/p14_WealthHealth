@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
@@ -45,6 +45,7 @@ function DatePicker({
   // 2. State & Refs Initialization
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
     useDatePickerState(value, dateFormat, onClose)
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
@@ -65,6 +66,7 @@ function DatePicker({
   const handleDateSelect = (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
     setInput(actualDate)
+    setSelectedDate(actualDate)
     closeCalendar()
     onChange({
       target: {
@@ -163,6 +165,7 @@ function DatePicker({
           ref={calendarRef}
           role="grid"
           isCalendarVisible={showCalendar}
+          selectedDate={selectedDate}
         />
       )}
     </div>
