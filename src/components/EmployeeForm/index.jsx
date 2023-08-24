@@ -11,7 +11,6 @@ import { formatDate } from '../../utils/formatDate'
 import { initialEmployeeState } from '../../config/initialState'
 import useFormErrors from '../../hooks/useFormErrors'
 import useFormData from '../../hooks/useFormData'
-import useDebouncedValidation from '../../hooks/useDebouncedValidation'
 import { useDispatch } from 'react-redux'
 import { addEmployee } from '../../slices/employeeSlice'
 import ModalComponent from '../Modal'
@@ -22,24 +21,16 @@ const EmployeeForm = () => {
   const [formData, originalHandleChange, resetFormData] =
     useFormData(initialEmployeeState)
 
-  const { errors, setError, clearError, validateField } = useFormErrors(
+  const { errors, setError, clearError } = useFormErrors(
     {},
     formattedFieldNames,
-  )
-
-  const debouncedValidation = useDebouncedValidation(
-    validateField,
-    300,
-    setError,
-    clearError,
   )
 
   const handleChange = (event) => {
     originalHandleChange(event)
 
-    const { name, value } = event.target
+    const { name } = event.target
     clearError(name)
-    debouncedValidation(name, value)
   }
 
   const [isModalOpen, setModalOpen] = useState(false)

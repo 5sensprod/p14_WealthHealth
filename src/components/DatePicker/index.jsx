@@ -76,9 +76,10 @@ function DatePicker({
 
   const handleInputChange = (e) => {
     const newValue = e.target.value
-    setInput(newValue)
+    setInput(newValue) // Mettre à jour la valeur de l'input
     if (!newValue) {
       setError(null)
+      onChange({ target: { name, value: '' } }) // Envoi de la valeur vide lors de l'effacement
       return
     }
     if (newValue.length >= 10) {
@@ -93,6 +94,7 @@ function DatePicker({
     }
     onChange({ target: { name, value: newValue } })
   }
+
   const toggleCalendarVisibility = (event) => {
     event.stopPropagation()
     toggleCalendar()
