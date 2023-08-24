@@ -106,36 +106,24 @@ function DatePicker({
     toggleCalendar()
   }
 
-  const handleBlur = (event) => {
-    if (
-      containerRef.current &&
-      !containerRef.current.contains(event.relatedTarget)
-    ) {
-      closeCalendar()
-    }
-  }
-
   // 4. Derived Data & Effects
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
   useOutsideClick(calendarRef, buttonRef, closeCalendar)
 
-  useEscapeKey(closeCalendar)
+  const handleEscape = () => {
+    if (inputRef.current) {
+      inputRef.current.blur()
+    }
+    closeCalendar()
+  }
+
+  useEscapeKey(handleEscape)
 
   // 5. Component Render
   return (
-    <div
-      ref={containerRef}
-      className={styles.container}
-      style={customStyles}
-      onBlur={handleBlur}
-    >
-      <div
-        ref={containerRef}
-        className={styles.inputContainer}
-        style={customStyles}
-        onBlur={handleBlur}
-      >
+    <div ref={containerRef} className={styles.container} style={customStyles}>
+      <div className={styles.inputContainer} style={customStyles}>
         <MaskedInput
           ref={inputRef}
           value={inputValue}

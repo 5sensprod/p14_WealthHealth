@@ -22,7 +22,6 @@ export function isValidDate(
   minYear = DEFAULT_CONFIG.MIN_YEAR,
   maxYear = DEFAULT_CONFIG.MAX_YEAR,
 ) {
-  console.log('isValidDate dateString:', dateString)
   let day, month, year
   const separator = dateString.includes('/') ? '/' : '-'
   const format = DEFAULT_CONFIG.DATE_FORMATS[formatKey]
