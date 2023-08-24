@@ -24,7 +24,6 @@ function useDatePickerState(initialValue, dateFormat, onClose) {
   }
   // Fonction pour mettre à jour la valeur saisie
   function setInput(date) {
-    console.log('setInput date:', date)
     if (date === '') {
       setInputValue('') // Autoriser une valeur vide
     } else {
