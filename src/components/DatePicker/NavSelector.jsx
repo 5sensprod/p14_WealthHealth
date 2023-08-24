@@ -58,10 +58,12 @@ function YearSelector({ currentMonth, view, setView, yearsBlock }) {
 }
 
 // Bouton pour revenir au mois courant
-function HomeButton({ setCurrentMonth, setView }) {
+function HomeButton({ setCurrentMonth, setView, setSelectedDate }) {
   const handleHomeClick = () => {
-    setCurrentMonth(resetToCurrentDate())
-    setView(DAYS)
+    const currentDate = resetToCurrentDate() // Obtenez la date actuelle
+    setCurrentMonth(currentDate) // Réinitialise le mois courant à la date actuelle
+    setSelectedDate(currentDate) // Mettez à jour la date sélectionnée pour refléter la date actuelle
+    setView(DAYS) // Change la vue pour afficher les jours
   }
 
   const ref = useKeyboardAccessibility(handleHomeClick)

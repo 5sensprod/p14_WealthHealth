@@ -17,6 +17,7 @@ const Calendar = forwardRef(
       reorderedDays,
       startOfWeek,
       selectedDate,
+      setSelectedDate,
     },
     ref,
   ) => {
@@ -60,6 +61,7 @@ const Calendar = forwardRef(
             animationKey={animationKey}
             setAnimationKey={setAnimationKey}
             selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
           />
         </div>
         <DateGrid
