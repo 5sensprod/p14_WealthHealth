@@ -6,12 +6,9 @@ function isLeapYear(year) {
 
 function generateRegex(formatKey, separator) {
   const formatMapping = {
-    [DEFAULT_CONFIG.DATE_FORMATS
-      .DEFAULT]: `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
-    [DEFAULT_CONFIG.DATE_FORMATS
-      .US]: `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
-    [DEFAULT_CONFIG.DATE_FORMATS
-      .ISO]: `^(\\d{4})${separator}(\\d{2})${separator}(\\d{2})$`,
+    DEFAULT: `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
+    US: `^(\\d{2})${separator}(\\d{2})${separator}(\\d{4})$`,
+    ISO: `^(\\d{4})${separator}(\\d{2})${separator}(\\d{2})$`,
   }
   return formatMapping[formatKey]
 }
@@ -22,14 +19,11 @@ export function isValidDate(
   minYear = DEFAULT_CONFIG.MIN_YEAR,
   maxYear = DEFAULT_CONFIG.MAX_YEAR,
 ) {
-  console.log('dateString:', dateString) // Log de la valeur de dateString
-  console.log('formatKey:', formatKey)
   let day, month, year
   const separator = dateString.includes('/') ? '/' : '-'
   const format = DEFAULT_CONFIG.DATE_FORMATS[formatKey]
 
   const regex = generateRegex(formatKey, separator)
-  console.log('regex:', regex) // Log de la valeur de regex
   if (!new RegExp(regex).test(dateString)) return false
 
   switch (format) {

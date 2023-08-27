@@ -4,7 +4,6 @@ import { useMaskedInput } from './hooks/useMaskedInput'
 const MaskedInput = forwardRef(
   ({ value, onChange, format = 'dd/mm/yyyy', ...props }, ref) => {
     const [displayValue, handleChange] = useMaskedInput(value, format, onChange)
-    console.log('Format dans MaskedInput:', format)
 
     return (
       <input

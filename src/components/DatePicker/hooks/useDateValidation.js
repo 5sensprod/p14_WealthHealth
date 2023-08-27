@@ -11,10 +11,16 @@ function useDateValidation(
   const [error, setError] = useState(null)
 
   function validate(value) {
-    const formatKey =
-      dateFormat in DEFAULT_CONFIG.DATE_FORMATS
-        ? dateFormat
-        : DEFAULT_CONFIG.DATE_FORMAT
+    const formatKey = Object.values(DEFAULT_CONFIG.DATE_FORMATS).includes(
+      dateFormat,
+    )
+      ? Object.keys(DEFAULT_CONFIG.DATE_FORMATS).find(
+          (key) => DEFAULT_CONFIG.DATE_FORMATS[key] === dateFormat,
+        )
+      : DEFAULT_CONFIG.DATE_FORMAT
+
+    console.log('Provided dateFormat:', dateFormat) // Ce log affichera le format fourni
+    console.log('Computed formatKey:', formatKey)
     if (isValidDate(value, formatKey, minYear, maxYear)) {
       setError(null)
       return true
