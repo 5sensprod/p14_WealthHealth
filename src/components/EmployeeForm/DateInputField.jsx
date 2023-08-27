@@ -3,8 +3,6 @@ import styles from './EmployeeForm.module.css'
 import DatePicker from '../DatePicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
-  // console.log('DateInputField value:', value)
-
   return (
     <div className={styles.label}>
       <p>{label}</p>
@@ -15,7 +13,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         useIcons={true}
         startOfWeek="0"
         language="fr"
-        dateFormat="DEFAULT"
+        dateFormat="US"
         manualInputEnabled={true}
         customStyles={{
           backgroundColor: 'transparent',

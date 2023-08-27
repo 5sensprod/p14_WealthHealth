@@ -4,6 +4,8 @@ import { formatDatePickerDate } from '../utils/dateFunctions'
 function useDatePickerState(initialValue, dateFormat, onClose) {
   // Gestion de l'affichage du calendrier
   const [showCalendar, setShowCalendar] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const [lastDateBeforeHomeClick, setLastDateBeforeHomeClick] = useState(null)
 
   // Gestion de la valeur saisie
   const [inputValue, setInputValue] = useState(
@@ -30,12 +32,36 @@ function useDatePickerState(initialValue, dateFormat, onClose) {
       setInputValue(formatDatePickerDate(date, dateFormat))
     }
   }
+  // Fonction pour gérer l'obtention du focus
+  function handleFocus() {
+    setIsFocused(true)
+    setShowCalendar(true) // Afficher le calendrier lorsque l'input obtient le focus
+  }
+
+  // Fonction pour gérer la perte du focus
+  function handleBlur() {
+    setIsFocused(false)
+    setShowCalendar(false) // Masquer le calendrier lorsque l'input perd le focus
+    if (onClose) {
+      onClose()
+    }
+  }
+
+  function saveLastDateBeforeHomeClick(date) {
+    setLastDateBeforeHomeClick(date)
+  }
+
   return {
     showCalendar,
     inputValue,
+    isFocused,
     toggleCalendar,
     closeCalendar,
     setInput,
+    handleFocus,
+    handleBlur,
+    lastDateBeforeHomeClick,
+    saveLastDateBeforeHomeClick,
   }
 }
 

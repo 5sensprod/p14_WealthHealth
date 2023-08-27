@@ -22,11 +22,14 @@ export function isValidDate(
   minYear = DEFAULT_CONFIG.MIN_YEAR,
   maxYear = DEFAULT_CONFIG.MAX_YEAR,
 ) {
+  console.log('dateString:', dateString) // Log de la valeur de dateString
+  console.log('formatKey:', formatKey)
   let day, month, year
   const separator = dateString.includes('/') ? '/' : '-'
   const format = DEFAULT_CONFIG.DATE_FORMATS[formatKey]
 
   const regex = generateRegex(formatKey, separator)
+  console.log('regex:', regex) // Log de la valeur de regex
   if (!new RegExp(regex).test(dateString)) return false
 
   switch (format) {
