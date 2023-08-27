@@ -154,7 +154,6 @@ function DatePicker({
           role="grid"
           isCalendarVisible={showCalendar}
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
         />
       )}
     </div>

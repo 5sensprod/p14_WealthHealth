@@ -58,7 +58,7 @@ function YearSelector({ currentMonth, view, setView, yearsBlock }) {
 }
 
 // Bouton pour revenir à la date actuelle
-function HomeButton({ setViewedDate, setView, setSelectedDate }) {
+function HomeButton({ setViewedDate, setView }) {
   const handleHomeClick = () => {
     const currentDate = resetToCurrentDate()
     setViewedDate(currentDate) // Cela modifie la vue pour montrer le mois/jour actuel
