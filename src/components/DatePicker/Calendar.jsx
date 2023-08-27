@@ -25,13 +25,13 @@ const Calendar = forwardRef(
 
     const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic()
 
-    const { currentMonth, setCurrentMonth, totalSlots } = useCalendarLogic(
+    const { viewedDate, setViewedDate, totalSlots } = useCalendarLogic(
       initialMonth,
       selectedDate,
       startOfWeek,
     )
 
-    const chooseDate = useChooseDate(selectDate, closeCalendar, currentMonth)
+    const chooseDate = useChooseDate(selectDate, closeCalendar, viewedDate)
 
     const [view, setView] = useState('days')
     const [animationKey, setAnimationKey] = useState(0)
@@ -39,18 +39,18 @@ const Calendar = forwardRef(
     // Mettre à jour le mois en cours lorsque la date sélectionnée change
     useEffect(() => {
       if (selectedDate) {
-        setCurrentMonth(
+        setViewedDate(
           new Date(selectedDate.getFullYear(), selectedDate.getMonth()),
         )
       }
-    }, [selectedDate, setCurrentMonth])
+    }, [selectedDate, setViewedDate])
 
     return (
       <div className={styles.calendar} ref={ref}>
         <div className={styles.calendarNav}>
           <NavSelector
-            currentMonth={currentMonth}
-            setCurrentMonth={setCurrentMonth}
+            currentMonth={viewedDate}
+            setViewedDate={setViewedDate}
             months={translations.shortMonths}
             years={years}
             useIcons={useIcons}
@@ -65,14 +65,14 @@ const Calendar = forwardRef(
           />
         </div>
         <DateGrid
-          key={`${currentMonth.getMonth()}-${currentMonth.getFullYear()}`}
+          key={`${viewedDate.getMonth()}-${viewedDate.getFullYear()}`}
           totalSlots={totalSlots}
           chooseDate={chooseDate}
           translations={translations}
           view={view}
           setView={setView}
-          currentMonth={currentMonth}
-          setCurrentMonth={setCurrentMonth}
+          currentMonth={viewedDate}
+          setCurrentMonth={setViewedDate}
           yearsBlock={yearsBlock}
           animationKey={animationKey}
           reorderedDays={reorderedDays}
