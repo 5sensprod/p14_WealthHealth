@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/handleNavigationKeys'
 import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
@@ -19,6 +19,10 @@ function DaysView({
     setHasBeenHovered(true)
   }
   const today = new Date()
+
+  useEffect(() => {
+    console.log('Selected Date has changed:', selectedDate)
+  }, [selectedDate])
 
   const handleDayKeyDown = (e, index) => {
     if (e.key === 'Tab') {
