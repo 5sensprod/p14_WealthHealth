@@ -10,6 +10,7 @@ function DaysView({
   setCurrentMonth,
   currentMonth,
   selectedDate,
+  viewedDate = null, // une valeur par défaut pour éviter 'undefined'
 }) {
   const daysRefs = useRef([])
   const [hasBeenHovered, setHasBeenHovered] = useState(false)
@@ -74,17 +75,25 @@ function DaysView({
           selectedDate.getMonth() === currentMonth.getMonth() &&
           selectedDate.getFullYear() === currentMonth.getFullYear()
 
+        const isViewedDate =
+          viewedDate &&
+          !day.isGrayed &&
+          viewedDate.getDate() === day.number &&
+          viewedDate.getMonth() === currentMonth.getMonth() &&
+          viewedDate.getFullYear() === currentMonth.getFullYear()
+
+        const dayClassCondition =
+          isSelectedDate || (todayIsThisDay && !hasBeenHovered) || isViewedDate
+
+        const activeClass = isSelectedDate || isViewedDate ? styles.active : ''
+
+        const dayClass = day.isGrayed ? styles.grayedDay : styles.day
+
         return (
           <div
             key={index}
             className={
-              day.isGrayed
-                ? styles.grayedDay
-                : isSelectedDate
-                ? `${styles.day} ${styles.active}`
-                : todayIsThisDay && !hasBeenHovered
-                ? `${styles.day} ${styles.today}`
-                : styles.day
+              dayClassCondition ? `${dayClass} ${activeClass}` : dayClass
             }
             onClick={(event) => {
               event.stopPropagation()

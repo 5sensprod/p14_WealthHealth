@@ -12,7 +12,8 @@ export function toggleYearView(view) {
 }
 
 export function resetToCurrentDate() {
-  return new Date()
+  const now = new Date()
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate())
 }
 
 export function reorderDays(days, startDayIndex) {
