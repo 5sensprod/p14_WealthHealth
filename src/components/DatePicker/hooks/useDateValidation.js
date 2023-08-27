@@ -19,8 +19,6 @@ function useDateValidation(
         )
       : DEFAULT_CONFIG.DATE_FORMAT
 
-    console.log('Provided dateFormat:', dateFormat) // Ce log affichera le format fourni
-    console.log('Computed formatKey:', formatKey)
     if (isValidDate(value, formatKey, minYear, maxYear)) {
       setError(null)
       return true
