@@ -69,6 +69,9 @@ function DatePicker({
   // 3. Handlers
   const handleDateSelect = (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
+
+    console.log('Selected Date:', actualDate)
+
     setInput(actualDate)
     setSelectedDate(actualDate)
     closeCalendar()
