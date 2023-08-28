@@ -28,5 +28,8 @@
     "Dec."
   ],
   "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  "placeholder": "Select a date"
+  "placeholder": "Select a date",
+  "errors": {
+    "invalidDateFormat": "Date format is invalid"
+  }
 }

@@ -1,14 +1,11 @@
 import { useState } from 'react'
 import { isValidDate } from '../utils/dateUtils'
 import { DEFAULT_CONFIG } from '../config/defaultConfig'
+import getTranslations from '../translate'
 
-function useDateValidation(
-  dateFormat,
-  minYear,
-  maxYear,
-  errorMessage = 'Date format is invalid',
-) {
+function useDateValidation(dateFormat, minYear, maxYear, language = 'fr') {
   const [error, setError] = useState(null)
+  const translations = getTranslations(language)
 
   function validate(value) {
     const formatKey = Object.values(DEFAULT_CONFIG.DATE_FORMATS).includes(
@@ -23,7 +20,7 @@ function useDateValidation(
       setError(null)
       return true
     } else {
-      setError(errorMessage)
+      setError(translations.errors.invalidDateFormat)
       return false
     }
   }

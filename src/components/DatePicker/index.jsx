@@ -59,6 +59,7 @@ function DatePicker({
     dateFormat,
     minYear,
     maxYear,
+    language,
   )
 
   useEffect(() => {
