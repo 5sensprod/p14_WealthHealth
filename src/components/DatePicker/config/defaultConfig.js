@@ -12,7 +12,7 @@ export const DEFAULT_CONFIG = {
   CUSTOM_STYLES: {},
   START_OF_WEEK: 1, // 0 pour Dimanche...
   MANUAL_INPUT_ENABLED: true,
-  MIN_YEAR: 1900,
+  MIN_YEAR: 1930,
   MAX_YEAR: 2100,
   DATE_FORMATS: {
     DEFAULT: 'DD-MM-YYYY',

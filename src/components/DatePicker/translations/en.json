@@ -30,6 +30,7 @@
   "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   "placeholder": "Select a date",
   "errors": {
-    "invalidDateFormat": "Date format is invalid"
+    "invalidDateFormat": "Date format is invalid",
+    "invalidDateRange": "The date should be between {minYear} and {maxYear}."
   }
 }
