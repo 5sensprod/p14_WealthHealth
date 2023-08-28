@@ -34,3 +34,30 @@ export function abbreviateMonth(month) {
 export function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate()
 }
+
+export function convertFormattedStringToDate(dateString, format) {
+  const parts = dateString.split('/')
+
+  switch (format) {
+    case 'DD-MM-YYYY':
+      return new Date(
+        parseInt(parts[2]),
+        parseInt(parts[1]) - 1,
+        parseInt(parts[0]),
+      )
+    case 'MM-DD-YYYY':
+      return new Date(
+        parseInt(parts[2]),
+        parseInt(parts[0]) - 1,
+        parseInt(parts[1]),
+      )
+    case 'YYYY-MM-DD':
+      return new Date(
+        parseInt(parts[0]),
+        parseInt(parts[1]) - 1,
+        parseInt(parts[2]),
+      )
+    default:
+      throw new Error(`Invalid date format: ${format}`)
+  }
+}

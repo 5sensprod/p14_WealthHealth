@@ -14,7 +14,10 @@ import useDatePickerState from './hooks/useDatePickerState'
 
 import getTranslations from './translate'
 import { reorderDays } from './utils/viewUtils'
-import { formatDatePickerDate } from './utils/dateFunctions'
+import {
+  formatDatePickerDate,
+  convertFormattedStringToDate,
+} from './utils/dateFunctions'
 
 import useOutsideClick from './hooks/useOutsideClick'
 
@@ -79,14 +82,21 @@ function DatePicker({
   const handleInputChange = (e) => {
     const newValue = e.target.value
     setInput(newValue) // Mettre à jour la valeur de l'input
+
     if (!newValue) {
       setError(null)
       onChange({ target: { name, value: '' } }) // Envoi de la valeur vide lors de l'effacement
       return
     }
+
     if (newValue.length >= 10) {
       if (validate(newValue)) {
         setError(null)
+
+        // Convertissez 'newValue' en objet Date
+        const dateObject = convertFormattedStringToDate(newValue, dateFormat)
+        setSelectedDate(dateObject)
+
         closeCalendar()
         inputRef.current.blur()
         toggleCalendar()
