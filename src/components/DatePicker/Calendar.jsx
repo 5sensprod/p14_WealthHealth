@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react'
+import React, { useState, forwardRef, useEffect } from 'react'
 import styles from './Calendar.module.css'
 import useCalendarLogic from './hooks/useCalendarLogic'
 import useYearLogic from './hooks/useYearLogic'
@@ -35,6 +35,15 @@ const Calendar = forwardRef(
     const [view, setView] = useState('days')
     const [animationKey, setAnimationKey] = useState(0)
 
+    // Mettre à jour le mois en cours lorsque la date sélectionnée change
+    useEffect(() => {
+      if (selectedDate) {
+        setViewedDate(
+          new Date(selectedDate.getFullYear(), selectedDate.getMonth()),
+        )
+      }
+    }, [selectedDate, setViewedDate])
+
     return (
       <div className={styles.calendar} ref={ref}>
         <div className={styles.calendarNav}>
@@ -50,6 +59,8 @@ const Calendar = forwardRef(
             setYearsBlock={setYearsBlock}
             animationKey={animationKey}
             setAnimationKey={setAnimationKey}
+            // selectedDate={selectedDate}
+            // setSelectedDate={setSelectedDate}
           />
         </div>
         <DateGrid
