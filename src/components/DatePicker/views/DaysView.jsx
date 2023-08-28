@@ -84,22 +84,23 @@ function DaysView({
           selectedDate.getMonth() === currentMonth.getMonth() &&
           selectedDate.getFullYear() === currentMonth.getFullYear()
 
-        const isViewedDate =
-          viewedDate &&
+        const isViewedDate = {
+          /* viewedDate &&
           !day.isGrayed &&
           viewedDate.getDate() === day.number &&
           viewedDate.getMonth() === currentMonth.getMonth() &&
-          viewedDate.getFullYear() === currentMonth.getFullYear()
+          viewedDate.getFullYear() === currentMonth.getFullYear() */
+        }
 
         const dayClassCondition =
           isSelectedDate || isViewedDate || (todayIsThisDay && !hasBeenHovered)
 
-        const activeClass =
-          isSelectedDate || isViewedDate
-            ? styles.active
-            : todayIsThisDay
-            ? styles.today
-            : ''
+        const activeClass = isSelectedDate
+          ? styles.active
+          : todayIsThisDay
+          ? styles.today
+          : ''
+
         const dayClass = day.isGrayed ? styles.grayedDay : styles.day
 
         return (
