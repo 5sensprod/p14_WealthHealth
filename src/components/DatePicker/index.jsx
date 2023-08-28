@@ -72,6 +72,10 @@ function DatePicker({
     setInput(actualDate)
     setSelectedDate(actualDate)
     closeCalendar()
+
+    // Validez la nouvelle valeur ici
+    validate(formatDatePickerDate(actualDate, dateFormat))
+
     onChange({
       target: {
         name,

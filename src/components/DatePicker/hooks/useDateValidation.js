@@ -4,25 +4,31 @@ import { DEFAULT_CONFIG } from '../config/defaultConfig'
 import getTranslations from '../translate'
 
 function useDateValidation(
-  dateFormat,
+  dateFormat = DEFAULT_CONFIG.DATE_FORMAT,
   minYear = DEFAULT_CONFIG.MIN_YEAR,
   maxYear = DEFAULT_CONFIG.MAX_YEAR,
-  language = 'fr',
+  language = DEFAULT_CONFIG.LANGUAGE,
 ) {
   const [error, setError] = useState(null)
   const translations = getTranslations(language)
 
   function validate(value) {
-    if (isValidDate(value, dateFormat, minYear, maxYear)) {
+    const formatKey = Object.values(DEFAULT_CONFIG.DATE_FORMATS).includes(
+      dateFormat,
+    )
+      ? Object.keys(DEFAULT_CONFIG.DATE_FORMATS).find(
+          (key) => DEFAULT_CONFIG.DATE_FORMATS[key] === dateFormat,
+        )
+      : DEFAULT_CONFIG.DATE_FORMAT
+
+    if (isValidDate(value, formatKey, minYear, maxYear)) {
       setError(null)
       return true
     } else {
-      // Message d'erreur pour une plage de dates non valide.
       const formattedError = translations.errors.invalidDateRange
-        .replace('{minYear}', minYear.toString())
-        .replace('{maxYear}', maxYear.toString())
+        .replace('{minYear}', minYear ? minYear.toString() : 'N/A')
+        .replace('{maxYear}', maxYear ? maxYear.toString() : 'N/A')
       setError(formattedError)
-
       return false
     }
   }
