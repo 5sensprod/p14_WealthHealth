@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/handleNavigationKeys'
 import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
@@ -10,39 +10,48 @@ function DaysView({
   setCurrentMonth,
   currentMonth,
   selectedDate,
-  viewedDate = null, // une valeur par défaut pour éviter 'undefined'
+  viewedDate = null,
 }) {
   const daysRefs = useRef([])
   const [hasBeenHovered, setHasBeenHovered] = useState(false)
+  const [changedMonth, setChangedMonth] = useState(null)
+
   const resetHoveredState = () => setHasBeenHovered(false)
   const handleDayHover = () => {
     setHasBeenHovered(true)
   }
   const today = new Date()
 
+  useEffect(() => {
+    if (changedMonth === 'next') {
+      daysRefs.current[0]?.focus()
+    } else if (changedMonth === 'prev') {
+      daysRefs.current[daysRefs.current.length - 1]?.focus()
+    }
+  }, [changedMonth])
+
   const handleDayKeyDown = (e, index) => {
     if (e.key === 'Tab') {
+      let direction
       if (e.shiftKey && index === 0) {
         e.preventDefault()
-        const newMonth = updateMonth(currentMonth, BACKWARD)
-        setCurrentMonth(newMonth)
+        direction = BACKWARD
+        setCurrentMonth(updateMonth(currentMonth, direction))
+        setChangedMonth('prev')
         return
       }
 
       if (!e.shiftKey && index === totalSlots.length - 1) {
+        direction = 'forward'
+        setCurrentMonth(updateMonth(currentMonth, direction))
+        setChangedMonth('next')
         return
       }
 
-      const { direction } = handleTabKey(
-        e,
-        totalSlots[index],
-        index,
-        currentMonth,
-      )
-      if (direction) {
+      const result = handleTabKey(e, totalSlots[index], index, currentMonth)
+      if (result.direction) {
         e.preventDefault()
-        const newMonth = updateMonth(currentMonth, direction)
-        setCurrentMonth(newMonth)
+        setCurrentMonth(updateMonth(currentMonth, result.direction))
       }
     } else {
       handleNavigationKeys(
@@ -86,7 +95,6 @@ function DaysView({
           isSelectedDate || (todayIsThisDay && !hasBeenHovered) || isViewedDate
 
         const activeClass = isSelectedDate || isViewedDate ? styles.active : ''
-
         const dayClass = day.isGrayed ? styles.grayedDay : styles.day
 
         return (
