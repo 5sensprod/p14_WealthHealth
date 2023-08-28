@@ -118,32 +118,46 @@ function DatePicker({
 
   useEffect(() => {
     let timeoutId
+    let isClicking = false
 
     const handleFocusOut = () => {
       timeoutId = setTimeout(() => {
         if (
+          !isClicking &&
           containerRef.current &&
           !containerRef.current.contains(document.activeElement)
         ) {
           closeCalendar()
         }
-      }, 0) // Un délai de 0 ms devrait suffire
+      }, 0)
     }
 
     const handleFocusIn = () => {
-      clearTimeout(timeoutId) // Annulez la fermeture si nous nous focalisons à nouveau sur un élément à l'intérieur du calendrier
+      clearTimeout(timeoutId)
+    }
+
+    const handleClick = (event) => {
+      if (event.type === 'mousedown') {
+        isClicking = true
+      } else if (event.type === 'mouseup') {
+        isClicking = false
+      }
     }
 
     const currentRef = containerRef.current
     if (currentRef) {
       currentRef.addEventListener('focusout', handleFocusOut)
       currentRef.addEventListener('focusin', handleFocusIn)
+      currentRef.addEventListener('mousedown', handleClick)
+      currentRef.addEventListener('mouseup', handleClick)
     }
 
     return () => {
       if (currentRef) {
         currentRef.removeEventListener('focusout', handleFocusOut)
         currentRef.removeEventListener('focusin', handleFocusIn)
+        currentRef.removeEventListener('mousedown', handleClick)
+        currentRef.removeEventListener('mouseup', handleClick)
       }
     }
   }, [closeCalendar])
