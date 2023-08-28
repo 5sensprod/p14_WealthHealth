@@ -75,7 +75,7 @@
     cursor: default;
     text-align: center;
     padding: 8px 4px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .day:hover,
@@ -138,5 +138,6 @@
 }
 
 .today {
-    background-color: #f0f0f0;
+    background-color: #4646467d;
+    color: #ffffff;
 }
