@@ -102,10 +102,6 @@ function DatePicker({
     toggleCalendar()
   }
 
-  const handleInputFocus = () => {
-    toggleCalendar()
-  }
-
   // 4. Derived Data & Effects
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
@@ -119,6 +115,38 @@ function DatePicker({
   }
 
   useEscapeKey(handleEscape)
+
+  useEffect(() => {
+    let timeoutId
+
+    const handleFocusOut = () => {
+      timeoutId = setTimeout(() => {
+        if (
+          containerRef.current &&
+          !containerRef.current.contains(document.activeElement)
+        ) {
+          closeCalendar()
+        }
+      }, 0) // Un délai de 0 ms devrait suffire
+    }
+
+    const handleFocusIn = () => {
+      clearTimeout(timeoutId) // Annulez la fermeture si nous nous focalisons à nouveau sur un élément à l'intérieur du calendrier
+    }
+
+    const currentRef = containerRef.current
+    if (currentRef) {
+      currentRef.addEventListener('focusout', handleFocusOut)
+      currentRef.addEventListener('focusin', handleFocusIn)
+    }
+
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener('focusout', handleFocusOut)
+        currentRef.removeEventListener('focusin', handleFocusIn)
+      }
+    }
+  }, [closeCalendar])
 
   // 5. Component Render
   return (
@@ -135,7 +163,6 @@ function DatePicker({
           className={error ? styles.errorInput : ''}
           onClick={toggleCalendarVisibility}
           onChange={handleInputChange}
-          onFocus={handleInputFocus}
         />
 
         <CalendarButton ref={buttonRef} onClick={toggleCalendarVisibility} />
