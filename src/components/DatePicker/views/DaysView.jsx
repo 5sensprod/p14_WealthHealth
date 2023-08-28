@@ -17,9 +17,9 @@ function DaysView({
   const [changedMonth, setChangedMonth] = useState(null)
 
   const resetHoveredState = () => setHasBeenHovered(false)
-  const handleDayHover = () => {
-    setHasBeenHovered(true)
-  }
+
+  const handleDayHover = () => setHasBeenHovered(true)
+
   const today = new Date()
 
   useEffect(() => {
@@ -84,31 +84,19 @@ function DaysView({
           selectedDate.getMonth() === currentMonth.getMonth() &&
           selectedDate.getFullYear() === currentMonth.getFullYear()
 
-        const isViewedDate = {
-          /* viewedDate &&
-          !day.isGrayed &&
-          viewedDate.getDate() === day.number &&
-          viewedDate.getMonth() === currentMonth.getMonth() &&
-          viewedDate.getFullYear() === currentMonth.getFullYear() */
+        let highlightedClass = ''
+        if (isSelectedDate) {
+          highlightedClass = styles.active
+        } else if (todayIsThisDay && !hasBeenHovered) {
+          highlightedClass = styles.today
         }
-
-        const dayClassCondition =
-          isSelectedDate || isViewedDate || (todayIsThisDay && !hasBeenHovered)
-
-        const activeClass = isSelectedDate
-          ? styles.active
-          : todayIsThisDay
-          ? styles.today
-          : ''
 
         const dayClass = day.isGrayed ? styles.grayedDay : styles.day
 
         return (
           <div
             key={index}
-            className={
-              dayClassCondition ? `${dayClass} ${activeClass}` : dayClass
-            }
+            className={`${dayClass} ${highlightedClass}`}
             onClick={(event) => {
               event.stopPropagation()
               if (!day.isGrayed) chooseDate(day.number)

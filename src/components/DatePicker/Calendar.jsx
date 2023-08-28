@@ -31,6 +31,7 @@ const Calendar = forwardRef(
     )
 
     const chooseDate = useChooseDate(selectDate, closeCalendar, viewedDate)
+    const [currentDate, setCurrentDate] = useState(new Date())
 
     const [view, setView] = useState('days')
     const [animationKey, setAnimationKey] = useState(0)
@@ -61,6 +62,8 @@ const Calendar = forwardRef(
             setAnimationKey={setAnimationKey}
             // selectedDate={selectedDate}
             // setSelectedDate={setSelectedDate}
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
           />
         </div>
         <DateGrid
@@ -77,6 +80,7 @@ const Calendar = forwardRef(
           reorderedDays={reorderedDays}
           selectedDate={selectedDate}
           viewedDate={viewedDate}
+          currentDate={currentDate}
         />
       </div>
     )

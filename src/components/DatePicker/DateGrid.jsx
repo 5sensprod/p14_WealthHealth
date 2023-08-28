@@ -17,6 +17,7 @@ function DateGrid({
   closeCalendar,
   selectedDate,
   viewedDate,
+  currentDate,
 }) {
   const handleMonthClick = (monthIndex) => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), monthIndex))
@@ -41,6 +42,7 @@ function DateGrid({
           currentMonth={currentMonth}
           selectedDate={selectedDate}
           viewedDate={viewedDate}
+          currentDate={currentDate}
         />
       )}
 
