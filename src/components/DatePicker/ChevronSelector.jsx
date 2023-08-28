@@ -20,7 +20,7 @@ const ChevronButton = React.forwardRef(
 )
 
 function ChevronButtons({
-  setCurrentMonth,
+  setViewedDate,
   useIcons,
   view,
   setYearsBlock,
@@ -28,7 +28,7 @@ function ChevronButtons({
   setAnimationKey,
 }) {
   const handleDateChange = (direction) => {
-    setCurrentMonth((prev) => {
+    setViewedDate((prev) => {
       const { newDate, newYearBlock } = calculateNewDate(
         view,
         direction,
