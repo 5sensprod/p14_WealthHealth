@@ -10,6 +10,7 @@ const ChevronButton = React.forwardRef(
     <Button
       ref={ref}
       onClick={onClick}
+      onMouseDown={(e) => e.preventDefault()} // Empêcher le blur de l'input
       className={styles.chevronButton}
       icon={() => useIcons && <ChevronIcon direction={direction} />}
       {...props}
@@ -41,7 +42,11 @@ function ChevronButtons({
     })
   }
 
-  const buttonRef = useKeyboardAccessibility((direction) => {
+  const prevButtonRef = useKeyboardAccessibility((direction) => {
+    handleDateChange(direction === 'down' ? 'prev' : 'next')
+  })
+
+  const nextButtonRef = useKeyboardAccessibility((direction) => {
     handleDateChange(direction === 'down' ? 'prev' : 'next')
   })
 
@@ -52,7 +57,7 @@ function ChevronButtons({
         onClick={() => handleDateChange('prev')}
         useIcons={useIcons}
         label="Previous"
-        ref={buttonRef}
+        ref={prevButtonRef}
         tabIndex={0}
       />
       <ChevronButton
@@ -60,7 +65,7 @@ function ChevronButtons({
         onClick={() => handleDateChange('next')}
         useIcons={useIcons}
         label="Next"
-        ref={buttonRef}
+        ref={nextButtonRef}
         tabIndex={0}
       />
     </div>
