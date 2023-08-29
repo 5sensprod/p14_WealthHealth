@@ -12,9 +12,9 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         onChange={onChange}
         useIcons={true}
         startOfWeek="0"
-        language="en"
+        language="fr"
         dateFormat="DEFAULT"
-        manualInputEnabled={true}
+        manualInputEnabled={false}
         customStyles={{
           backgroundColor: 'transparent',
           borderRadius: '0',

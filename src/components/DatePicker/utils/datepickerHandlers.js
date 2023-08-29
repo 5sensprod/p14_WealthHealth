@@ -34,6 +34,15 @@ export const handleDateSelect =
     })
   }
 
+export const createEscapeHandler = (closeCalendar, inputRef) => {
+  return () => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.blur()
+    }
+    closeCalendar()
+  }
+}
+
 export const handleInputChange =
   (
     setInput,

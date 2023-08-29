@@ -1,32 +1,36 @@
+// 1. Imports: Dependencies
 import React, { useRef, useEffect, useState } from 'react'
 
+// 2. Imports: Styles
 import styles from './DatePicker.module.css'
 
+// 3. Imports: Components
 import Calendar from './Calendar'
 import CalendarButton from './CalendarButton'
 import MaskedInput from './MaskedInput'
 
+// 4. Imports: Hooks
 import useDateValidation from './hooks/useDateValidation'
 import useEscapeKey from './hooks/useEscapeKey'
 import useDatePickerState from './hooks/useDatePickerState'
+import useOutsideClick from './hooks/useOutsideClick'
+import useFocusAndClickOutside from './hooks/useFocusAndClickOutside'
 
+// 5. Imports: Utilities and Handlers
 import getTranslations from './translate'
 import { reorderDays } from './utils/viewUtils'
 import {
   formatDatePickerDate,
   convertFormattedStringToDate,
 } from './utils/dateFunctions'
-
-import useOutsideClick from './hooks/useOutsideClick'
 import { handlePropsAndConfig } from './utils/propsAndConfig'
-
-import useFocusAndClickOutside from './hooks/useFocusAndClickOutside'
-
 import {
   toggleCalendarVisibility,
   handleDateSelect,
+  createEscapeHandler,
 } from './utils/datepickerHandlers'
 
+// 6. Component Definition
 function DatePicker({
   name,
   value,
@@ -35,6 +39,7 @@ function DatePicker({
   onClose,
   ...configProps
 }) {
+  // 6.1 Configuration and State Initialization
   const {
     useIcons,
     dateFormat,
@@ -46,16 +51,16 @@ function DatePicker({
     maxYear,
   } = handlePropsAndConfig(configProps)
 
-  // 2. State & Refs Initialization
+  // 6.2 State & Refs Initialization
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
     useDatePickerState(value, dateFormat, onClose)
   const [selectedDate, setSelectedDate] = useState(new Date())
-
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
   const containerRef = useRef(null)
   const inputRef = useRef(null)
 
+  // 6.3 Validation Hooks
   const [error, validate, setError] = useDateValidation(
     dateFormat,
     minYear,
@@ -63,11 +68,15 @@ function DatePicker({
     language,
   )
 
+  // 6.4 Effects
   useEffect(() => {
     setInput(value)
   }, [value, setInput])
+  useOutsideClick(calendarRef, buttonRef, closeCalendar)
+  useEscapeKey(createEscapeHandler(closeCalendar, inputRef))
+  useFocusAndClickOutside(containerRef, closeCalendar)
 
-  // 3. Handlers
+  // 6.5 Handlers
   const onDateSelect = handleDateSelect(
     setInput,
     setSelectedDate,
@@ -79,7 +88,6 @@ function DatePicker({
     name,
     outputFormat,
   )
-
   const handleInputChange = (e) => {
     const newValue = e.target.value
     setInput(newValue) // Mettre à jour la valeur de l'input
@@ -112,24 +120,11 @@ function DatePicker({
       onChange({ target: { name, value: newValue } }) // Si incomplet, renvoyez la valeur actuelle
     }
   }
-
   const onToggleCalendarVisibility = toggleCalendarVisibility(toggleCalendar)
 
-  // 4. Derived Data & Effects
+  // 6.6 Derived Data & Effects
   const translations = getTranslations(language)
   const reorderedDays = reorderDays(translations.days, startOfWeek)
-  useOutsideClick(calendarRef, buttonRef, closeCalendar)
-
-  const handleEscape = () => {
-    if (inputRef.current) {
-      inputRef.current.blur()
-    }
-    closeCalendar()
-  }
-
-  useEscapeKey(handleEscape)
-
-  useFocusAndClickOutside(containerRef, closeCalendar)
 
   // 5. Component Render
   return (
