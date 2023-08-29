@@ -98,9 +98,11 @@ function DatePicker({
     if (!newValue) {
       setError(null)
       onChange({ target: { name, value: '' } }) // Envoi de la valeur vide lors de l'effacement
+
+      setSelectedDate(new Date()) // Réinitialiser à la date du jour
+
       return
     }
-
     if (newValue.length >= 10 && validate(newValue)) {
       setError(null)
       const dateObject = convertFormattedStringToDate(newValue, dateFormat)
