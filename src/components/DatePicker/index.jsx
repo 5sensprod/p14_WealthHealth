@@ -20,10 +20,11 @@ import {
 import useOutsideClick from './hooks/useOutsideClick'
 import { handlePropsAndConfig } from './utils/propsAndConfig'
 
+import useFocusAndClickOutside from './hooks/useFocusAndClickOutside'
+
 import {
   toggleCalendarVisibility,
   handleDateSelect,
-  handleInputChange,
 } from './utils/datepickerHandlers'
 
 function DatePicker({
@@ -128,51 +129,8 @@ function DatePicker({
 
   useEscapeKey(handleEscape)
 
-  useEffect(() => {
-    let timeoutId
-    let isClicking = false
+  useFocusAndClickOutside(containerRef, closeCalendar)
 
-    const handleFocusOut = () => {
-      timeoutId = setTimeout(() => {
-        if (
-          !isClicking &&
-          containerRef.current &&
-          !containerRef.current.contains(document.activeElement)
-        ) {
-          closeCalendar()
-        }
-      }, 0)
-    }
-
-    const handleFocusIn = () => {
-      clearTimeout(timeoutId)
-    }
-
-    const handleClick = (event) => {
-      if (event.type === 'mousedown') {
-        isClicking = true
-      } else if (event.type === 'mouseup') {
-        isClicking = false
-      }
-    }
-
-    const currentRef = containerRef.current
-    if (currentRef) {
-      currentRef.addEventListener('focusout', handleFocusOut)
-      currentRef.addEventListener('focusin', handleFocusIn)
-      currentRef.addEventListener('mousedown', handleClick)
-      currentRef.addEventListener('mouseup', handleClick)
-    }
-
-    return () => {
-      if (currentRef) {
-        currentRef.removeEventListener('focusout', handleFocusOut)
-        currentRef.removeEventListener('focusin', handleFocusIn)
-        currentRef.removeEventListener('mousedown', handleClick)
-        currentRef.removeEventListener('mouseup', handleClick)
-      }
-    }
-  }, [closeCalendar])
   // 5. Component Render
   return (
     <div ref={containerRef} className={styles.container} style={customStyles}>
