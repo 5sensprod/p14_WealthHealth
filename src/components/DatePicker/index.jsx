@@ -98,26 +98,29 @@ function DatePicker({
     if (!newValue) {
       setError(null)
       onChange({ target: { name, value: '' } }) // Envoi de la valeur vide lors de l'effacement
-
       setSelectedDate(new Date()) // Réinitialiser à la date du jour
-
       return
     }
-    if (newValue.length >= 10 && validate(newValue)) {
-      setError(null)
-      const dateObject = convertFormattedStringToDate(newValue, dateFormat)
-      setSelectedDate(dateObject)
 
-      // Envoyer l'objet Date à l'hôte
-      onChange({ target: { name, value: dateObject } })
+    if (newValue.length >= 10) {
+      if (validate(newValue)) {
+        console.log('Validation Result:', true)
+        setError(null)
+        const dateObject = convertFormattedStringToDate(newValue, dateFormat)
+        setSelectedDate(dateObject)
+        onChange({ target: { name, value: dateObject } }) // Si valide, renvoyez la date
 
-      closeCalendar()
-      inputRef.current.blur()
-      toggleCalendar()
+        closeCalendar()
+        inputRef.current.blur()
+        toggleCalendar()
+      } else {
+        console.log('Validation Result:', false)
+        console.log(error)
+        onChange({ target: { name, value: '' } }) // Si invalide, renvoyez une chaîne vide
+      }
     } else {
       setError(null)
-      // Envoyer la valeur en tant que chaîne de caractères si elle n'est pas complète ou valide
-      onChange({ target: { name, value: newValue } })
+      onChange({ target: { name, value: newValue } }) // Si incomplet, renvoyez la valeur actuelle
     }
   }
 
