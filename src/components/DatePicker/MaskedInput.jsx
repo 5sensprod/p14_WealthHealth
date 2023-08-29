@@ -4,7 +4,6 @@ import { useMaskedInput } from './hooks/useMaskedInput'
 const MaskedInput = forwardRef(
   ({ value, onChange, format = 'DEFAULT', ...props }, ref) => {
     const [displayValue, handleChange] = useMaskedInput(value, format, onChange)
-
     return (
       <input
         ref={ref}

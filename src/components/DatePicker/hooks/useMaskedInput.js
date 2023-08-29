@@ -19,10 +19,15 @@ export const useMaskedInput = (initialValue, format, onChange) => {
       return
     }
 
-    newValue = formatToMask(newValue, format)
-    setDisplayValue(newValue)
+    try {
+      newValue = formatToMask(newValue, format)
 
-    onChange && onChange({ target: { value: newValue } })
+      setDisplayValue(newValue)
+
+      onChange && onChange({ target: { value: newValue } })
+    } catch (error) {
+      console.error('Error formatting value:', error)
+    }
   }
 
   return [displayValue, handleChange]

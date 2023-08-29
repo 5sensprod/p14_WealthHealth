@@ -1,10 +1,4 @@
-// export const START_YEAR = 1930
-// export const END_YEAR = new Date().getFullYear() + 2
-// export const YEAR_BLOCK_SIZE = 16
-
 export const DEFAULT_CONFIG = {
-  // START_YEAR: 1930,
-  // END_YEAR: new Date().getFullYear() + 2,
   YEAR_BLOCK_SIZE: 16,
   USE_ICONS: false,
   LANGUAGE: 'en',
@@ -20,3 +14,6 @@ export const DEFAULT_CONFIG = {
     ISO: 'YYYY-MM-DD',
   },
 }
+
+DEFAULT_CONFIG.OUTPUT_FORMAT =
+  DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT]

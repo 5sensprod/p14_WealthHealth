@@ -33,12 +33,17 @@ function DatePicker({
   let {
     useIcons,
     dateFormat,
+    outputFormat,
     customStyles,
     startOfWeek,
     manualInputEnabled,
     minYear,
     maxYear,
-  } = { ...DEFAULT_CONFIG, ...configProps }
+  } = {
+    ...DEFAULT_CONFIG,
+    ...configProps,
+    outputFormat: configProps.outputFormat || configProps.dateFormat,
+  }
 
   // Interprétation de la clé 'dateFormat' comme une référence aux formats définis dans DEFAULT_CONFIG.DATE_FORMATS
   if (DEFAULT_CONFIG.DATE_FORMATS[dateFormat]) {
@@ -70,19 +75,18 @@ function DatePicker({
   const handleDateSelect = (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
 
-    console.log('Selected Date:', actualDate)
-
-    setInput(actualDate)
+    setInput(actualDate) // Ceci affecte la valeur à l'input visuel, donc utilisez `dateFormat`
     setSelectedDate(actualDate)
     closeCalendar()
 
-    // Validez la nouvelle valeur ici
+    // Validez la nouvelle valeur ici avec le format d'affichage (dateFormat)
     validate(formatDatePickerDate(actualDate, dateFormat))
 
+    // Quand vous envoyez la valeur en dehors, utilisez `outputFormat`
     onChange({
       target: {
         name,
-        value: formatDatePickerDate(actualDate, dateFormat, onClose),
+        value: formatDatePickerDate(actualDate, outputFormat),
       },
     })
   }
@@ -97,22 +101,22 @@ function DatePicker({
       return
     }
 
-    if (newValue.length >= 10) {
-      if (validate(newValue)) {
-        setError(null)
+    if (newValue.length >= 10 && validate(newValue)) {
+      setError(null)
+      const dateObject = convertFormattedStringToDate(newValue, dateFormat)
+      setSelectedDate(dateObject)
 
-        // Convertissez 'newValue' en objet Date
-        const dateObject = convertFormattedStringToDate(newValue, dateFormat)
-        setSelectedDate(dateObject)
+      // Envoyer l'objet Date à l'hôte
+      onChange({ target: { name, value: dateObject } })
 
-        closeCalendar()
-        inputRef.current.blur()
-        toggleCalendar()
-      }
+      closeCalendar()
+      inputRef.current.blur()
+      toggleCalendar()
     } else {
       setError(null)
+      // Envoyer la valeur en tant que chaîne de caractères si elle n'est pas complète ou valide
+      onChange({ target: { name, value: newValue } })
     }
-    onChange({ target: { name, value: newValue } })
   }
 
   const toggleCalendarVisibility = (event) => {
@@ -179,7 +183,6 @@ function DatePicker({
       }
     }
   }, [closeCalendar])
-
   // 5. Component Render
   return (
     <div ref={containerRef} className={styles.container} style={customStyles}>

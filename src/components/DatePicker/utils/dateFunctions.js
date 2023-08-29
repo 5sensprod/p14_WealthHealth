@@ -41,21 +41,27 @@ export function convertFormattedStringToDate(dateString, format) {
   switch (format) {
     case 'DD-MM-YYYY':
       return new Date(
-        parseInt(parts[2]),
-        parseInt(parts[1]) - 1,
-        parseInt(parts[0]),
+        Date.UTC(
+          parseInt(parts[2]),
+          parseInt(parts[1]) - 1,
+          parseInt(parts[0]),
+        ),
       )
     case 'MM-DD-YYYY':
       return new Date(
-        parseInt(parts[2]),
-        parseInt(parts[0]) - 1,
-        parseInt(parts[1]),
+        Date.UTC(
+          parseInt(parts[2]),
+          parseInt(parts[0]) - 1,
+          parseInt(parts[1]),
+        ),
       )
     case 'YYYY-MM-DD':
       return new Date(
-        parseInt(parts[0]),
-        parseInt(parts[1]) - 1,
-        parseInt(parts[2]),
+        Date.UTC(
+          parseInt(parts[0]),
+          parseInt(parts[1]) - 1,
+          parseInt(parts[2]),
+        ),
       )
     default:
       throw new Error(`Invalid date format: ${format}`)
