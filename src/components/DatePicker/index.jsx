@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
 
-import { DEFAULT_CONFIG } from './config/defaultConfig'
-
 import styles from './DatePicker.module.css'
 
 import Calendar from './Calendar'
@@ -20,6 +18,7 @@ import {
 } from './utils/dateFunctions'
 
 import useOutsideClick from './hooks/useOutsideClick'
+import { handlePropsAndConfig } from './utils/propsAndConfig'
 
 function DatePicker({
   name,
@@ -29,8 +28,7 @@ function DatePicker({
   onClose,
   ...configProps
 }) {
-  // 1. Destructuring & Default Props
-  let {
+  const {
     useIcons,
     dateFormat,
     outputFormat,
@@ -39,16 +37,7 @@ function DatePicker({
     manualInputEnabled,
     minYear,
     maxYear,
-  } = {
-    ...DEFAULT_CONFIG,
-    ...configProps,
-    outputFormat: configProps.outputFormat || configProps.dateFormat,
-  }
-
-  // Interprétation de la clé 'dateFormat' comme une référence aux formats définis dans DEFAULT_CONFIG.DATE_FORMATS
-  if (DEFAULT_CONFIG.DATE_FORMATS[dateFormat]) {
-    dateFormat = DEFAULT_CONFIG.DATE_FORMATS[dateFormat]
-  }
+  } = handlePropsAndConfig(configProps)
 
   // 2. State & Refs Initialization
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
