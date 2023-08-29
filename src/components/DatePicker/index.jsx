@@ -29,6 +29,13 @@ import {
   handleDateSelect,
   createEscapeHandler,
 } from './utils/datepickerHandlers'
+import {
+  updateInput,
+  handleEmptyInput,
+  handleValidDate,
+  handleInvalidDate,
+  handleIncompleteInput,
+} from './utils/dateInputHandlers'
 
 // 6. Component Definition
 function DatePicker({
@@ -88,24 +95,29 @@ function DatePicker({
     name,
     outputFormat,
   )
+
+  ///////
   const handleInputChange = (e) => {
     const newValue = e.target.value
-    setInput(newValue) // Mettre à jour la valeur de l'input
+    updateInput(setInput, newValue)
 
     if (!newValue) {
-      setError(null)
-      onChange({ target: { name, value: '' } }) // Envoi de la valeur vide lors de l'effacement
-      setSelectedDate(new Date()) // Réinitialiser à la date du jour
+      handleEmptyInput(name, onChange, setError, setSelectedDate)
       return
     }
 
     if (newValue.length >= 10) {
       if (validate(newValue)) {
         console.log('Validation Result:', true)
-        setError(null)
-        const dateObject = convertFormattedStringToDate(newValue, dateFormat)
-        setSelectedDate(dateObject)
-        onChange({ target: { name, value: dateObject } }) // Si valide, renvoyez la date
+        handleValidDate(
+          newValue,
+          name,
+          onChange,
+          setError,
+          setSelectedDate,
+          convertFormattedStringToDate,
+          dateFormat,
+        )
 
         closeCalendar()
         inputRef.current.blur()
@@ -113,13 +125,14 @@ function DatePicker({
       } else {
         console.log('Validation Result:', false)
         console.log(error)
-        onChange({ target: { name, value: '' } }) // Si invalide, renvoyez une chaîne vide
+        handleInvalidDate(name, onChange)
       }
     } else {
-      setError(null)
-      onChange({ target: { name, value: newValue } }) // Si incomplet, renvoyez la valeur actuelle
+      handleIncompleteInput(newValue, name, onChange, setError)
     }
   }
+
+  /////
   const onToggleCalendarVisibility = toggleCalendarVisibility(toggleCalendar)
 
   // 6.6 Derived Data & Effects
