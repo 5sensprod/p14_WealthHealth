@@ -20,6 +20,12 @@ import {
 import useOutsideClick from './hooks/useOutsideClick'
 import { handlePropsAndConfig } from './utils/propsAndConfig'
 
+import {
+  toggleCalendarVisibility,
+  handleDateSelect,
+  handleInputChange,
+} from './utils/datepickerHandlers'
+
 function DatePicker({
   name,
   value,
@@ -113,10 +119,7 @@ function DatePicker({
     }
   }
 
-  const toggleCalendarVisibility = (event) => {
-    event.stopPropagation()
-    toggleCalendar()
-  }
+  const onToggleCalendarVisibility = toggleCalendarVisibility(toggleCalendar)
 
   // 4. Derived Data & Effects
   const translations = getTranslations(language)
@@ -190,11 +193,11 @@ function DatePicker({
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
-          onClick={toggleCalendarVisibility}
+          onClick={onToggleCalendarVisibility}
           onChange={handleInputChange}
         />
 
-        <CalendarButton ref={buttonRef} onClick={toggleCalendarVisibility} />
+        <CalendarButton ref={buttonRef} onClick={onToggleCalendarVisibility} />
       </div>
       {error && <p className={styles.errorMessage}>{error}</p>}
       {showCalendar && (
