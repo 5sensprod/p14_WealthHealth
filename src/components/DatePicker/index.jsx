@@ -101,14 +101,11 @@ function DatePicker({
     const newValue = e.target.value
     updateInput(setInput, newValue)
 
-    // Si la valeur est vide
     if (!newValue) {
       handleEmptyInput(name, onChange, setError, setSelectedDate)
-      closeCalendar() // Ferme le calendrier
       return
     }
 
-    // Si la valeur complète a été saisie (basé sur une longueur de 10)
     if (newValue.length >= 10) {
       if (validate(newValue)) {
         console.log('Validation Result:', true)
@@ -121,18 +118,17 @@ function DatePicker({
           convertFormattedStringToDate,
           dateFormat,
         )
-        closeCalendar() // Ferme le calendrier
+
+        closeCalendar()
         inputRef.current.blur()
         toggleCalendar()
       } else {
         console.log('Validation Result:', false)
         console.log(error)
-        handleInvalidDate(newValue, name, onChange) // Cette fonction ne devrait pas effacer la valeur de l'input
-        // Le calendrier reste ouvert
+        handleInvalidDate(name, onChange)
       }
     } else {
       handleIncompleteInput(newValue, name, onChange, setError)
-      // Le calendrier reste ouvert en cas d'une entrée incomplète
     }
   }
 
