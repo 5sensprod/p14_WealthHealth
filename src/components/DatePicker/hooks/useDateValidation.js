@@ -21,13 +21,23 @@ function useDateValidation(
         )
       : DEFAULT_CONFIG.DATE_FORMAT
 
-    if (isValidDate(value, formatKey, minYear, maxYear)) {
+    const validationResult = isValidDate(value, formatKey, minYear, maxYear)
+
+    if (validationResult.isValid) {
       setError(null)
       return true
     } else {
-      const formattedError = translations.errors.invalidDateRange
-        .replace('{minYear}', minYear ? minYear.toString() : 'N/A')
-        .replace('{maxYear}', maxYear ? maxYear.toString() : 'N/A')
+      let formattedError
+      if (validationResult.errorType === 'outOfRange') {
+        formattedError = translations.errors.invalidDateRange
+          .replace('{minYear}', minYear ? minYear.toString() : 'N/A')
+          .replace('{maxYear}', maxYear ? maxYear.toString() : 'N/A')
+      } else if (validationResult.errorType === 'invalidDate') {
+        formattedError = translations.errors.invalidDate
+      } else {
+        formattedError = 'La date est invalide'
+      }
+      console.log('Setting error:', formattedError)
       setError(formattedError)
       return false
     }

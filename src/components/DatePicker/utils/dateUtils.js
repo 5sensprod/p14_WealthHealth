@@ -24,7 +24,8 @@ export function isValidDate(
   const format = DEFAULT_CONFIG.DATE_FORMATS[formatKey]
 
   const regex = generateRegex(formatKey, separator)
-  if (!new RegExp(regex).test(dateString)) return false
+  if (!new RegExp(regex).test(dateString))
+    return { isValid: false, errorType: 'invalidDate' }
 
   switch (format) {
     case DEFAULT_CONFIG.DATE_FORMATS.DEFAULT:
@@ -37,23 +38,25 @@ export function isValidDate(
       ;[year, month, day] = dateString.split(separator).map(Number)
       break
     default:
-      return false // format non pris en charge
+      return { isValid: false, errorType: 'unsupportedFormat' }
   }
 
-  if (isNaN(day) || isNaN(month) || isNaN(year)) return false
-  if (day < 1 || day > 31 || month < 1 || month > 12) return false
-  if (year < minYear || year > maxYear) return false
+  if (isNaN(day) || isNaN(month) || isNaN(year))
+    return { isValid: false, errorType: 'invalidDate' }
+  if (day < 1 || day > 31 || month < 1 || month > 12)
+    return { isValid: false, errorType: 'invalidDate' }
+  if (year < minYear || year > maxYear)
+    return { isValid: false, errorType: 'outOfRange' }
 
   if (month === 2) {
-    if (isLeapYear(year) && day > 29) return false
-    if (!isLeapYear(year) && day > 28) return false
+    if (isLeapYear(year) && day > 29)
+      return { isValid: false, errorType: 'invalidDate' }
+    if (!isLeapYear(year) && day > 28)
+      return { isValid: false, errorType: 'invalidDate' }
   } else {
     const daysInMonth = new Date(year, month, 0).getDate()
-    if (day > daysInMonth) return false
-  }
-  if (dateString === '') {
-    return true
+    if (day > daysInMonth) return { isValid: false, errorType: 'invalidDate' }
   }
 
-  return true
+  return { isValid: true, errorType: null }
 }
