@@ -27,7 +27,7 @@ export const handlePropsAndConfig = (configProps) => {
     customStyles,
     startOfWeek,
     manualInputEnabled,
-    minYear,
-    maxYear,
+    minYear: configProps.minYear || minYear, // Surchargez ici
+    maxYear: configProps.maxYear || maxYear, // Surchargez ici
   }
 }

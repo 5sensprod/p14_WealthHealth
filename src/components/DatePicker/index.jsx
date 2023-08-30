@@ -42,6 +42,8 @@ function DatePicker({
   value,
   onChange,
   language,
+  minYear: propMinYear, // renommez ces
+  maxYear: propMaxYear, // deux lignes
   onClose,
   ...configProps
 }) {
@@ -55,15 +57,18 @@ function DatePicker({
     manualInputEnabled,
     minYear,
     maxYear,
-  } = handlePropsAndConfig(configProps)
-
+  } = handlePropsAndConfig({
+    ...configProps,
+    minYear: propMinYear, // Utilisez le renommage pour éviter le conflit
+    maxYear: propMaxYear, // Utilisez le renommage pour éviter le conflit
+  })
   // 6.2 State & Refs Initialization
 
   // 6.3 Validation Hooks
   const [error, validate, setError] = useDateValidation(
     dateFormat,
-    minYear,
-    maxYear,
+    minYear, // déjà surchargé
+    maxYear, // déjà surchargé
     language,
   )
   // Définition de checkError
@@ -165,6 +170,8 @@ function DatePicker({
           role="grid"
           isCalendarVisible={showCalendar}
           selectedDate={selectedDate}
+          minYear={minYear}
+          maxYear={maxYear}
         />
       )}
     </div>
