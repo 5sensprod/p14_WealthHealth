@@ -1,5 +1,5 @@
 // 1. Imports: Dependencies
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 // 2. Imports: Styles
 import styles from './DatePicker.module.css'
@@ -33,7 +33,6 @@ import {
   updateInput,
   handleEmptyInput,
   handleValidDate,
-  handleInvalidDate,
   handleIncompleteInput,
 } from './utils/dateInputHandlers'
 
@@ -59,8 +58,10 @@ function DatePicker({
   } = handlePropsAndConfig(configProps)
 
   // 6.2 State & Refs Initialization
+  // Définition de checkError
+  const checkError = () => error !== null
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
-    useDatePickerState(value, dateFormat, onClose)
+    useDatePickerState(value, dateFormat, onClose, checkError)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
@@ -76,9 +77,10 @@ function DatePicker({
   )
 
   // 6.4 Effects
-  useEffect(() => {
-    setInput(value)
-  }, [value, setInput])
+  // useEffect(() => {
+  //   setInput(value)
+  // }, [value, setInput])
+
   useOutsideClick(calendarRef, buttonRef, closeCalendar)
   useEscapeKey(createEscapeHandler(closeCalendar, inputRef))
   useFocusAndClickOutside(containerRef, closeCalendar)
@@ -99,7 +101,9 @@ function DatePicker({
   ///////
   const handleInputChange = (e) => {
     const newValue = e.target.value
+    console.log('Before updateInput:', inputValue) // Ajouter pour le debug
     updateInput(setInput, newValue)
+    console.log('After updateInput:', inputValue)
 
     if (!newValue) {
       handleEmptyInput(name, onChange, setError, setSelectedDate)
@@ -108,7 +112,6 @@ function DatePicker({
 
     if (newValue.length >= 10) {
       if (validate(newValue)) {
-        console.log('Validation Result:', true)
         handleValidDate(
           newValue,
           name,
@@ -123,9 +126,8 @@ function DatePicker({
         inputRef.current.blur()
         toggleCalendar()
       } else {
-        console.log('Validation Result:', false)
         console.log(error)
-        handleInvalidDate(name, onChange)
+        // handleInvalidDate(name, onChange);
       }
     } else {
       handleIncompleteInput(newValue, name, onChange, setError)
