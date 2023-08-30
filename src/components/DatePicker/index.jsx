@@ -121,14 +121,11 @@ function DatePicker({
         closeCalendar()
         inputRef.current.blur()
         toggleCalendar()
-      } else {
-        console.log('Current error state:', error)
       }
     } else {
       handleIncompleteInput(newValue, name, onChange, setError)
     }
   }
-
   const onToggleCalendarVisibility = toggleCalendarVisibility(toggleCalendar)
 
   // 6.6 Derived Data & Effects

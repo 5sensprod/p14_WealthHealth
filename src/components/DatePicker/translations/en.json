@@ -31,6 +31,8 @@
   "placeholder": "Select a date",
   "errors": {
     "invalidDateFormat": "Date format is invalid",
-    "invalidDateRange": "The date should be between {minYear} and {maxYear}."
+    "invalidDateRange": "The date should be between {minYear} and {maxYear}.",
+    "invalidDate": "The date is invalid",
+    "unknownError": "An unknown error has occurred"
   }
 }
