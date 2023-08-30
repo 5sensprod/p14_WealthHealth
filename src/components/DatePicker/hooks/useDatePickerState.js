@@ -7,7 +7,7 @@ function useDatePickerState(
   onClose,
   checkError,
   setError,
-  error,
+  // error,
 ) {
   // Gestion de l'affichage du calendrier
   const [showCalendar, setShowCalendar] = useState(false)

@@ -10,7 +10,7 @@ function DaysView({
   setCurrentMonth,
   currentMonth,
   selectedDate,
-  viewedDate = null,
+  // viewedDate = null,
 }) {
   const daysRefs = useRef([])
   const [hasBeenHovered, setHasBeenHovered] = useState(false)

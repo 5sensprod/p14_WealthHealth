@@ -31,6 +31,9 @@ export function handleNavigationKeys(
       break
 
     case 'Tab':
+      if (index < maxIndex) {
+        refsArray[index + 1].focus()
+      }
       break
     default:
       break
