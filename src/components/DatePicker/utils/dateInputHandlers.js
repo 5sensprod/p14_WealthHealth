@@ -25,8 +25,8 @@ export const handleValidDate = (
   onChange({ target: { name, value: dateObject } })
 }
 
-export const handleInvalidDate = (name, onChange) => {
-  onChange({ target: { name, value: '' } })
+export const handleInvalidDate = (newValue, name, onChange) => {
+  onChange({ target: { name, value: newValue } })
 }
 
 export const handleIncompleteInput = (newValue, name, onChange, setError) => {
