@@ -37,12 +37,9 @@ function ChevronButtons({
         direction,
         yearsBlock,
         prev,
-        minYear, // Ajoutez ceci
-        maxYear, // Ajoutez ceci
+        minYear,
+        maxYear,
       )
-
-      console.log('newDate:', newDate) // Debug
-      console.log('newYearBlock:', newYearBlock) // Debug
 
       setYearsBlock(newYearBlock)
       setAnimationKey((prevKey) => prevKey + 1)

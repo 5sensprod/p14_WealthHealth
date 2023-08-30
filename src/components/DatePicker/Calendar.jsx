@@ -17,12 +17,11 @@ const Calendar = forwardRef(
       reorderedDays,
       startOfWeek,
       selectedDate,
-      minYear, // Les valeurs surchargées ici
-      maxYear, // Les valeurs surchargées ici
+      minYear,
+      maxYear,
     },
     ref,
   ) => {
-    console.log('minYear:', minYear, 'maxYear:', maxYear)
     const translations = getTranslations(language)
 
     const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic(

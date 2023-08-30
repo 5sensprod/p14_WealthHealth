@@ -48,8 +48,6 @@ export const goToPreviousYear = (currentDate, minYear, maxYear) => {
 }
 export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
   if (isNaN(yearsBlock[0])) return yearsBlock
-  console.log('yearsBlock[0]:', yearsBlock[0])
-  console.log('DEFAULT_CONFIG.YEAR_BLOCK_SIZE:', DEFAULT_CONFIG.YEAR_BLOCK_SIZE)
   const newStartYear = yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const baseYear = newStartYear > maxYear ? minYear : newStartYear
   return Array.from(
@@ -60,8 +58,6 @@ export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
 
 export const goToPreviousYearBlock = (yearsBlock, minYear, maxYear) => {
   if (isNaN(yearsBlock[0])) return yearsBlock
-  console.log('yearsBlock[0]:', yearsBlock[0])
-  console.log('DEFAULT_CONFIG.YEAR_BLOCK_SIZE:', DEFAULT_CONFIG.YEAR_BLOCK_SIZE)
   const newStartYear = yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const baseYear =
     newStartYear < minYear
