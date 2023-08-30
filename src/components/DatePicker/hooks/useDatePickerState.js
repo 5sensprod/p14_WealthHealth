@@ -1,7 +1,14 @@
 import { useState } from 'react'
 import { formatDatePickerDate } from '../utils/dateFunctions'
 
-function useDatePickerState(initialValue, dateFormat, onClose, checkError) {
+function useDatePickerState(
+  initialValue,
+  dateFormat,
+  onClose,
+  checkError,
+  setError,
+  error,
+) {
   // Gestion de l'affichage du calendrier
   const [showCalendar, setShowCalendar] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
@@ -19,17 +26,20 @@ function useDatePickerState(initialValue, dateFormat, onClose, checkError) {
 
   // Fonction pour fermer le calendrier
   function closeCalendar() {
-    if (onClose) {
-      const hasError = checkError ? checkError() : false
+    const hasError = checkError ? checkError() : false
 
-      if (hasError) {
-        // Ne pas réinitialiser l'input, ou utiliser une logique spécifique ici
-      }
-
-      onClose(hasError) // ou onClose({ hasError, ...autres infos })
+    if (hasError) {
+      setInput('') // Réinitialise la valeur d'entrée en cas d'erreur
+      setError(null) // Réinitialise l'état de l'erreur
     }
+
+    if (onClose) {
+      onClose(hasError)
+    }
+
     setShowCalendar(false)
   }
+
   // Fonction pour mettre à jour la valeur saisie
   function setInput(date) {
     if (date === '') {

@@ -58,15 +58,6 @@ function DatePicker({
   } = handlePropsAndConfig(configProps)
 
   // 6.2 State & Refs Initialization
-  // Définition de checkError
-  const checkError = () => error !== null
-  const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
-    useDatePickerState(value, dateFormat, onClose, checkError)
-  const [selectedDate, setSelectedDate] = useState(new Date())
-  const calendarRef = useRef(null)
-  const buttonRef = useRef(null)
-  const containerRef = useRef(null)
-  const inputRef = useRef(null)
 
   // 6.3 Validation Hooks
   const [error, validate, setError] = useDateValidation(
@@ -75,6 +66,15 @@ function DatePicker({
     maxYear,
     language,
   )
+  // Définition de checkError
+  const checkError = () => error !== null
+  const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
+    useDatePickerState(value, dateFormat, onClose, checkError, setError)
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const calendarRef = useRef(null)
+  const buttonRef = useRef(null)
+  const containerRef = useRef(null)
+  const inputRef = useRef(null)
 
   // 6.4 Effects
   // useEffect(() => {
@@ -98,12 +98,9 @@ function DatePicker({
     outputFormat,
   )
 
-  ///////
   const handleInputChange = (e) => {
     const newValue = e.target.value
-    console.log('Before updateInput:', inputValue) // Ajouter pour le debug
     updateInput(setInput, newValue)
-    console.log('After updateInput:', inputValue)
 
     if (!newValue) {
       handleEmptyInput(name, onChange, setError, setSelectedDate)
@@ -121,20 +118,15 @@ function DatePicker({
           convertFormattedStringToDate,
           dateFormat,
         )
-
         closeCalendar()
         inputRef.current.blur()
         toggleCalendar()
-      } else {
-        console.log(error)
-        // handleInvalidDate(name, onChange);
       }
     } else {
       handleIncompleteInput(newValue, name, onChange, setError)
     }
   }
 
-  /////
   const onToggleCalendarVisibility = toggleCalendarVisibility(toggleCalendar)
 
   // 6.6 Derived Data & Effects

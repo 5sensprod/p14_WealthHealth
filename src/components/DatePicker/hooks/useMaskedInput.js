@@ -25,9 +25,7 @@ export const useMaskedInput = (initialValue, format, onChange) => {
       setDisplayValue(newValue)
 
       onChange && onChange({ target: { value: newValue } })
-    } catch (error) {
-      console.error('Error formatting value:', error)
-    }
+    } catch (error) {}
   }
 
   return [displayValue, handleChange]
