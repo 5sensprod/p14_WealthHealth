@@ -18,9 +18,10 @@ function YearsView({ handleYearClick, selectedDate, yearsBlock }) {
 
   return (
     <div className={styles.yearsContainer}>
+      {console.log(yearsBlock)}
       {yearsBlock.map((year, index) => (
         <div
-          key={year}
+          key={year || index} // Utilisez l'index si l'année est invalide (NaN ou undefined)
           className={`${styles.year} ${
             index === selectedDate.getYear() ? styles.selectedYear : ''
           }`}

@@ -25,7 +25,10 @@ const Calendar = forwardRef(
     console.log('minYear:', minYear, 'maxYear:', maxYear)
     const translations = getTranslations(language)
 
-    const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic()
+    const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic(
+      minYear,
+      maxYear,
+    )
 
     const { viewedDate, setViewedDate, totalSlots } = useCalendarLogic(
       initialMonth,
@@ -63,10 +66,10 @@ const Calendar = forwardRef(
             setYearsBlock={setYearsBlock}
             animationKey={animationKey}
             setAnimationKey={setAnimationKey}
-            // selectedDate={selectedDate}
-            // setSelectedDate={setSelectedDate}
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
+            minYear={minYear}
+            maxYear={maxYear}
           />
         </div>
         <DateGrid

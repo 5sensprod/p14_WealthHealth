@@ -8,55 +8,64 @@ const adjustDate = (currentDate, yearAdjustment, monthAdjustment) => {
   return new Date(year, month)
 }
 
-export const goToNextMonth = (currentDate) => {
-  if (
-    currentDate.getMonth() === 11 &&
-    currentDate.getFullYear() === DEFAULT_CONFIG.MAX_YEAR
-  ) {
-    return new Date(DEFAULT_CONFIG.MIN_YEAR, 0)
+export const goToNextMonth = (currentDate, minYear, maxYear) => {
+  const nextDate = adjustDate(
+    currentDate,
+    currentDate.getMonth() === 11 ? 1 : 0,
+    1,
+  )
+  if (nextDate.getFullYear() > maxYear) {
+    return new Date(maxYear, 11) // ou retourner à minYear, 0 selon votre besoin
   }
-  return adjustDate(currentDate, currentDate.getMonth() === 11 ? 1 : 0, 1)
+  return nextDate
 }
 
-export const goToPreviousMonth = (currentDate) => {
-  if (
-    currentDate.getMonth() === 0 &&
-    currentDate.getFullYear() === DEFAULT_CONFIG.MIN_YEAR
-  ) {
-    return new Date(DEFAULT_CONFIG.MAX_YEAR, 11)
+export const goToPreviousMonth = (currentDate, minYear, maxYear) => {
+  const prevDate = adjustDate(
+    currentDate,
+    currentDate.getMonth() === 0 ? -1 : 0,
+    -1,
+  )
+  if (prevDate.getFullYear() < minYear) {
+    return new Date(minYear, 0) // ou retourner à maxYear, 11 selon votre besoin
   }
-  return adjustDate(currentDate, currentDate.getMonth() === 0 ? -1 : 0, -1)
+  return prevDate
+}
+export const goToNextYear = (currentDate, minYear, maxYear) => {
+  const nextDate = adjustDate(currentDate, 1, 0)
+  if (nextDate.getFullYear() > maxYear) {
+    return new Date(maxYear, currentDate.getMonth())
+  }
+  return nextDate
 }
 
-export const goToNextYear = (currentDate) => {
-  return currentDate.getFullYear() === DEFAULT_CONFIG.MAX_YEAR
-    ? new Date(DEFAULT_CONFIG.MIN_YEAR, currentDate.getMonth())
-    : adjustDate(currentDate, 1, 0)
+export const goToPreviousYear = (currentDate, minYear, maxYear) => {
+  const prevDate = adjustDate(currentDate, -1, 0)
+  if (prevDate.getFullYear() < minYear) {
+    return new Date(minYear, currentDate.getMonth())
+  }
+  return prevDate
 }
-
-export const goToPreviousYear = (currentDate) => {
-  return currentDate.getFullYear() === DEFAULT_CONFIG.MIN_YEAR
-    ? new Date(DEFAULT_CONFIG.MAX_YEAR, currentDate.getMonth())
-    : adjustDate(currentDate, -1, 0)
-}
-
-export const goToNextYearBlock = (yearsBlock) => {
+export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
+  if (isNaN(yearsBlock[0])) return yearsBlock
+  console.log('yearsBlock[0]:', yearsBlock[0])
+  console.log('DEFAULT_CONFIG.YEAR_BLOCK_SIZE:', DEFAULT_CONFIG.YEAR_BLOCK_SIZE)
   const newStartYear = yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE
-  const baseYear =
-    newStartYear > DEFAULT_CONFIG.MAX_YEAR
-      ? DEFAULT_CONFIG.MIN_YEAR
-      : newStartYear
+  const baseYear = newStartYear > maxYear ? minYear : newStartYear
   return Array.from(
     { length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE },
     (_, i) => baseYear + i,
   )
 }
 
-export const goToPreviousYearBlock = (yearsBlock) => {
+export const goToPreviousYearBlock = (yearsBlock, minYear, maxYear) => {
+  if (isNaN(yearsBlock[0])) return yearsBlock
+  console.log('yearsBlock[0]:', yearsBlock[0])
+  console.log('DEFAULT_CONFIG.YEAR_BLOCK_SIZE:', DEFAULT_CONFIG.YEAR_BLOCK_SIZE)
   const newStartYear = yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const baseYear =
-    newStartYear < DEFAULT_CONFIG.MIN_YEAR
-      ? DEFAULT_CONFIG.MAX_YEAR - DEFAULT_CONFIG.YEAR_BLOCK_SIZE + 1
+    newStartYear < minYear
+      ? maxYear - DEFAULT_CONFIG.YEAR_BLOCK_SIZE + 1
       : newStartYear
   return Array.from(
     { length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE },
@@ -65,7 +74,14 @@ export const goToPreviousYearBlock = (yearsBlock) => {
 }
 
 // ========== DATE NAVIGATION ==========
-export function calculateNewDate(view, direction, yearsBlock, prev) {
+export function calculateNewDate(
+  view,
+  direction,
+  yearsBlock,
+  prev,
+  minYear,
+  maxYear,
+) {
   let newDate = prev
   let newYearBlock = yearsBlock
 
@@ -73,22 +89,20 @@ export function calculateNewDate(view, direction, yearsBlock, prev) {
     case 'months':
       newDate =
         direction === 'prev'
-          ? goToPreviousYear(
-              prev,
-              DEFAULT_CONFIG.MIN_YEAR,
-              DEFAULT_CONFIG.MAX_YEAR,
-            )
-          : goToNextYear(prev, DEFAULT_CONFIG.MAX_YEAR)
+          ? goToPreviousYear(prev, minYear, maxYear)
+          : goToNextYear(prev, minYear, maxYear)
       break
     case 'days':
       newDate =
-        direction === 'prev' ? goToPreviousMonth(prev) : goToNextMonth(prev)
+        direction === 'prev'
+          ? goToPreviousMonth(prev, minYear, maxYear)
+          : goToNextMonth(prev, minYear, maxYear)
       break
     case 'years':
       newYearBlock =
         direction === 'prev'
-          ? goToPreviousYearBlock(yearsBlock, new Date().getFullYear())
-          : goToNextYearBlock(yearsBlock, new Date().getFullYear())
+          ? goToPreviousYearBlock(yearsBlock, minYear, maxYear)
+          : goToNextYearBlock(yearsBlock, minYear, maxYear)
       break
     default:
       break

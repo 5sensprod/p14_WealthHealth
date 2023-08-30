@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { DEFAULT_CONFIG } from '../config/defaultConfig'
 
-const useYearLogic = () => {
+const useYearLogic = (
+  minYear = DEFAULT_CONFIG.MIN_YEAR,
+  maxYear = DEFAULT_CONFIG.MAX_YEAR,
+) => {
   const today = new Date()
   const thisYear = today.getFullYear()
   const initialMonth = new Date(thisYear, today.getMonth())
 
   // Bloc actuel basé sur l'année courante
   const calculateYearBlockStart = (currentYear) => {
-    const yearsSinceStart = currentYear - DEFAULT_CONFIG.MIN_YEAR
+    const yearsSinceStart = currentYear - minYear
     return currentYear - (yearsSinceStart % DEFAULT_CONFIG.YEAR_BLOCK_SIZE)
   }
 
@@ -22,8 +25,8 @@ const useYearLogic = () => {
 
   // Génération du tableau des années
   const years = Array.from(
-    { length: DEFAULT_CONFIG.MAX_YEAR - DEFAULT_CONFIG.MIN_YEAR + 1 },
-    (_, i) => DEFAULT_CONFIG.MIN_YEAR + i,
+    { length: maxYear - minYear + 1 },
+    (_, i) => minYear + i,
   )
 
   return {
