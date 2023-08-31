@@ -1,13 +1,13 @@
 import { DEFAULT_CONFIG } from '../config/defaultConfig'
 
-// Fonction de traitement plus stricte pour les configurations d'années
+// Fonction pour les configurations d'années
 const processYearConfig = (yearConfig, currentYear) => {
   if (typeof yearConfig === 'number') return yearConfig
 
   if (typeof yearConfig === 'string') {
     const match = yearConfig.match(/(auto|actual)([+-]\d+)?/)
     if (match) {
-      const base = currentYear // Redondance éliminée
+      const base = currentYear
       const offset = parseInt(match[2], 10) || 0
       return base + offset
     }
@@ -84,10 +84,15 @@ export const goToPreviousYear = (currentDate, minYear, maxYear) => {
 
 export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
   const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
-  const newStartYear = Math.min(
-    yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
-    maxProcessedYear,
-  )
+  const newStartYear = yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE
+
+  if (newStartYear > maxProcessedYear) {
+    // Si on dépasse maxYear, revenir à minYear
+    const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
+    return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
+      return minProcessedYear + i
+    })
+  }
 
   return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
     const year = newStartYear + i
@@ -97,14 +102,19 @@ export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
 
 export const goToPreviousYearBlock = (yearsBlock, minYear, maxYear) => {
   const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
-  const newStartYear = Math.max(
-    yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
-    minProcessedYear,
-  )
+  const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
+
+  let newStartYear = yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE
+
+  if (newStartYear < minProcessedYear) {
+    newStartYear = maxProcessedYear - DEFAULT_CONFIG.YEAR_BLOCK_SIZE + 1 // Revenir au bloc max
+  } else {
+    newStartYear = Math.max(newStartYear, minProcessedYear)
+  }
 
   return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
     const year = newStartYear + i
-    return year >= minProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
+    return year >= minProcessedYear && year <= maxProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
   }).filter(Boolean) // Retirer cette ligne pour garder des places vides
 }
 

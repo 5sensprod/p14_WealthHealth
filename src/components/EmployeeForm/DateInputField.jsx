@@ -16,7 +16,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         dateFormat="DEFAULT"
         manualInputEnabled={true}
         minYear={'auto-93'}
-        maxYear={'auto+2'}
+        maxYear={'auto+5'}
         customStyles={{
           backgroundColor: 'transparent',
           borderRadius: '0',
