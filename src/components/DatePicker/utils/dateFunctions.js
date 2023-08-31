@@ -1,6 +1,18 @@
+import { DEFAULT_CONFIG } from '../config/defaultConfig'
 // ========== DATE UTILITIES ==========
 
-export function formatDatePickerDate(value, dateFormat = 'DD-MM-YYYY') {
+export function abbreviateMonth(month) {
+  return month.length > 5 ? month.substring(0, 4) + '.' : month
+}
+
+export function getDaysInMonth(year, month) {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+export function formatDatePickerDate(
+  value,
+  dateFormat = DEFAULT_CONFIG.DATE_FORMATS.DEFAULT,
+) {
   if (!(value instanceof Date)) {
     return value
   }
@@ -27,15 +39,10 @@ export function formatDatePickerDate(value, dateFormat = 'DD-MM-YYYY') {
   }
 }
 
-export function abbreviateMonth(month) {
-  return month.length > 5 ? month.substring(0, 4) + '.' : month
-}
-
-export function getDaysInMonth(year, month) {
-  return new Date(year, month + 1, 0).getDate()
-}
-
-export function convertFormattedStringToDate(dateString, format) {
+export function convertFormattedStringToDate(
+  dateString,
+  format = DEFAULT_CONFIG.DATE_FORMATS.DEFAULT,
+) {
   const parts = dateString.split('/')
 
   switch (format) {

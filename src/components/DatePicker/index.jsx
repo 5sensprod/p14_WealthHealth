@@ -45,6 +45,7 @@ function DatePicker({
   minYear: propMinYear, // renommez ces
   maxYear: propMaxYear, // deux lignes
   manualInputEnabled: propManualInputEnabled,
+  dateFormat: propDateFormat,
   onClose,
   ...configProps
 }) {

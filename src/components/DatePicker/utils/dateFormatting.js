@@ -6,7 +6,11 @@ export const MASK_FORMATS = {
   [DEFAULT_CONFIG.DATE_FORMATS.ISO]: [4, 7],
 }
 
-export function formatToMask(value, format, separator = '/') {
+export function formatToMask(
+  value,
+  format = DEFAULT_CONFIG.DATE_FORMATS.DEFAULT,
+  separator = '/',
+) {
   const positions = MASK_FORMATS[format] || []
   if (!positions.length) {
     throw new Error(`Invalid format: ${format}`)

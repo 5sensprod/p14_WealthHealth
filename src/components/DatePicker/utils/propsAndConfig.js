@@ -17,9 +17,9 @@ export const handlePropsAndConfig = (configProps) => {
     ...configProps,
   }
 
-  const dateFormat = DEFAULT_CONFIG.DATE_FORMATS[originalDateFormat]
-    ? DEFAULT_CONFIG.DATE_FORMATS[originalDateFormat]
-    : originalDateFormat
+  const dateFormat = originalDateFormat
+    ? originalDateFormat
+    : DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT]
 
   const outputFormat = originalOutputFormat || dateFormat
 

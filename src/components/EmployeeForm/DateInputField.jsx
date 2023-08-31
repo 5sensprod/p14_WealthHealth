@@ -10,17 +10,18 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         name={name}
         value={value}
         onChange={onChange}
+        yearsBlock={10}
         // useIcons={true}
         // startOfWeek="1"
         // language="fr"
-        dateFormat="DEFAULT"
+        // dateFormat="DEFAULT"
         // manualInputEnabled={true}
         // minYear={'auto-77'}
         // maxYear={'auto+10'}
-        customStyles={{
-          backgroundColor: 'transparent',
-          borderRadius: '0',
-        }}
+        // customStyles={{
+        //   backgroundColor: 'transparent',
+        //   borderRadius: '0',
+        // }}
       />
 
       {error && <span className={styles.errorMessage}>{error}</span>}
