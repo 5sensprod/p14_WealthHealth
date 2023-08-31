@@ -83,29 +83,29 @@ export const goToPreviousYear = (currentDate, minYear, maxYear) => {
 }
 
 export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
-  if (isNaN(yearsBlock[0])) return yearsBlock
-  const newStartYear = yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE
-  const baseYear =
-    newStartYear > applyYearConfig(maxYear)
-      ? applyYearConfig(minYear)
-      : newStartYear
-  return Array.from(
-    { length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE },
-    (_, i) => baseYear + i,
+  const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
+  const newStartYear = Math.min(
+    yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
+    maxProcessedYear,
   )
+
+  return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
+    const year = newStartYear + i
+    return year <= maxProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
+  }).filter(Boolean) // Retirer cette ligne pour garder des places vides
 }
 
 export const goToPreviousYearBlock = (yearsBlock, minYear, maxYear) => {
-  if (isNaN(yearsBlock[0])) return yearsBlock
-  const newStartYear = yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE
-  const baseYear =
-    newStartYear < applyYearConfig(minYear)
-      ? applyYearConfig(maxYear) - DEFAULT_CONFIG.YEAR_BLOCK_SIZE + 1
-      : newStartYear
-  return Array.from(
-    { length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE },
-    (_, i) => baseYear + i,
+  const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
+  const newStartYear = Math.max(
+    yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
+    minProcessedYear,
   )
+
+  return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
+    const year = newStartYear + i
+    return year >= minProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
+  }).filter(Boolean) // Retirer cette ligne pour garder des places vides
 }
 
 export const calculateNewDate = (

@@ -1,5 +1,5 @@
 import { DEFAULT_CONFIG } from '../config/defaultConfig'
-import { applyYearConfig } from './dateNavigations' // Importez applyYearConfig
+import { applyYearConfig } from './dateNavigations'
 
 export const handlePropsAndConfig = (configProps) => {
   const {
