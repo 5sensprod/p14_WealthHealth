@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { HomeIcon } from './Icons'
 import ChevronButtons from './ChevronSelector'
 import styles from './Calendar.module.css'
@@ -21,7 +21,7 @@ function MonthSelector({ currentMonth, months, view, setView }) {
 
   const ref = useKeyboardAccessibility(handleMonthSelect)
 
-  if (view !== DAYS) return null
+  if (view === YEARS) return null
 
   return (
     <Button
@@ -80,13 +80,13 @@ function HomeButton({ setViewedDate, setView, setCurrentDate }) {
 }
 
 function NavSelector(props) {
-  const monthRef = useRef(null)
+  // const monthRef = useRef(null)
 
-  useEffect(() => {
-    if (monthRef.current) {
-      monthRef.current.focus()
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (monthRef.current) {
+  //     monthRef.current.focus()
+  //   }
+  // }, [])
   return (
     <>
       <div className={styles.NavSelector}>
