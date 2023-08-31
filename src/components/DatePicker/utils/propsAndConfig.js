@@ -3,14 +3,15 @@ import { applyYearConfig } from './dateNavigations'
 
 export const handlePropsAndConfig = (configProps) => {
   const {
-    useIcons,
+    useIcons: originalUseIcons,
     dateFormat: originalDateFormat,
     outputFormat: originalOutputFormat,
     customStyles,
-    startOfWeek,
-    manualInputEnabled,
+    startOfWeek: originalStartOfWeek,
+    manualInputEnabled: originalManualInputEnabled,
     minYear: originalMinYear,
     maxYear: originalMaxYear,
+    language: originalLanguage,
   } = {
     ...DEFAULT_CONFIG,
     ...configProps,
@@ -24,17 +25,32 @@ export const handlePropsAndConfig = (configProps) => {
 
   const currentYear = new Date().getFullYear()
 
-  // Appliquez le traitement pour minYear et maxYear
-  const minYear = applyYearConfig(
-    originalMinYear || DEFAULT_CONFIG.minYear,
-    currentYear,
-  )
-  const maxYear = applyYearConfig(
-    originalMaxYear || DEFAULT_CONFIG.maxYear,
-    currentYear,
-  )
+  const minYear =
+    applyYearConfig(originalMinYear || DEFAULT_CONFIG.MIN_YEAR, currentYear) ||
+    DEFAULT_CONFIG.MIN_YEAR
+
+  const maxYear =
+    applyYearConfig(originalMaxYear || DEFAULT_CONFIG.MAX_YEAR, currentYear) ||
+    DEFAULT_CONFIG.MAX_YEAR
+
+  const startOfWeek =
+    originalStartOfWeek !== undefined
+      ? originalStartOfWeek
+      : DEFAULT_CONFIG.START_OF_WEEK
+
+  const useIcons =
+    originalUseIcons !== undefined ? originalUseIcons : DEFAULT_CONFIG.USE_ICONS
+
+  const language =
+    originalLanguage !== undefined ? originalLanguage : DEFAULT_CONFIG.LANGUAGE
+
+  const manualInputEnabled =
+    originalManualInputEnabled !== undefined
+      ? originalManualInputEnabled
+      : DEFAULT_CONFIG.MANUAL_INPUT_ENABLED
 
   return {
+    language,
     useIcons,
     dateFormat,
     outputFormat,

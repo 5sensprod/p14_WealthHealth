@@ -41,14 +41,16 @@ function DatePicker({
   name,
   value,
   onChange,
-  language,
+  language: propLanguage,
   minYear: propMinYear, // renommez ces
   maxYear: propMaxYear, // deux lignes
+  manualInputEnabled: propManualInputEnabled,
   onClose,
   ...configProps
 }) {
   // 6.1 Configuration and State Initialization
   const {
+    language,
     useIcons,
     dateFormat,
     outputFormat,
@@ -59,8 +61,10 @@ function DatePicker({
     maxYear,
   } = handlePropsAndConfig({
     ...configProps,
+    language: propLanguage,
     minYear: propMinYear, // Utilisez le renommage pour éviter le conflit
     maxYear: propMaxYear, // Utilisez le renommage pour éviter le conflit
+    manualInputEnabled: propManualInputEnabled,
   })
   // 6.2 State & Refs Initialization
 

@@ -29,7 +29,6 @@ function MonthSelector({ currentMonth, months, view, setView }) {
       onClick={handleMonthSelect}
       className={styles.navButton}
       tabIndex={0}
-      autoFocus // Ajout de l'attribut autoFocus
     >
       {months[currentMonth.getMonth()]}
     </Button>

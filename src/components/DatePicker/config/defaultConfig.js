@@ -1,11 +1,11 @@
 export const DEFAULT_CONFIG = {
   YEAR_BLOCK_SIZE: 16,
-  USE_ICONS: false,
-  LANGUAGE: 'en',
+  USE_ICONS: true,
+  LANGUAGE: 'fr',
   DATE_FORMAT: 'DEFAULT',
   CUSTOM_STYLES: {},
-  START_OF_WEEK: 1, // 0 pour Dimanche...
-  MANUAL_INPUT_ENABLED: true,
+  START_OF_WEEK: 0, // 0 pour Dimanche...
+  MANUAL_INPUT_ENABLED: false,
   MIN_YEAR: 1930,
   MAX_YEAR: 2025,
   DATE_FORMATS: {
