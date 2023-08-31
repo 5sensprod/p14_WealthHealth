@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { HomeIcon } from './Icons'
 import ChevronButtons from './ChevronSelector'
 import styles from './Calendar.module.css'
@@ -29,6 +29,7 @@ function MonthSelector({ currentMonth, months, view, setView }) {
       onClick={handleMonthSelect}
       className={styles.navButton}
       tabIndex={0}
+      autoFocus // Ajout de l'attribut autoFocus
     >
       {months[currentMonth.getMonth()]}
     </Button>
@@ -80,6 +81,13 @@ function HomeButton({ setViewedDate, setView, setCurrentDate }) {
 }
 
 function NavSelector(props) {
+  const monthRef = useRef(null)
+
+  useEffect(() => {
+    if (monthRef.current) {
+      monthRef.current.focus()
+    }
+  }, [])
   return (
     <>
       <div className={styles.NavSelector}>
