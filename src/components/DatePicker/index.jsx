@@ -42,8 +42,8 @@ function DatePicker({
   value,
   onChange,
   language: propLanguage,
-  minYear: propMinYear, // renommez ces
-  maxYear: propMaxYear, // deux lignes
+  minYear: propMinYear,
+  maxYear: propMaxYear,
   manualInputEnabled: propManualInputEnabled,
   dateFormat: propDateFormat,
   yearBlockSize: propYearBlockSize,

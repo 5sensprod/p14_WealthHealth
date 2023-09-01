@@ -7,7 +7,6 @@ import DateInputField from './DateInputField'
 import AddressFields from './AddressFields'
 import { validateEmployeeForm } from './validation'
 import { formattedFieldNames } from '../../utils/formatFieldNames'
-import { formatDate } from '../../utils/formatDate'
 import { initialEmployeeState } from '../../config/initialState'
 import useFormErrors from '../../hooks/useFormErrors'
 import useFormData from '../../hooks/useFormData'
@@ -51,17 +50,23 @@ const EmployeeForm = () => {
 
     // vérifier si l'objet des erreurs est vide
     if (Object.keys(fieldErrors).length === 0) {
+      // Conversion de la date en format voulu
+      const date = new Date(formData.dateOfBirth)
+      const formattedDateOfBirth = date.toString()
+
+      const date2 = new Date(formData.startDate)
+      const formattedStartDate = date2.toString()
+
       const processedData = {
         ...formData,
-        dateOfBirth: formatDate(formData.dateOfBirth),
-        startDate: formatDate(formData.startDate),
+        dateOfBirth: formattedDateOfBirth,
+        startDate: formattedStartDate,
       }
 
       dispatch(addEmployee(processedData))
       console.log('Employé sauvegardé avec succès!')
 
       resetFormData()
-
       setModalOpen(true)
     }
   }
