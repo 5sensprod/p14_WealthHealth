@@ -18,6 +18,12 @@
     margin-top: 1rem;
     margin-bottom: 10px;
 }
+.labelContainer {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 10px;
+}
+
 
 .address {
     margin-top: 10px;
@@ -25,7 +31,7 @@
 
 .submitButton {
     padding: 0.5rem 1rem;
-    background-color: #007bff;
+    background-color: #001429;
     color: white;
     border: none;
     border-radius: 4px;
@@ -47,9 +53,20 @@
   .month {
     /* Ajoutez vos styles ici pour afficher les mois sous forme de grille */
     width: calc(100% / 7); /* Pour 7 colonnes par semaine */
-    height: 50px; /* ou toute autre hauteur que vous préférez */
+    height: 50px; 
     display: inline-block;
     text-align: center;
     vertical-align: top;
-    /* ... tout autre style que vous souhaitez ajouter */
+
+  }
+
+  .visually-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
   }

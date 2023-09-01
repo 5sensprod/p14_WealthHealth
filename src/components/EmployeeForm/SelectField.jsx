@@ -8,7 +8,7 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
   }
 
   return (
-    <div className={styles.label}>
+    <label className={styles.label} htmlFor={name}>
       <p>{label}</p>
       <Select
         name={name}
@@ -26,7 +26,7 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
         styles={customStyles}
       />
       {error && <span className={styles.errorMessage}>{error}</span>}
-    </div>
+    </label>
   )
 }
 
