@@ -11,6 +11,10 @@
   gap: 10px;
 }
 
+.inputContainer {
+  display: flex;
+  gap: 5px;
+}
 .calendarButton {
   cursor: pointer;
 }
