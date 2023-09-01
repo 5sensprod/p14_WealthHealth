@@ -12,6 +12,7 @@ export const handlePropsAndConfig = (configProps) => {
     minYear: originalMinYear,
     maxYear: originalMaxYear,
     language: originalLanguage,
+    yearBlockSize: originalYearBlockSize,
   } = {
     ...DEFAULT_CONFIG,
     ...configProps,
@@ -49,6 +50,11 @@ export const handlePropsAndConfig = (configProps) => {
       ? originalManualInputEnabled
       : DEFAULT_CONFIG.MANUAL_INPUT_ENABLED
 
+  const yearBlockSize =
+    originalYearBlockSize !== undefined
+      ? originalYearBlockSize
+      : DEFAULT_CONFIG.YEAR_BLOCK_SIZE
+
   return {
     language,
     useIcons,
@@ -59,5 +65,6 @@ export const handlePropsAndConfig = (configProps) => {
     manualInputEnabled,
     minYear,
     maxYear,
+    yearBlockSize,
   }
 }

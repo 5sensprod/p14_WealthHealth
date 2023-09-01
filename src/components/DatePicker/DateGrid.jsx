@@ -18,6 +18,7 @@ function DateGrid({
   selectedDate,
   viewedDate,
   currentDate,
+  yearBlockSize,
 }) {
   const handleMonthClick = (monthIndex) => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), monthIndex))
@@ -61,6 +62,7 @@ function DateGrid({
           animationKey={animationKey}
           handleYearClick={handleYearClick}
           selectedDate={selectedDate}
+          yearBlockSize={yearBlockSize}
         />
       )}
     </>

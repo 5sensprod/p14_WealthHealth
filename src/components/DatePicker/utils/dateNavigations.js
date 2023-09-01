@@ -27,14 +27,6 @@ export const applyYearConfig = (yearConfig, currentYear) => {
 }
 
 export const goToNextMonth = (currentDate, minYear, maxYear) => {
-  console.log(
-    'Valeur traitée de minYear dans goToNextMonth:',
-    applyYearConfig(minYear),
-  )
-  console.log(
-    'Valeur traitée de maxYear dans goToNextMonth:',
-    applyYearConfig(maxYear),
-  )
   const nextDate = adjustDate(
     currentDate,
     currentDate.getMonth() === 11 ? 1 : 0,
@@ -47,14 +39,6 @@ export const goToNextMonth = (currentDate, minYear, maxYear) => {
 }
 
 export const goToPreviousMonth = (currentDate, minYear, maxYear) => {
-  console.log(
-    'Valeur traitée de minYear dans goToPreviousMonth:',
-    applyYearConfig(minYear),
-  )
-  console.log(
-    'Valeur traitée de maxYear dans goToPreviousMonth:',
-    applyYearConfig(maxYear),
-  )
   const prevDate = adjustDate(
     currentDate,
     currentDate.getMonth() === 0 ? -1 : 0,
@@ -82,9 +66,15 @@ export const goToPreviousYear = (currentDate, minYear, maxYear) => {
   return prevDate
 }
 
-export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
+export const goToNextYearBlock = (
+  yearsBlock,
+  minYear,
+  maxYear,
+  yearBlockSize,
+) => {
+  const blockSize = yearBlockSize || DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
-  const newStartYear = yearsBlock[0] + DEFAULT_CONFIG.YEAR_BLOCK_SIZE
+  const newStartYear = yearsBlock[0] + blockSize
 
   if (newStartYear > maxProcessedYear) {
     // Si on dépasse maxYear, revenir à minYear
@@ -100,11 +90,17 @@ export const goToNextYearBlock = (yearsBlock, minYear, maxYear) => {
   }).filter(Boolean) // Retirer cette ligne pour garder des places vides
 }
 
-export const goToPreviousYearBlock = (yearsBlock, minYear, maxYear) => {
+export const goToPreviousYearBlock = (
+  yearsBlock,
+  minYear,
+  maxYear,
+  yearBlockSize,
+) => {
+  const blockSize = yearBlockSize || DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
   const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
 
-  let newStartYear = yearsBlock[0] - DEFAULT_CONFIG.YEAR_BLOCK_SIZE
+  let newStartYear = yearsBlock[0] - blockSize
 
   if (newStartYear < minProcessedYear) {
     newStartYear = maxProcessedYear - DEFAULT_CONFIG.YEAR_BLOCK_SIZE + 1 // Revenir au bloc max

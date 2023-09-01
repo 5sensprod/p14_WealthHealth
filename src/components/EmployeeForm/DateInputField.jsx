@@ -10,7 +10,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         name={name}
         value={value}
         onChange={onChange}
-        yearsBlock={10}
+        // yearBlockSize={16}
         // useIcons={true}
         // startOfWeek="1"
         // language="fr"

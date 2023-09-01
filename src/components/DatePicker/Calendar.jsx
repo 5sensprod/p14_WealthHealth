@@ -19,6 +19,7 @@ const Calendar = forwardRef(
       selectedDate,
       minYear,
       maxYear,
+      yearBlockSize,
     },
     ref,
   ) => {
@@ -33,6 +34,7 @@ const Calendar = forwardRef(
       initialMonth,
       selectedDate,
       startOfWeek,
+      yearBlockSize,
     )
 
     const chooseDate = useChooseDate(selectDate, closeCalendar, viewedDate)
@@ -86,6 +88,7 @@ const Calendar = forwardRef(
           selectedDate={selectedDate}
           viewedDate={viewedDate}
           currentDate={currentDate}
+          yearBlockSize={yearBlockSize}
         />
       </div>
     )

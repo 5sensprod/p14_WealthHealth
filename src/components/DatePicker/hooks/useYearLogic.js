@@ -4,6 +4,7 @@ import { DEFAULT_CONFIG } from '../config/defaultConfig'
 const useYearLogic = (
   minYear = DEFAULT_CONFIG.MIN_YEAR,
   maxYear = DEFAULT_CONFIG.MAX_YEAR,
+  yearBlockSize = DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
 ) => {
   const today = new Date()
   const thisYear = today.getFullYear()
@@ -36,6 +37,7 @@ const useYearLogic = (
     years,
     yearsBlock,
     setYearsBlock,
+    yearBlockSize,
   }
 }
 

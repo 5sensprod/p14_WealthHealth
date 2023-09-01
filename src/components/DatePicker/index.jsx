@@ -46,6 +46,7 @@ function DatePicker({
   maxYear: propMaxYear, // deux lignes
   manualInputEnabled: propManualInputEnabled,
   dateFormat: propDateFormat,
+  yearBlockSize: propYearBlockSize,
   onClose,
   ...configProps
 }) {
@@ -60,20 +61,22 @@ function DatePicker({
     manualInputEnabled,
     minYear,
     maxYear,
+    yearBlockSize,
   } = handlePropsAndConfig({
     ...configProps,
     language: propLanguage,
-    minYear: propMinYear, // Utilisez le renommage pour éviter le conflit
-    maxYear: propMaxYear, // Utilisez le renommage pour éviter le conflit
+    minYear: propMinYear,
+    maxYear: propMaxYear,
     manualInputEnabled: propManualInputEnabled,
+    yearBlockSize: propYearBlockSize,
   })
   // 6.2 State & Refs Initialization
 
   // 6.3 Validation Hooks
   const [error, validate, setError] = useDateValidation(
     dateFormat,
-    minYear, // déjà surchargé
-    maxYear, // déjà surchargé
+    minYear,
+    maxYear,
     language,
   )
   // Définition de checkError
@@ -177,6 +180,7 @@ function DatePicker({
           selectedDate={selectedDate}
           minYear={minYear}
           maxYear={maxYear}
+          yearBlockSize={yearBlockSize}
         />
       )}
     </div>

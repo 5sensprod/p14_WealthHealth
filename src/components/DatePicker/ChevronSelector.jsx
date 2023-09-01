@@ -29,6 +29,7 @@ function ChevronButtons({
   setAnimationKey,
   minYear,
   maxYear,
+  yearBlockSize, // Ajouté
 }) {
   const handleDateChange = (direction) => {
     setViewedDate((prev) => {
@@ -39,8 +40,18 @@ function ChevronButtons({
         prev,
         minYear,
         maxYear,
+        yearBlockSize, // Ajouté
       )
+      if (newYearBlock) {
+        // ajouté pour éviter 'undefined'
+        setYearsBlock(newYearBlock)
+      }
 
+      if (newDate) {
+        // ajouté pour éviter 'undefined'
+        setAnimationKey((prevKey) => prevKey + 1)
+        return newDate
+      }
       setYearsBlock(newYearBlock)
       setAnimationKey((prevKey) => prevKey + 1)
       return newDate
