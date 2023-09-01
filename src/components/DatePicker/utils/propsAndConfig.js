@@ -13,6 +13,7 @@ export const handlePropsAndConfig = (configProps) => {
     maxYear: originalMaxYear,
     language: originalLanguage,
     yearBlockSize: originalYearBlockSize,
+    designType: originalDesignType,
   } = {
     ...DEFAULT_CONFIG,
     ...configProps,
@@ -55,6 +56,11 @@ export const handlePropsAndConfig = (configProps) => {
       ? originalYearBlockSize
       : DEFAULT_CONFIG.YEAR_BLOCK_SIZE
 
+  const designType =
+    originalDesignType !== undefined
+      ? originalDesignType
+      : DEFAULT_CONFIG.DESIGN_TYPE
+
   return {
     language,
     useIcons,
@@ -66,5 +72,6 @@ export const handlePropsAndConfig = (configProps) => {
     minYear,
     maxYear,
     yearBlockSize,
+    designType,
   }
 }

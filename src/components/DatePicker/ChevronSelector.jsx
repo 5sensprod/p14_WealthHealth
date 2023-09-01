@@ -10,7 +10,7 @@ const ChevronButton = React.forwardRef(
     <Button
       ref={ref}
       onClick={onClick}
-      onMouseDown={(e) => e.preventDefault()} // Empêcher le blur de l'input
+      onMouseDown={(e) => e.preventDefault()}
       className={styles.chevronButton}
       icon={() => useIcons && <ChevronIcon direction={direction} />}
       {...props}
@@ -29,7 +29,7 @@ function ChevronButtons({
   setAnimationKey,
   minYear,
   maxYear,
-  yearBlockSize, // Ajouté
+  yearBlockSize,
 }) {
   const handleDateChange = (direction) => {
     setViewedDate((prev) => {
@@ -40,15 +40,13 @@ function ChevronButtons({
         prev,
         minYear,
         maxYear,
-        yearBlockSize, // Ajouté
+        yearBlockSize,
       )
       if (newYearBlock) {
-        // ajouté pour éviter 'undefined'
         setYearsBlock(newYearBlock)
       }
 
       if (newDate) {
-        // ajouté pour éviter 'undefined'
         setAnimationKey((prevKey) => prevKey + 1)
         return newDate
       }

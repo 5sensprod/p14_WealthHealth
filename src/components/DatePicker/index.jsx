@@ -47,6 +47,7 @@ function DatePicker({
   manualInputEnabled: propManualInputEnabled,
   dateFormat: propDateFormat,
   yearBlockSize: propYearBlockSize,
+  designType: propDesignType,
   onClose,
   ...configProps
 }) {
@@ -62,6 +63,7 @@ function DatePicker({
     minYear,
     maxYear,
     yearBlockSize,
+    designType,
   } = handlePropsAndConfig({
     ...configProps,
     language: propLanguage,
@@ -69,6 +71,7 @@ function DatePicker({
     maxYear: propMaxYear,
     manualInputEnabled: propManualInputEnabled,
     yearBlockSize: propYearBlockSize,
+    designType: propDesignType,
   })
   // 6.2 State & Refs Initialization
 
@@ -167,6 +170,7 @@ function DatePicker({
       {error && <p className={styles.errorMessage}>{error}</p>}
       {showCalendar && (
         <Calendar
+          designType={designType}
           startOfWeek={startOfWeek}
           selectDate={onDateSelect}
           closeCalendar={closeCalendar}
