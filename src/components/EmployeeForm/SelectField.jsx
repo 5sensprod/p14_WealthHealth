@@ -8,9 +8,10 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
   }
 
   return (
-    <label className={styles.label} htmlFor={name}>
-      <p>{label}</p>
+    <div className={styles.label}>
+      <label>{label}</label>
       <Select
+        aria-label={label}
         name={name}
         value={options.find((option) => option.value === value)}
         onChange={(selectedOption) => {
@@ -26,7 +27,7 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
         styles={customStyles}
       />
       {error && <span className={styles.errorMessage}>{error}</span>}
-    </label>
+    </div>
   )
 }
 

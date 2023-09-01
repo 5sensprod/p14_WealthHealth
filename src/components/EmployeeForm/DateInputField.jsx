@@ -4,8 +4,8 @@ import DatePicker from '../DatePicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
   return (
-    <label className={styles.label} htmlFor={name}>
-      <p>{label}</p>
+    <div className={styles.label}>
+      <label>{label}</label>
       <DatePicker
         name={name}
         value={value}
@@ -26,7 +26,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
       />
 
       {error && <span className={styles.errorMessage}>{error}</span>}
-    </label>
+    </div>
   )
 }
 

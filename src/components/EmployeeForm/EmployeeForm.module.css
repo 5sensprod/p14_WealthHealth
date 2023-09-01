@@ -14,9 +14,11 @@
 }
 
 .label {
-    display: block;
+    display: flex;
     margin-top: 1rem;
     margin-bottom: 10px;
+    flex-direction: column;
+    gap: 5px;
 }
 .labelContainer {
     display: block;
