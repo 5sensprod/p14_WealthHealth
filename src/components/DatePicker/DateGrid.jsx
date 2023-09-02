@@ -19,6 +19,8 @@ function DateGrid({
   viewedDate,
   currentDate,
   yearBlockSize,
+  minYear,
+  maxYear,
 }) {
   const handleMonthClick = (monthIndex) => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), monthIndex))
@@ -63,6 +65,8 @@ function DateGrid({
           handleYearClick={handleYearClick}
           selectedDate={selectedDate}
           yearBlockSize={yearBlockSize}
+          minYear={minYear}
+          maxYear={maxYear}
         />
       )}
     </>

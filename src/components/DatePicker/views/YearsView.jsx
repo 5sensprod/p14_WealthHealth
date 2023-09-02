@@ -7,6 +7,8 @@ function YearsView({
   selectedDate,
   yearsBlock,
   yearBlockSize,
+  minYear,
+  maxYear,
 }) {
   const yearsRefs = useRef([])
 

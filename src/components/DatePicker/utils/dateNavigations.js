@@ -76,19 +76,22 @@ export const goToNextYearBlock = (
   const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
   const newStartYear = yearsBlock[0] + blockSize
 
+  // Si la nouvelle année de départ dépasse maxProcessedYear,
+  // retournez simplement le bloc actuel.
   if (newStartYear > maxProcessedYear) {
-    // Si on dépasse maxYear, revenir à minYear
-    const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
-    return Array.from({ length: blockSize }, (_, i) => {
-      // Utilisez blockSize ici
-      return minProcessedYear + i
-    })
+    return yearsBlock
   }
 
-  return Array.from({ length: blockSize }, (_, i) => {
-    const year = newStartYear + i
-    return year <= maxProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
-  }).filter(Boolean) // Retirer cette ligne pour garder des places vides
+  // Si l'ajout de blockSize à newStartYear dépasse maxProcessedYear,
+  // ajustez la blockSize pour qu'elle ne dépasse pas.
+  if (newStartYear + blockSize - 1 > maxProcessedYear) {
+    return Array.from(
+      { length: maxProcessedYear - newStartYear + 1 },
+      (_, i) => newStartYear + i,
+    )
+  }
+
+  return Array.from({ length: blockSize }, (_, i) => newStartYear + i)
 }
 
 export const goToPreviousYearBlock = (
@@ -110,7 +113,9 @@ export const goToPreviousYearBlock = (
 
   return Array.from({ length: blockSize }, (_, i) => {
     const year = newStartYear + i
-    return year >= minProcessedYear && year <= maxProcessedYear ? year : null
+    // Ajoutez cette condition pour s'assurer que l'année ne dépasse pas maxProcessedYear
+    if (year > maxProcessedYear) return null
+    return year >= minProcessedYear ? year : null
   }).filter(Boolean)
 }
 

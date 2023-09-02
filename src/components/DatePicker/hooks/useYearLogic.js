@@ -18,7 +18,10 @@ const useYearLogic = (
 
   const [yearsBlock, setYearsBlock] = useState(() => {
     const yearBlockStart = calculateYearBlockStart(thisYear)
-    return Array.from({ length: yearBlockSize }, (_, i) => yearBlockStart + i)
+    return Array.from(
+      { length: yearBlockSize },
+      (_, i) => yearBlockStart + i,
+    ).filter((year) => year >= minYear && year <= maxYear)
   })
 
   // Génération du tableau des années
