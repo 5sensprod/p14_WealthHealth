@@ -56,7 +56,7 @@ function DatePicker({
     language,
     useIcons,
     dateFormat,
-    outputFormat,
+    // outputFormat,
     customStyles,
     startOfWeek,
     manualInputEnabled,
@@ -73,6 +73,8 @@ function DatePicker({
     yearBlockSize: propYearBlockSize,
     designType: propDesignType,
   })
+
+  // console.log('outputFormat:', outputFormat)
   // 6.2 State & Refs Initialization
 
   // 6.3 Validation Hooks
@@ -111,7 +113,7 @@ function DatePicker({
     dateFormat,
     onChange,
     name,
-    outputFormat,
+    // outputFormat,
   )
 
   const handleInputChange = (e) => {

@@ -15,7 +15,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         // useIcons={true}
         // startOfWeek="1"
         // language="fr"
-        // dateFormat="DEFAULT"
+        // dateFormat="ISO"
         // manualInputEnabled={true}
         // minYear={'auto-77'}
         // maxYear={'auto+10'}
