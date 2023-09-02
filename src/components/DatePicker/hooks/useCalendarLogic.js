@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { generateTotalSlots } from '../utils/calendarUtils'
+import { generateTotalSlots } from '../utils/dateFunctions'
 
 function useCalendarLogic(initialMonth, selectedDate, startOfWeek = 0) {
   const [viewedDate, setViewedDate] = useState(selectedDate || initialMonth)

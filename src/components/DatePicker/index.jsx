@@ -17,7 +17,7 @@ import useOutsideClick from './hooks/useOutsideClick'
 import useFocusAndClickOutside from './hooks/useFocusAndClickOutside'
 
 // 5. Imports: Utilities and Handlers
-import getTranslations from './translate'
+import getTranslations from './utils/translate'
 import { reorderDays } from './utils/viewUtils'
 import {
   formatDatePickerDate,
@@ -28,7 +28,7 @@ import {
   toggleCalendarVisibility,
   handleDateSelect,
   createEscapeHandler,
-} from './utils/datepickerHandlers'
+} from './utils/dateInputHandlers'
 import {
   updateInput,
   handleEmptyInput,

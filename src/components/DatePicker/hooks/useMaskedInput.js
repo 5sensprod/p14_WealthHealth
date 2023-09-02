@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { formatToMask } from '../utils/dateFormatting'
+import { formatToMask } from '../utils/dateFunctions'
 
 export const useMaskedInput = (initialValue, format, onChange) => {
   const [displayValue, setDisplayValue] = useState(

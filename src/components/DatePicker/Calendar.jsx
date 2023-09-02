@@ -6,7 +6,7 @@ import useYearLogic from './hooks/useYearLogic'
 import NavSelector from './NavSelector'
 import DateGrid from './DateGrid'
 import useChooseDate from './hooks/useChooseDate'
-import getTranslations from './translate'
+import getTranslations from './utils/translate'
 import { DEFAULT_CONFIG } from './config/defaultConfig'
 
 const Calendar = forwardRef(

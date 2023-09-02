@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { isValidDate } from '../utils/dateUtils'
+import { isValidDate } from '../utils/dateFunctions'
 import { DEFAULT_CONFIG } from '../config/defaultConfig'
-import getTranslations from '../translate'
+import getTranslations from '../utils/translate'
 
 function useDateValidation(
   dateFormat = DEFAULT_CONFIG.DATE_FORMAT,
