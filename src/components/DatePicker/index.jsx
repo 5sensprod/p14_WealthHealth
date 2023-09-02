@@ -72,10 +72,8 @@ function DatePicker({
     manualInputEnabled: propManualInputEnabled,
     yearBlockSize: propYearBlockSize,
     designType: propDesignType,
+    dateFormat: propDateFormat,
   })
-
-  // console.log('outputFormat:', outputFormat)
-  // 6.2 State & Refs Initialization
 
   // 6.3 Validation Hooks
   const [error, validate, setError] = useDateValidation(

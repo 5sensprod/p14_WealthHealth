@@ -5,7 +5,6 @@ export const handlePropsAndConfig = (configProps) => {
   const {
     useIcons: originalUseIcons,
     dateFormat: originalDateFormat,
-    // outputFormat: originalOutputFormat,
     customStyles,
     startOfWeek: originalStartOfWeek,
     manualInputEnabled: originalManualInputEnabled,
@@ -19,11 +18,9 @@ export const handlePropsAndConfig = (configProps) => {
     ...configProps,
   }
 
-  const dateFormat = originalDateFormat
-    ? originalDateFormat
+  const dateFormat = DEFAULT_CONFIG.DATE_FORMATS[originalDateFormat]
+    ? DEFAULT_CONFIG.DATE_FORMATS[originalDateFormat]
     : DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT]
-
-  // const outputFormat = originalOutputFormat || dateFormat
 
   const currentYear = new Date().getFullYear()
 
@@ -65,7 +62,6 @@ export const handlePropsAndConfig = (configProps) => {
     language,
     useIcons,
     dateFormat,
-    // outputFormat,
     customStyles,
     startOfWeek,
     manualInputEnabled,
