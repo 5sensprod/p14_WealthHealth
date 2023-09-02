@@ -3,63 +3,6 @@ import { applyYearConfig } from './dateNavigations'
 
 export const handlePropsAndConfig = (configProps) => {
   const {
-    useIcons: originalUseIcons,
-    dateFormat: originalDateFormat,
-    customStyles,
-    startOfWeek: originalStartOfWeek,
-    manualInputEnabled: originalManualInputEnabled,
-    minYear: originalMinYear,
-    maxYear: originalMaxYear,
-    language: originalLanguage,
-    yearBlockSize: originalYearBlockSize,
-    designType: originalDesignType,
-  } = {
-    ...DEFAULT_CONFIG,
-    ...configProps,
-  }
-
-  const dateFormat = DEFAULT_CONFIG.DATE_FORMATS[originalDateFormat]
-    ? DEFAULT_CONFIG.DATE_FORMATS[originalDateFormat]
-    : DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT]
-
-  const currentYear = new Date().getFullYear()
-
-  const minYear =
-    applyYearConfig(originalMinYear || DEFAULT_CONFIG.MIN_YEAR, currentYear) ||
-    DEFAULT_CONFIG.MIN_YEAR
-
-  const maxYear =
-    applyYearConfig(originalMaxYear || DEFAULT_CONFIG.MAX_YEAR, currentYear) ||
-    DEFAULT_CONFIG.MAX_YEAR
-
-  const startOfWeek =
-    originalStartOfWeek !== undefined
-      ? originalStartOfWeek
-      : DEFAULT_CONFIG.START_OF_WEEK
-
-  const useIcons =
-    originalUseIcons !== undefined ? originalUseIcons : DEFAULT_CONFIG.USE_ICONS
-
-  const language =
-    originalLanguage !== undefined ? originalLanguage : DEFAULT_CONFIG.LANGUAGE
-
-  const manualInputEnabled =
-    originalManualInputEnabled !== undefined
-      ? originalManualInputEnabled
-      : DEFAULT_CONFIG.MANUAL_INPUT_ENABLED
-
-  const yearBlockSize =
-    originalYearBlockSize !== undefined
-      ? originalYearBlockSize
-      : DEFAULT_CONFIG.YEAR_BLOCK_SIZE
-
-  const designType =
-    originalDesignType !== undefined
-      ? originalDesignType
-      : DEFAULT_CONFIG.DESIGN_TYPE
-
-  return {
-    language,
     useIcons,
     dateFormat,
     customStyles,
@@ -67,7 +10,47 @@ export const handlePropsAndConfig = (configProps) => {
     manualInputEnabled,
     minYear,
     maxYear,
+    language,
     yearBlockSize,
     designType,
+  } = {
+    ...DEFAULT_CONFIG,
+    ...configProps,
+  }
+
+  const currentYear = new Date().getFullYear()
+
+  const getProcessedValue = (originalValue, defaultValue, processingFunc) =>
+    originalValue !== undefined
+      ? processingFunc
+        ? processingFunc(originalValue)
+        : originalValue
+      : defaultValue
+
+  return {
+    language: getProcessedValue(language, DEFAULT_CONFIG.LANGUAGE),
+    useIcons: getProcessedValue(useIcons, DEFAULT_CONFIG.USE_ICONS),
+    dateFormat: getProcessedValue(
+      dateFormat,
+      DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT],
+      (val) => DEFAULT_CONFIG.DATE_FORMATS[val],
+    ),
+    customStyles,
+    startOfWeek: getProcessedValue(startOfWeek, DEFAULT_CONFIG.START_OF_WEEK),
+    manualInputEnabled: getProcessedValue(
+      manualInputEnabled,
+      DEFAULT_CONFIG.MANUAL_INPUT_ENABLED,
+    ),
+    minYear: getProcessedValue(minYear, DEFAULT_CONFIG.MIN_YEAR, (val) =>
+      applyYearConfig(val, currentYear),
+    ),
+    maxYear: getProcessedValue(maxYear, DEFAULT_CONFIG.MAX_YEAR, (val) =>
+      applyYearConfig(val, currentYear),
+    ),
+    yearBlockSize: getProcessedValue(
+      yearBlockSize,
+      DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
+    ),
+    designType: getProcessedValue(designType, DEFAULT_CONFIG.DESIGN_TYPE),
   }
 }
