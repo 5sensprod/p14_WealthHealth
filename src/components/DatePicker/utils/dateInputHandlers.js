@@ -47,7 +47,6 @@ export const handleDateSelect =
     dateFormat,
     onChange,
     name,
-    // outputFormat,
   ) =>
   (date) => {
     const actualDate = typeof date === 'string' ? new Date(date) : date
@@ -56,7 +55,6 @@ export const handleDateSelect =
     setSelectedDate(actualDate)
     closeCalendar()
 
-    // Valide la nouvelle valeur ici avec le format d'affichage (dateFormat)
     validate(formatDatePickerDate(actualDate, dateFormat))
 
     onChange({

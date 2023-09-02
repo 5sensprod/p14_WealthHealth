@@ -1,5 +1,5 @@
 // 1. Imports: Dependencies
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
 // 2. Imports: Styles
 import styles from './DatePicker.module.css'
@@ -28,8 +28,6 @@ import {
   toggleCalendarVisibility,
   handleDateSelect,
   createEscapeHandler,
-} from './utils/dateInputHandlers'
-import {
   updateInput,
   handleEmptyInput,
   handleValidDate,
@@ -56,7 +54,6 @@ function DatePicker({
     language,
     useIcons,
     dateFormat,
-    // outputFormat,
     customStyles,
     startOfWeek,
     manualInputEnabled,
@@ -82,6 +79,7 @@ function DatePicker({
     maxYear,
     language,
   )
+
   // Définition de checkError
   const checkError = () => error !== null
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
@@ -92,10 +90,11 @@ function DatePicker({
   const containerRef = useRef(null)
   const inputRef = useRef(null)
 
-  // 6.4 Effects
-  // useEffect(() => {
-  //   setInput(value)
-  // }, [value, setInput])
+  useEffect(() => {
+    if (error) {
+      setSelectedDate(new Date())
+    }
+  }, [error])
 
   useOutsideClick(calendarRef, buttonRef, closeCalendar)
   useEscapeKey(createEscapeHandler(closeCalendar, inputRef))
@@ -111,7 +110,6 @@ function DatePicker({
     dateFormat,
     onChange,
     name,
-    // outputFormat,
   )
 
   const handleInputChange = (e) => {
@@ -142,6 +140,7 @@ function DatePicker({
       handleIncompleteInput(newValue, name, onChange, setError)
     }
   }
+
   const onToggleCalendarVisibility = toggleCalendarVisibility(toggleCalendar)
 
   // 6.6 Derived Data & Effects
@@ -163,6 +162,7 @@ function DatePicker({
           className={error ? styles.errorInput : ''}
           onClick={onToggleCalendarVisibility}
           onChange={handleInputChange}
+          maxLength={10}
         />
 
         <CalendarButton ref={buttonRef} onClick={onToggleCalendarVisibility} />

@@ -10,11 +10,12 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         name={name}
         value={value}
         onChange={onChange}
+        designType={'neuro'}
         yearBlockSize={20}
         // useIcons={true}
         startOfWeek="1"
         language="fr"
-        dateFormat="ISO"
+        dateFormat="DEFAULT"
         // manualInputEnabled={true}
         // minYear={'auto-10'}
         // maxYear={'auto+10'}
