@@ -79,12 +79,13 @@ export const goToNextYearBlock = (
   if (newStartYear > maxProcessedYear) {
     // Si on dépasse maxYear, revenir à minYear
     const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
-    return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
+    return Array.from({ length: blockSize }, (_, i) => {
+      // Utilisez blockSize ici
       return minProcessedYear + i
     })
   }
 
-  return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
+  return Array.from({ length: blockSize }, (_, i) => {
     const year = newStartYear + i
     return year <= maxProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
   }).filter(Boolean) // Retirer cette ligne pour garder des places vides
@@ -103,15 +104,14 @@ export const goToPreviousYearBlock = (
   let newStartYear = yearsBlock[0] - blockSize
 
   if (newStartYear < minProcessedYear) {
-    newStartYear = maxProcessedYear - DEFAULT_CONFIG.YEAR_BLOCK_SIZE + 1 // Revenir au bloc max
-  } else {
-    newStartYear = Math.max(newStartYear, minProcessedYear)
+    // Si on est en dessous de minYear, définir le début du bloc à maxYear - blockSize + 1
+    newStartYear = maxProcessedYear - blockSize + 1
   }
 
-  return Array.from({ length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE }, (_, i) => {
+  return Array.from({ length: blockSize }, (_, i) => {
     const year = newStartYear + i
-    return year >= minProcessedYear && year <= maxProcessedYear ? year : null // null ou un autre marqueur pour des années non-cliquables
-  }).filter(Boolean) // Retirer cette ligne pour garder des places vides
+    return year >= minProcessedYear && year <= maxProcessedYear ? year : null
+  }).filter(Boolean)
 }
 
 export const calculateNewDate = (
@@ -121,6 +121,7 @@ export const calculateNewDate = (
   prev,
   minYear,
   maxYear,
+  yearBlockSize,
 ) => {
   const currentYear = new Date().getFullYear()
   const minProcessedYear = applyYearConfig(minYear, currentYear)
@@ -149,8 +150,14 @@ export const calculateNewDate = (
               yearsBlock,
               minProcessedYear,
               maxProcessedYear,
+              yearBlockSize,
             )
-          : goToNextYearBlock(yearsBlock, minProcessedYear, maxProcessedYear)
+          : goToNextYearBlock(
+              yearsBlock,
+              minProcessedYear,
+              maxProcessedYear,
+              yearBlockSize,
+            )
       break
     default:
       break

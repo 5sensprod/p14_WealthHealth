@@ -80,13 +80,6 @@ function HomeButton({ setViewedDate, setView, setCurrentDate }) {
 }
 
 function NavSelector(props) {
-  // const monthRef = useRef(null)
-
-  // useEffect(() => {
-  //   if (monthRef.current) {
-  //     monthRef.current.focus()
-  //   }
-  // }, [])
   return (
     <>
       <div className={styles.NavSelector}>

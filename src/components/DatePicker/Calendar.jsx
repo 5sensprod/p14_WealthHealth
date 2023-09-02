@@ -32,6 +32,7 @@ const Calendar = forwardRef(
     const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic(
       dateProps.minYear,
       dateProps.maxYear,
+      dateProps.yearBlockSize,
     )
 
     // Calendar Logic
@@ -66,6 +67,7 @@ const Calendar = forwardRef(
             view={view}
             setView={setView}
             yearsBlock={yearsBlock}
+            yearBlockSize={dateProps.yearBlockSize}
             setYearsBlock={setYearsBlock}
             animationKey={animationKey}
             setAnimationKey={setAnimationKey}

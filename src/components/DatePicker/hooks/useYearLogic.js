@@ -13,15 +13,12 @@ const useYearLogic = (
   // Bloc actuel basé sur l'année courante
   const calculateYearBlockStart = (currentYear) => {
     const yearsSinceStart = currentYear - minYear
-    return currentYear - (yearsSinceStart % DEFAULT_CONFIG.YEAR_BLOCK_SIZE)
+    return currentYear - (yearsSinceStart % yearBlockSize)
   }
 
   const [yearsBlock, setYearsBlock] = useState(() => {
     const yearBlockStart = calculateYearBlockStart(thisYear)
-    return Array.from(
-      { length: DEFAULT_CONFIG.YEAR_BLOCK_SIZE },
-      (_, i) => yearBlockStart + i,
-    )
+    return Array.from({ length: yearBlockSize }, (_, i) => yearBlockStart + i)
   })
 
   // Génération du tableau des années
