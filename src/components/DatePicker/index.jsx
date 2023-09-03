@@ -13,8 +13,7 @@ import MaskedInput from './MaskedInput'
 import useDateValidation from './hooks/useDateValidation'
 import useEscapeKey from './hooks/useEscapeKey'
 import useDatePickerState from './hooks/useDatePickerState'
-import useOutsideClick from './hooks/useOutsideClick'
-import useFocusAndClickOutside from './hooks/useFocusAndClickOutside'
+import useOutsideInteractions from './hooks/useOutsideInteractions'
 
 // 5. Imports: Utilities and Handlers
 import getTranslations from './utils/translate'
@@ -96,9 +95,8 @@ function DatePicker({
     }
   }, [error])
 
-  useOutsideClick(calendarRef, buttonRef, closeCalendar)
   useEscapeKey(createEscapeHandler(closeCalendar, inputRef))
-  useFocusAndClickOutside(containerRef, closeCalendar)
+  useOutsideInteractions(calendarRef, buttonRef, closeCalendar)
 
   // 6.5 Handlers
   const onDateSelect = handleDateSelect(
