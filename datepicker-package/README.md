@@ -50,21 +50,28 @@ export default App
 
 ## Configurations
 
-Les props name, value et onChange sont essentiels pour récupérer les données.
+Vous pouvez personnaliser le comportement et l'apparence du DatePicker.
 
-### Exemple :
+### Usage :
 
 ```javascript
 <DatePicker
   name={name}
   value={value}
   onChange={onChange}
+  designType={'neuro'}
+  yearBlockSize={32}
+  useIcons={true}
   startOfWeek="1"
   language="fr"
   dateFormat="ISO"
   manualInputEnabled={true}
+  minYear={'auto-10'}
+  maxYear={2030}
 />
 ```
+
+### Liste des options :
 
 Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les props suivantes :
 
