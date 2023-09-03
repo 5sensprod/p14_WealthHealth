@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './EmployeeForm.module.css'
-import DatePicker from 'react-custom-datepicker'
+import DatePicker from '@5sensprod/react-custom-datepicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
   return (
@@ -11,14 +11,14 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         name={name}
         value={value}
         onChange={onChange}
-        designType={'neuro'}
-        yearBlockSize={32}
+        designType={'default'}
+        yearBlockSize={16}
         useIcons={true}
         startOfWeek="1"
         language="fr"
-        dateFormat="ISO"
+        // dateFormat="ISO"
         manualInputEnabled={true}
-        minYear={'auto-10'}
+        // minYear={'auto-10'}
         maxYear={2030}
         customStyles={{
           backgroundColor: 'transparent',
