@@ -1,0 +1,104 @@
+/* Default */
+
+.day,
+.grayedDay {
+    cursor: default;
+    text-align: center;
+    padding: 8px 4px;
+    transition: all 0.3s ease;
+}
+
+.day:hover,
+.month:hover,
+.year:hover {
+    background: #EEF0F4;
+border-radius: 25%;
+box-shadow: inset 7px 7px 14px #d4d6d9, inset -7px -7px 14px #ffffff;
+}
+
+.active {
+    background-color: #f0f0f0;
+}
+
+.navButton:hover {
+    opacity: 1;
+}
+
+.grayedDay {
+    color: #0000003b;
+}
+
+
+/* Glass */
+.glass {
+    margin-top: 15px;
+    position: absolute;
+    padding: 10px 10px;
+    background: rgba(255, 242, 223, 0.25);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 6px );
+    -webkit-backdrop-filter: blur( 6px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    width: fit-content;
+    width: 300px;
+    height: fit-content;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    color: rgba(0, 0, 0, 0.867);
+}
+
+.glass .daysContainer, .daysContainer {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.glass .day,
+.glass .grayedDay {
+    cursor: default;
+    text-align: center;
+    padding: 8px 4px;
+    transition: all 0.3s ease;
+}
+
+.glass .day:hover,
+.glass .month:hover,
+.glass .year:hover {
+    background-color: #490e0e;
+}
+
+.glass .active {
+    background-color: #f0f0f0;
+}
+
+.glass .navButton:hover {
+    opacity: 1;
+}
+
+.glass .grayedDay {
+    color: #de22223b;
+}
+
+
+
+/* Neuro */
+.neuro {
+    margin-top: 15px;
+    position: absolute;
+    padding: 20px 20px;
+    border-radius: 35px;
+    background: #ffffff;
+    box-shadow: inset 20px 20px 60px #d2d2d2,
+    inset -20px -20px 60px #ffffff;
+    width: fit-content;
+    width: 300px;
+    height: fit-content;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+

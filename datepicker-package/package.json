@@ -1,0 +1,20 @@
+{
+  "name": "react-custom-datepicker",
+  "version": "1.0.0",
+  "description": "Un composant DatePicker personnalisé pour React",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "votre_script_de_compilation"
+  },
+  "keywords": [
+    "react",
+    "datepicker",
+    "calendar"
+  ],
+  "author": "5SENSPROD Christophe Barilley",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  }
+}

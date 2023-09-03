@@ -1,0 +1,43 @@
+.container {
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.containerInput {
+  display: flex;
+  gap: 10px;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 5px;
+}
+.calendarButton {
+  cursor: pointer;
+}
+
+select {
+  background: transparent;
+  border: none;
+}
+
+.calendarButton {
+  background: transparent;
+  border: none;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+  padding: 0;
+}
+
+.calendarButton:hover {
+  opacity: .8;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

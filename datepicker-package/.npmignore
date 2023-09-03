@@ -1,0 +1,10 @@
+# Ignorer les fichiers de test
+tests/
+test.js
+
+# Ignorer la documentation
+docs/
+
+# Ignorer les fichiers de développement
+*.log
+yarn.lock
