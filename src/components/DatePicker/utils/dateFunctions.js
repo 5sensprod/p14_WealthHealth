@@ -210,3 +210,12 @@ export function formatToMask(
 
   return maskedValue
 }
+
+export function chooseDate(selectDate, closeCalendar, currentMonth, day) {
+  selectDate(
+    `${currentMonth.getFullYear()}-${String(
+      currentMonth.getMonth() + 1,
+    ).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+  )
+  closeCalendar()
+}

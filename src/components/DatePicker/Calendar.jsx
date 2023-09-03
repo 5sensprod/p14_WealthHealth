@@ -3,10 +3,11 @@ import styles from './Calendar.module.css'
 import NavSelector from './NavSelector'
 import DateGrid from './DateGrid'
 import getTranslations from './utils/translate'
-import useChooseDate from './hooks/useChooseDate'
+// import useChooseDate from './hooks/useChooseDate'
 import useCalendarLogic from './hooks/useCalendarLogic'
 import useYearLogic from './hooks/useYearLogic'
 import useDesignStyles from './hooks/useDesignStyles'
+import { chooseDate } from './utils/dateFunctions'
 
 const Calendar = forwardRef(
   (
@@ -44,7 +45,8 @@ const Calendar = forwardRef(
     )
 
     // Date choosing logic
-    const chooseDate = useChooseDate(selectDate, closeCalendar, viewedDate)
+    const handleChooseDate = (day) =>
+      chooseDate(selectDate, closeCalendar, viewedDate, day)
 
     // State Initializations
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -82,7 +84,7 @@ const Calendar = forwardRef(
         <DateGrid
           key={`${viewedDate.getMonth()}-${viewedDate.getFullYear()}`}
           totalSlots={totalSlots}
-          chooseDate={chooseDate}
+          chooseDate={handleChooseDate}
           translations={translations}
           view={view}
           setView={setView}
