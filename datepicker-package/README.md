@@ -1,11 +1,10 @@
 # React Custom DatePicker
 
 Un composant DatePicker personnalisé pour React.
-Installation
 
-## Installez via npm
+## Installation
 
-npm install react-custom-datepicker
+npm i @5sensprod/react-custom-datepicker
 
 ## Utilisation
 
