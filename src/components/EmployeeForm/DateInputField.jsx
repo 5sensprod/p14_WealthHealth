@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './EmployeeForm.module.css'
-import DatePicker from '../DatePicker'
+import DatePicker from 'react-custom-datepicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
   return (

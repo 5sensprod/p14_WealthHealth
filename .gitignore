@@ -11,6 +11,10 @@
 # production
 /build
 
+# datePicker
+datepicker-package/node_modules
+datepicker-package/dist
+
 # misc
 .DS_Store
 .env.local
