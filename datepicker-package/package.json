@@ -1,5 +1,5 @@
 {
-  "name": "react-custom-datepicker",
+  "name": "@5sensprod/react-custom-datepicker",
   "version": "1.0.0",
   "description": "Un composant DatePicker personnalisé pour React",
   "main": "dist/index.js",
