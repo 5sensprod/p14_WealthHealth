@@ -54,6 +54,7 @@ Les props name, value et onChange sont essentiels pour récupérer les données.
 
 ### Exemple :
 
+```javascript
 <DatePicker
   name={name}
   value={value}
@@ -63,6 +64,7 @@ Les props name, value et onChange sont essentiels pour récupérer les données.
   dateFormat="ISO"
   manualInputEnabled={true}
 />
+```
 
 Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les props suivantes :
 
