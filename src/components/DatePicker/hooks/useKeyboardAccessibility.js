@@ -1,14 +1,13 @@
-import { useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 
-function useKeyboardAccessibility(onAction, onEscape) {
+function useKeyboardAccessibility(onAction) {
+  const ref = useRef(null)
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Enter') {
         e.preventDefault()
         onAction()
-      }
-      if (e.key === 'Escape' && onEscape) {
-        onEscape()
       }
     }
 
@@ -18,14 +17,21 @@ function useKeyboardAccessibility(onAction, onEscape) {
       }
     }
 
-    document.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('keyup', handleKeyUp)
+    const currentRef = ref.current
+    if (currentRef) {
+      currentRef.addEventListener('keydown', handleKeyDown)
+      currentRef.addEventListener('keyup', handleKeyUp)
+    }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('keyup', handleKeyUp)
+      if (currentRef) {
+        currentRef.removeEventListener('keydown', handleKeyDown)
+        currentRef.removeEventListener('keyup', handleKeyUp)
+      }
     }
-  }, [onAction, onEscape])
+  }, [onAction])
+
+  return ref
 }
 
 export default useKeyboardAccessibility
