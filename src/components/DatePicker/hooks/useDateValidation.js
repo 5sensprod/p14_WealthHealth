@@ -21,7 +21,7 @@ function useDateValidation(
         )
       : DEFAULT_CONFIG.DATE_FORMAT
 
-    let formattedError = translations.errors.unknownError // valeur par défaut
+    let formattedError = translations.errors.unknownError
     const validationResponse = isValidDate(value, formatKey, minYear, maxYear)
 
     if (validationResponse.isValid) {
