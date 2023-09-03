@@ -14,7 +14,7 @@ export const handleValidDate = (
   onChange,
   setError,
   setSelectedDate,
-  convertFormattedStringToDate, // Déjà un argument
+  convertFormattedStringToDate,
   dateFormat,
 ) => {
   setError(null)

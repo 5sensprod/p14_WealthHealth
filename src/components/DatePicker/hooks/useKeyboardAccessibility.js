@@ -6,14 +6,14 @@ function useKeyboardAccessibility(onAction) {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Enter') {
-        e.preventDefault() // Empêche le comportement par défaut pour "Enter"
+        e.preventDefault()
         onAction()
       }
     }
 
     const handleKeyUp = (e) => {
       if (e.key === 'Space') {
-        onAction() // "Space" déclenche l'action sur keyUp pour éviter le défilement par défaut
+        onAction()
       }
     }
 
