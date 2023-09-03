@@ -9,7 +9,7 @@ npm install react-custom-datepicker
 
 ## Utilisation
 
-````javascript
+```javascript
 import DatePicker from 'react-custom-datepicker'
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
   )
 }
 export default App
-<!-- ``` -->
+```
 
 Notes importantes:
 
@@ -29,26 +29,24 @@ Notes importantes:
     La prop value doit être au format spécifié par dateFormat (par défaut, DD/MM/YYYY).
     Si vous souhaitez lier le DatePicker à un <label>, assurez-vous de fournir un attribut id unique au DatePicker et utilisez ce même ID dans l'attribut for du <label>. Ceci améliore l'accessibilité et l'expérience utilisateur :
 
-    // ```javascript
-
+```javascript
 import DatePicker from 'react-custom-datepicker'
 
 function App() {
-return (
-
-<div>
-<label htmlFor={`${name}DateInput`}>{label}</label>
-<DatePicker
-id={`${name}DateInput`}
-name={name}
-value={value}
-onChange={onChange}
-/>
-</div>
-)
+  return (
+    <div>
+      <label htmlFor={`${name}DateInput`}>{label}</label>
+      <DatePicker
+        id={`${name}DateInput`}
+        name={name}
+        value={value}
+        onChange={onChange}
+      />
+    </div>
+  )
 }
 export default App
-````
+```
 
 ## Configurations
 
