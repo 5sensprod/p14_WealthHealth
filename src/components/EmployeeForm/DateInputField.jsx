@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './EmployeeForm.module.css'
-import DatePicker from '@5sensprod/react-custom-datepicker'
+// import DatePicker from '@5sensprod/react-custom-datepicker'
+import DatePicker from '../DatePicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
   return (
@@ -18,7 +19,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         language="fr"
         // dateFormat="ISO"
         manualInputEnabled={true}
-        // minYear={'auto-10'}
+        minYear={'auto-10'}
         maxYear={2030}
         customStyles={{
           backgroundColor: 'transparent',
