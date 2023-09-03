@@ -35,6 +35,7 @@ import {
 
 // 6. Component Definition
 function DatePicker({
+  id,
   name,
   value,
   onChange,
@@ -151,6 +152,7 @@ function DatePicker({
     <div ref={containerRef} className={styles.container} style={customStyles}>
       <div className={styles.inputContainer} style={customStyles}>
         <MaskedInput
+          id={id}
           ref={inputRef}
           value={inputValue}
           format={dateFormat}

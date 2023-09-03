@@ -16,14 +16,55 @@ function App() {
   return (
     <div>
       <h1>Mon application</h1>
-      <DatePicker />
+      <DatePicker name={name} value={value} onChange={onChange} />
     </div>
   )
 }
 export default App
 ```
 
+Notes importantes:
+
+    Les props name, value et onChange sont essentiels pour récupérer les données.
+    La prop value doit être au format spécifié par dateFormat (par défaut, DD/MM/YYYY).
+    Si vous souhaitez lier le DatePicker à un <label>, assurez-vous de fournir un attribut id unique au DatePicker et utilisez ce même ID dans l'attribut for du <label>. Ceci améliore l'accessibilité et l'expérience utilisateur :
+
+    ```javascript
+
+import DatePicker from 'react-custom-datepicker'
+
+function App() {
+return (
+
+<div>
+<label htmlFor={`${name}DateInput`}>{label}</label>
+<DatePicker
+id={`${name}DateInput`}
+name={name}
+value={value}
+onChange={onChange}
+/>
+</div>
+)
+}
+export default App
+```
+
 ## Configurations
+
+Les props name, value et onChange sont essentiels pour récupérer les données.
+
+### Exemple :
+
+<DatePicker
+  name={name}
+  value={value}
+  onChange={onChange}
+  startOfWeek="1"
+  language="fr"
+  dateFormat="ISO"
+  manualInputEnabled={true}
+/>
 
 Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les props suivantes :
 
@@ -75,3 +116,7 @@ Les contributions sont les bienvenues. Veuillez ouvrir une issue ou soumettre un
 ## Licence
 
 MIT
+
+```
+
+```

@@ -5,24 +5,25 @@ import DatePicker from '../DatePicker'
 const DateInputField = ({ name, value, label, onChange, error }) => {
   return (
     <div className={styles.label}>
-      <label>{label}</label>
+      <label htmlFor={`${name}DateInput`}>{label}</label>
       <DatePicker
+        id={`${name}DateInput`}
         name={name}
         value={value}
         onChange={onChange}
-        // designType={'neuro'}
-        // yearBlockSize={32}
-        // useIcons={true}
-        // startOfWeek="1"
-        // language="fr"
-        // dateFormat="ISO"
-        // manualInputEnabled={true}
-        // minYear={'auto-10'}
-        // maxYear={2030}
-        // customStyles={{
-        //   backgroundColor: 'transparent',
-        //   borderRadius: '0',
-        // }}
+        designType={'neuro'}
+        yearBlockSize={32}
+        useIcons={true}
+        startOfWeek="1"
+        language="fr"
+        dateFormat="ISO"
+        manualInputEnabled={true}
+        minYear={'auto-10'}
+        maxYear={2030}
+        customStyles={{
+          backgroundColor: 'transparent',
+          borderRadius: '0',
+        }}
       />
 
       {error && <span className={styles.errorMessage}>{error}</span>}
