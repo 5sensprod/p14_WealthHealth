@@ -35,6 +35,7 @@ import {
 
 // 6. Component Definition
 function DatePicker({
+  id,
   name,
   value,
   onChange,
@@ -48,6 +49,7 @@ function DatePicker({
   onClose,
   ...configProps
 }) {
+  // console.log(typeof value, value)
   // 6.1 Configuration and State Initialization
   const {
     language,
@@ -83,6 +85,11 @@ function DatePicker({
   const checkError = () => error !== null
   const { showCalendar, inputValue, toggleCalendar, closeCalendar, setInput } =
     useDatePickerState(value, dateFormat, onClose, checkError, setError)
+
+  useEffect(() => {
+    setInput(value)
+  }, [value, setInput])
+
   const [selectedDate, setSelectedDate] = useState(new Date())
   const calendarRef = useRef(null)
   const buttonRef = useRef(null)
@@ -150,6 +157,7 @@ function DatePicker({
     <div ref={containerRef} className={styles.container} style={customStyles}>
       <div className={styles.inputContainer} style={customStyles}>
         <MaskedInput
+          id={id}
           ref={inputRef}
           value={inputValue}
           format={dateFormat}

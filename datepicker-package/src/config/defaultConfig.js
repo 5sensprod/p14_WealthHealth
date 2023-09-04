@@ -1,7 +1,7 @@
 export const DEFAULT_CONFIG = {
   YEAR_BLOCK_SIZE: 16,
   USE_ICONS: true,
-  DESIGN_TYPE: 'default', // 'default' ou 'alternative'
+  DESIGN_TYPE: 'default',
   LANGUAGE: 'fr',
   DATE_FORMAT: 'DEFAULT',
   CUSTOM_STYLES: {},
@@ -16,5 +16,15 @@ export const DEFAULT_CONFIG = {
   },
 }
 
-// DEFAULT_CONFIG.OUTPUT_FORMAT =
-//   DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT]
+const currentYear = new Date().getFullYear()
+
+export const CONFIG_VALIDATION_RULES = {
+  LANGUAGE: ['en', 'fr'],
+  START_OF_WEEK: [0, 1, 2, 3, 4, 5, 6],
+  DESIGN_TYPE: ['default', 'neuro', 'glass'],
+  USE_ICONS: [true, false],
+  MANUAL_INPUT_ENABLED: [true, false],
+  DATE_FORMAT: Object.keys(DEFAULT_CONFIG.DATE_FORMATS),
+  MIN_YEAR: { min: 1900, max: currentYear },
+  MAX_YEAR: { min: 1900, max: currentYear + 50 },
+}
