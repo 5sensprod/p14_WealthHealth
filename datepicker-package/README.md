@@ -92,7 +92,7 @@ Vous pouvez personnaliser le comportement et l'apparence du DatePicker.
   designType={'neuro'}
   yearBlockSize={32}
   useIcons={true}
-  startOfWeek="1"
+  startOfWeek={1}
   language="fr"
   dateFormat="ISO"
   manualInputEnabled={true}

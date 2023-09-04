@@ -49,7 +49,7 @@ function DatePicker({
   onClose,
   ...configProps
 }) {
-  // console.log(typeof value, value)
+  console.log(typeof value, value)
   // 6.1 Configuration and State Initialization
   const {
     language,
