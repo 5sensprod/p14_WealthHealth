@@ -8,17 +8,41 @@ npm i @5sensprod/react-custom-datepicker
 
 ## Utilisation
 
+Le composant DatePicker de @5sensprod/react-custom-datepicker est conçu pour être intuitif et facile à utiliser. Cependant, quelques configurations initiales sont essentielles pour garantir son bon fonctionnement.
+
+Dans l'exemple ci-dessous, nous montrons comment intégrer le composant DatePicker dans une application React. Nous soulignons l'importance d'initialiser un état pour la date sélectionnée, qui est cruciale pour le bon fonctionnement du composant dès son premier rendu.
+
+Notez bien : La fonction handleDateChange est un exemple basique de gestionnaire d'événements. Elle est conçue pour être simple et claire. Cependant, en fonction de vos besoins spécifiques, vous pouvez la modifier ou la compléter pour s'adapter à la logique de votre formulaire ou de votre application.
+
 ```javascript
-import DatePicker from 'react-custom-datepicker'
+import React, { useState } from 'react'
+import './App.css'
+import DatePicker from '@5sensprod/react-custom-datepicker'
 
 function App() {
+  // *** Initialisation cruciale Définissez un état pour la date sélectionnée.
+  // Il est essentiel d'initialiser l'état avec une valeur (ici, la date du jour) pour que le DatePicker fonctionne correctement dès le départ.
+
+  const [selectedDate, setSelectedDate] = useState(new Date())
+
+  // Cette fonction sera appelée chaque fois que l'utilisateur sélectionne une nouvelle date
+  const handleDateChange = (date) => {
+    setSelectedDate(date)
+    console.log('Date sélectionnée:', date)
+  }
+
   return (
-    <div>
-      <h1>Mon application</h1>
-      <DatePicker name={name} value={value} onChange={onChange} />
+    <div className="App">
+      <h1>Test du DatePicker</h1>
+      <DatePicker
+        name={'name'} // nom de l'input, utile pour la gestion des formulaires
+        value={selectedDate} // la date actuellement sélectionnée
+        onChange={handleDateChange} // fonction appelée lors de la sélection d'une nouvelle date
+      />
     </div>
   )
 }
+
 export default App
 ```
 
@@ -29,16 +53,23 @@ La prop value doit être au format spécifié par dateFormat (par défaut, DD/MM
 Si vous souhaitez lier le DatePicker à un <label>, assurez-vous de fournir un attribut id unique au DatePicker et utilisez ce même ID dans l'attribut for du <label>. Ceci améliore l'accessibilité et l'expérience utilisateur.
 
 ```javascript
-import DatePicker from 'react-custom-datepicker'
-
 function App() {
+  // Note: Assurez-vous d'initialiser vos states `name`, `value` et `onChange` au niveau parent (exemple précédent).
+
   return (
     <div>
+      // Utilisez un label pour améliorer l'accessibilité
       <label htmlFor={`${name}DateInput`}>{label}</label>
+      // Instanciez votre DatePicker en lui passant les props essentiels
       <DatePicker
+        // L'ID est utilisé pour lier le composant DatePicker à son <label> associé.
+        // Cela fournit une meilleure expérience utilisateur et améliore l'accessibilité.
         id={`${name}DateInput`}
+        // Le `name` est utilisé pour identifier le champ lors de l'envoi du formulaire.
         name={name}
+        // La `value` représente la date actuellement sélectionnée.
         value={value}
+        // La fonction `onChange` est appelée chaque fois que l'utilisateur change la date.
         onChange={onChange}
       />
     </div>
