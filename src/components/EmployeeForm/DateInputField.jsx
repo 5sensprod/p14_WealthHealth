@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './EmployeeForm.module.css'
-import DatePicker from '@5sensprod/react-custom-datepicker'
-// import DatePicker from '../DatePicker'
+// import DatePicker from '@5sensprod/react-custom-datepicker'
+import DatePicker from '../DatePicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
   return (
@@ -13,7 +13,7 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         value={value}
         onChange={onChange}
         designType={'default'}
-        yearBlockSize={16}
+        yearBlockSize={8}
         useIcons={true}
         startOfWeek="0"
         language="fr"

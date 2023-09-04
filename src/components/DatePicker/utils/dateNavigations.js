@@ -66,34 +66,6 @@ export const goToPreviousYear = (currentDate, minYear, maxYear) => {
   return prevDate
 }
 
-export const goToNextYearBlock = (
-  yearsBlock,
-  minYear,
-  maxYear,
-  yearBlockSize,
-) => {
-  const blockSize = yearBlockSize || DEFAULT_CONFIG.YEAR_BLOCK_SIZE
-  const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
-  const newStartYear = yearsBlock[0] + blockSize
-
-  // Si la nouvelle année de départ dépasse maxProcessedYear,
-  // retournez simplement le bloc actuel.
-  if (newStartYear > maxProcessedYear) {
-    return yearsBlock
-  }
-
-  // Si l'ajout de blockSize à newStartYear dépasse maxProcessedYear,
-  // ajustez la blockSize pour qu'elle ne dépasse pas.
-  if (newStartYear + blockSize - 1 > maxProcessedYear) {
-    return Array.from(
-      { length: maxProcessedYear - newStartYear + 1 },
-      (_, i) => newStartYear + i,
-    )
-  }
-
-  return Array.from({ length: blockSize }, (_, i) => newStartYear + i)
-}
-
 export const goToPreviousYearBlock = (
   yearsBlock,
   minYear,
@@ -106,17 +78,40 @@ export const goToPreviousYearBlock = (
 
   let newStartYear = yearsBlock[0] - blockSize
 
+  // Si nous sommes en dessous de minYear
   if (newStartYear < minProcessedYear) {
-    // Si on est en dessous de minYear, définir le début du bloc à maxYear - blockSize + 1
-    newStartYear = maxProcessedYear - blockSize + 1
+    // Si le premier élément du bloc actuel est déjà minYear, affichez les deux dernières années avant maxYear
+    if (yearsBlock[0] === minProcessedYear) {
+      newStartYear = maxProcessedYear - 1 // Affichez les 2 dernières années avant maxYear
+    } else {
+      newStartYear = maxProcessedYear - blockSize + 1 // Commencez par maxYear - blockSize + 1
+    }
   }
 
-  return Array.from({ length: blockSize }, (_, i) => {
-    const year = newStartYear + i
-    // Ajoutez cette condition pour s'assurer que l'année ne dépasse pas maxProcessedYear
-    if (year > maxProcessedYear) return null
-    return year >= minProcessedYear ? year : null
-  }).filter(Boolean)
+  return Array.from({ length: blockSize }, (_, i) => newStartYear + i).filter(
+    (year) => year >= minProcessedYear && year <= maxProcessedYear,
+  )
+}
+
+export const goToNextYearBlock = (
+  yearsBlock,
+  minYear,
+  maxYear,
+  yearBlockSize,
+) => {
+  const blockSize = yearBlockSize || DEFAULT_CONFIG.YEAR_BLOCK_SIZE
+  const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
+  const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
+
+  let newStartYear = yearsBlock[0] + blockSize
+
+  if (newStartYear > maxProcessedYear) {
+    newStartYear = minProcessedYear
+  }
+
+  return Array.from({ length: blockSize }, (_, i) => newStartYear + i).filter(
+    (year) => year >= minProcessedYear && year <= maxProcessedYear,
+  )
 }
 
 export const calculateNewDate = (
