@@ -180,6 +180,10 @@ Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les 
     - `'neuro'`: Design effet neurmorphism.
     - `'glass'`: Design effet glassmorphism.
 
+## Exemple en direct intégré
+
+    [![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/priceless-rubin-554zjg?file=/src/App.js)
+
 ## Contribution
 
 Les contributions sont les bienvenues. Veuillez ouvrir une issue ou soumettre une pull request sur GitHub.
