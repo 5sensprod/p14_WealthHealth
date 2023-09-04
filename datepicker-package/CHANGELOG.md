@@ -2,6 +2,12 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
+## [1.1.1] - 2023-09-03 (ou la date réelle)
+
+### Modifié
+
+- Correction mineure de la documentation.
+
 ## [1.1.0] - 2023-09-02
 
 ### Ajouté
