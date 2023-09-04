@@ -19,16 +19,32 @@ export const handlePropsAndConfig = (configProps) => {
   }
 
   const currentYear = new Date().getFullYear()
+  const validLanguages = ['en', 'fr']
 
-  const getProcessedValue = (originalValue, defaultValue, processingFunc) =>
-    originalValue !== undefined
+  const getProcessedValue = (
+    originalValue,
+    defaultValue,
+    processingFunc,
+    validatorFunc,
+  ) =>
+    originalValue !== undefined &&
+    (validatorFunc ? validatorFunc(originalValue) : true)
       ? processingFunc
         ? processingFunc(originalValue)
         : originalValue
       : defaultValue
 
   return {
-    language: getProcessedValue(language, DEFAULT_CONFIG.LANGUAGE),
+    language: getProcessedValue(language, DEFAULT_CONFIG.LANGUAGE, (val) => {
+      if (!validLanguages.includes(val)) {
+        console.info(
+          `Invalid language "${val}". Defaulting to "${DEFAULT_CONFIG.LANGUAGE}".`,
+        )
+        return DEFAULT_CONFIG.LANGUAGE
+      }
+      return val
+    }),
+
     useIcons: getProcessedValue(useIcons, DEFAULT_CONFIG.USE_ICONS),
     dateFormat: getProcessedValue(
       dateFormat,
@@ -36,7 +52,12 @@ export const handlePropsAndConfig = (configProps) => {
       (val) => DEFAULT_CONFIG.DATE_FORMATS[val],
     ),
     customStyles,
-    startOfWeek: getProcessedValue(startOfWeek, DEFAULT_CONFIG.START_OF_WEEK),
+    startOfWeek: getProcessedValue(
+      startOfWeek,
+      DEFAULT_CONFIG.START_OF_WEEK,
+      null,
+      (val) => val >= 0 && val <= 6,
+    ),
     manualInputEnabled: getProcessedValue(
       manualInputEnabled,
       DEFAULT_CONFIG.MANUAL_INPUT_ENABLED,
