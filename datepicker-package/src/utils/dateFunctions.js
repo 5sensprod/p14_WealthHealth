@@ -193,12 +193,30 @@ export function formatToMask(
   format = DEFAULT_CONFIG.DATE_FORMATS.DEFAULT,
   separator = '/',
 ) {
+  if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+    const [year, month, day] = value.split('-')
+    switch (format) {
+      case DEFAULT_CONFIG.DATE_FORMATS.US:
+        value = `${month}${day}${year}`
+        break
+      case DEFAULT_CONFIG.DATE_FORMATS.DEFAULT:
+        value = `${day}${month}${year}`
+        break
+      case DEFAULT_CONFIG.DATE_FORMATS.ISO:
+        // Do nothing as the format is already correct.
+        break
+      default:
+        throw new Error(`Invalid format: ${format}`)
+    }
+  }
+
   const positions = MASK_FORMATS[format] || []
   if (!positions.length) {
     throw new Error(`Invalid format: ${format}`)
   }
 
   let maskedValue = value.replace(/\D/g, '')
+
   positions.forEach((position) => {
     if (maskedValue.length > position) {
       maskedValue = `${maskedValue.substring(

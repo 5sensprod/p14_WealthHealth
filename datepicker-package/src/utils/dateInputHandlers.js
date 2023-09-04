@@ -20,7 +20,13 @@ export const handleValidDate = (
   setError(null)
   const dateObject = convertFormattedStringToDate(newValue, dateFormat)
   setSelectedDate(dateObject)
-  onChange({ target: { name, value: dateObject } })
+
+  // Formater la date pour l'hôte en format 'YYYY-MM-DD'
+  const formattedForHost = `${dateObject.getFullYear()}-${String(
+    dateObject.getMonth() + 1,
+  ).padStart(2, '0')}-${String(dateObject.getDate()).padStart(2, '0')}`
+
+  onChange({ target: { name, value: formattedForHost } }) // nous passons cette valeur à l'hôte
 }
 
 export const handleInvalidDate = (name, onChange) => {
@@ -55,12 +61,18 @@ export const handleDateSelect =
     setSelectedDate(actualDate)
     closeCalendar()
 
-    validate(formatDatePickerDate(actualDate, dateFormat))
+    const formattedForDisplay = formatDatePickerDate(actualDate, dateFormat)
+    validate(formattedForDisplay)
+
+    // Maintenant, nous formaterons toujours la date pour l'hôte en format 'YYYY-MM-DD'
+    const formattedForHost = `${actualDate.getFullYear()}-${String(
+      actualDate.getMonth() + 1,
+    ).padStart(2, '0')}-${String(actualDate.getDate()).padStart(2, '0')}`
 
     onChange({
       target: {
         name,
-        value: formatDatePickerDate(actualDate, dateFormat),
+        value: formattedForHost, // nous passons cette valeur à l'hôte
       },
     })
   }

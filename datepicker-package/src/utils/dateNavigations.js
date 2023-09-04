@@ -13,7 +13,8 @@ const processYearConfig = (yearConfig, currentYear) => {
     }
   }
 
-  return currentYear
+  // retourner null si la configuration de l'année n'est pas valide
+  return null
 }
 
 const adjustDate = (currentDate, yearAdjustment, monthAdjustment) => {
