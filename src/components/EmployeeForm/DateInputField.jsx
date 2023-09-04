@@ -1,14 +1,9 @@
 import React from 'react'
 import styles from './EmployeeForm.module.css'
-// import DatePicker from '@5sensprod/react-custom-datepicker'
-import DatePicker from '../DatePicker'
+import DatePicker from '@5sensprod/react-custom-datepicker'
+// import DatePicker from '../DatePicker'
 
 const DateInputField = ({ name, value, label, onChange, error }) => {
-  const handleDateChange = (event) => {
-    console.log('Value received in DateInputField:', event.target.value)
-    onChange(event)
-  }
-  // console.log('Value passed to DatePicker:', value)
   return (
     <div className={styles.label}>
       <label htmlFor={`${name}DateInput`}>{label}</label>
@@ -16,13 +11,13 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         id={`${name}DateInput`}
         name={name}
         value={value}
-        onChange={handleDateChange}
+        onChange={onChange}
         designType={'default'}
         yearBlockSize={16}
         useIcons={true}
         startOfWeek={0}
         language="fr"
-        dateFormat="US"
+        // dateFormat="ISO"
         manualInputEnabled={true}
         minYear={'auto-10'}
         maxYear={2030}
