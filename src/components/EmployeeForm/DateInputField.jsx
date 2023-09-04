@@ -12,15 +12,15 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
         name={name}
         value={value}
         onChange={onChange}
-        designType={'def'}
+        designType={'default'}
         yearBlockSize={16}
-        useIcons="ss"
-        startOfWeek="7"
-        language="fl"
-        dateFormat={'IS'}
-        manualInputEnabled="fru"
-        // minYear={'bbfg-10'}
-        // maxYear={'bbfg-10'}
+        useIcons={true}
+        startOfWeek={0}
+        language="fr"
+        // dateFormat="ISO"
+        manualInputEnabled={true}
+        // minYear={'auto-10'}
+        maxYear={2030}
         customStyles={{
           backgroundColor: 'transparent',
           borderRadius: '0',
