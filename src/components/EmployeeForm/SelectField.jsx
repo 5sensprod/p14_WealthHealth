@@ -15,7 +15,6 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
         name={name}
         value={options.find((option) => option.value === value)}
         onChange={(selectedOption) => {
-          // Création d'un faux événement pour simuler le comportement d'un événement standard
           onChange({
             target: {
               name: name,
