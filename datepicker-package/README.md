@@ -78,6 +78,39 @@ function App() {
 export default App
 ```
 
+## Le format de date renvoyé
+
+Le composant DatePicker est conçu pour afficher des dates dans différents formats. Cependant, indépendamment du format d'affichage choisi, la date renvoyée au composant hôte est toujours au format YYYY-MM-DD.
+
+Voici un exemple simplifié d'utilisation du DatePicker dans un composant DateInputField :
+
+```javascript
+const DateInputField = ({ name, value, label, onChange, error }) => {
+  const handleDateChange = (event) => {
+    console.log('Value received in DateInputField:', event.target.value) // Toujours au format YYYY-MM-DD
+    onChange(event)
+  }
+
+  return (
+    <div>
+      <label htmlFor={`${name}DateInput`}>{label}</label>
+      <DatePicker
+        id={`${name}DateInput`}
+        name={name}
+        value={value}
+        onChange={handleDateChange}
+        dateFormat="US"
+      />
+      {error && <span>{error}</span>}
+    </div>
+  )
+}
+
+export default DateInputField
+```
+
+Notez que même si le dateFormat est défini sur "US" (MM-DD-YYYY), la valeur renvoyée (accessible via event.target.value dans handleDateChange) est toujours au format YYYY-MM-DD.
+
 ## Configurations
 
 Vous pouvez personnaliser le comportement et l'apparence du DatePicker.
