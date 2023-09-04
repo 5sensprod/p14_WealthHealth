@@ -26,9 +26,10 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(new Date())
 
   // Cette fonction sera appelée chaque fois que l'utilisateur sélectionne une nouvelle date
-  const handleDateChange = (date) => {
-    setSelectedDate(date)
-    console.log('Date sélectionnée:', date)
+  const handleDateChange = (event) => {
+    const dateValue = event.target.value
+    console.log('Valeur du DatePicker:', dateValue)
+    setSelectedDate(dateValue)
   }
 
   return (

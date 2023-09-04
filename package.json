@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://5sensprod.github.io/p14_WealthHealth",
   "dependencies": {
+    "@5sensprod/react-custom-datepicker": "^1.1.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
