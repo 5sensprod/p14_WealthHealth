@@ -1,10 +1,17 @@
 import styles from '../Calendar.module.css'
 import alternativeStyles from '../AlternativeCalendar.module.css'
 
-const useDesignStyles = (designType) => {
-  const selectedStyles = designType === 'default' ? styles : alternativeStyles
-  const designClass =
-    designType === 'neuro' ? 'neuro' : designType === 'glass' ? 'glass' : ''
+const useDesignStyles = (designType = 'default') => {
+  let selectedStyles = styles
+  let designClass = ''
+
+  if (designType === 'neuro') {
+    selectedStyles = { ...styles, ...alternativeStyles }
+    designClass = 'neuro'
+  } else if (designType === 'glass') {
+    selectedStyles = { ...styles, ...alternativeStyles }
+    designClass = 'glass'
+  }
 
   return { selectedStyles, designClass }
 }

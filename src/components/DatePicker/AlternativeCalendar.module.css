@@ -53,6 +53,7 @@ box-shadow: inset 7px 7px 14px #d4d6d9, inset -7px -7px 14px #ffffff;
 .glass .daysContainer, .daysContainer {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    background-color: #490e0e;
 }
 
 .glass .day,

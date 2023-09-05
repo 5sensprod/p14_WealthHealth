@@ -7,6 +7,7 @@ import useCalendarLogic from './hooks/useCalendarLogic'
 import useYearLogic from './hooks/useYearLogic'
 import useDesignStyles from './hooks/useDesignStyles'
 import { chooseDate } from './utils/dateFunctions'
+import alternativeStyles from './AlternativeCalendar.module.css'
 
 const Calendar = forwardRef(
   (
@@ -55,7 +56,11 @@ const Calendar = forwardRef(
 
     return (
       <div
-        className={`${selectedStyles.calendar} ${selectedStyles[designClass]}`}
+        className={`${selectedStyles.calendar} ${
+          designClass && alternativeStyles[designClass]
+            ? alternativeStyles[designClass]
+            : ''
+        }`}
         ref={ref}
       >
         {/* Navigation Selector */}
