@@ -85,7 +85,7 @@ function DaysView({
           selectedDate.getFullYear() === currentMonth.getFullYear()
 
         let highlightedClass = ''
-        if (isSelectedDate) {
+        if (isSelectedDate && !hasBeenHovered) {
           highlightedClass = styles.active
         } else if (todayIsThisDay && !hasBeenHovered) {
           highlightedClass = styles.today

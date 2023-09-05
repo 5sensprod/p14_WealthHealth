@@ -6,6 +6,8 @@ Toutes les modifications notables de ce projet seront documentées dans ce fichi
 
 ### Ajouté
 
+- Ajout de la prop placeholderText pour configurer le placeholder du champ de date. Si une chaîne de caractères est fournie, elle sera utilisée comme texte de placeholder. Pour un placeholder vide, fournir une chaîne vide (""). En l'absence de cette prop, la valeur par défaut de translations.placeholder sera utilisée.
+
 - Ajout de la prop showButton pour contrôler l'affichage du bouton du calendrier. Si true, le bouton du calendrier sera affiché. Si false, le bouton sera caché.
 
 ## [1.1.1] - 2023-09-03

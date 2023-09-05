@@ -40,6 +40,7 @@ function DatePicker({
   value,
   onChange,
   showButton = true,
+  placeholderText = null,
   language: propLanguage,
   minYear: propMinYear,
   maxYear: propMaxYear,
@@ -164,9 +165,13 @@ function DatePicker({
           id={id}
           ref={inputRef}
           value={inputValue}
+          placeholder={
+            placeholderText !== null
+              ? placeholderText
+              : translations.placeholder
+          }
           format={dateFormat}
           onBlur={manualInputEnabled ? handleInputChange : null}
-          placeholder={translations.placeholder}
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}

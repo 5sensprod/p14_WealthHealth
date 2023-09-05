@@ -144,6 +144,12 @@ Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les 
   - Si true, le bouton du calendrier sera affiché.
   - Si false, le bouton sera caché.
 
+- **placeholderText** (type: String, default: null):
+
+  - Si une chaîne de caractères est fournie, celle-ci sera utilisée comme texte de placeholder pour l'entrée de la date.
+  - Si la valeur est null ou non fournie, la valeur par défaut de translations.placeholder sera utilisée.
+  - Pour avoir un placeholder vide, fournissez une chaîne vide ("").
+
 - **useIcons** (type: Boolean, default: `true`):
 
   - Si `true`, des icônes (chevrons) seront utilisées pour la navigation du calendrier.

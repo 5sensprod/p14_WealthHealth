@@ -34,7 +34,7 @@ select {
   opacity: 0.5;
   transition: opacity 0.2s ease-in-out;
   position: absolute;
-  right: 0;
+  right: -25px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -58,7 +58,7 @@ select {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-  pointer-events: none; 
+  pointer-events: none;
 }
 
 .errorMessage {
