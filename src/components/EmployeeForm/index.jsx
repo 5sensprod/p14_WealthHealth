@@ -101,6 +101,7 @@ const EmployeeForm = () => {
         />
 
         <DateInputField
+          className={styles.dateInputField}
           name="dateOfBirth"
           label="Date of Birth"
           type="text"
@@ -110,6 +111,7 @@ const EmployeeForm = () => {
         />
 
         <DateInputField
+          className={styles.dateInputField}
           name="startDate"
           label="Start Date"
           type="text"

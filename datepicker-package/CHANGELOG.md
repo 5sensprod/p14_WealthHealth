@@ -2,7 +2,13 @@
 
 Toutes les modifications notables de ce projet seront documentées dans ce fichier.
 
-## [1.1.1] - 2023-09-03 (ou la date réelle)
+## [1.1.2] - 2023-09-04
+
+### Ajouté
+
+- Ajout de la prop showButton pour contrôler l'affichage du bouton du calendrier. Si true, le bouton du calendrier sera affiché. Si false, le bouton sera caché.
+
+## [1.1.1] - 2023-09-03
 
 ### Modifié
 

@@ -139,6 +139,11 @@ Vous pouvez personnaliser le comportement et l'apparence du DatePicker.
 
 Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les props suivantes :
 
+- **showButton** (type: Boolean, default: true):
+
+  - Si true, le bouton du calendrier sera affiché.
+  - Si false, le bouton sera caché.
+
 - **useIcons** (type: Boolean, default: `true`):
 
   - Si `true`, des icônes (chevrons) seront utilisées pour la navigation du calendrier.

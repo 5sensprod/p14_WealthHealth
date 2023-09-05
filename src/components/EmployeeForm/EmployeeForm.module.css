@@ -4,6 +4,7 @@
     justify-content: center;
     flex-direction: column;
     margin-top: 40px;
+    transition: font-size 0.2s ease-in-out;
 }
 
 .container,
@@ -73,6 +74,13 @@
     position: absolute;
     width: 1px;
   }
+  /* input  {
+    background-color: blue;
+  } */
+
+   /* .dateInputField input {
+    background-color: blue;
+  } */
 
   @media (max-width: 410px) {
     .title {

@@ -18,6 +18,7 @@ const Calendar = forwardRef(
       reorderedDays,
       startOfWeek,
       designType,
+      showButton = true,
       ...dateProps
     },
     ref,

@@ -39,6 +39,7 @@ function DatePicker({
   name,
   value,
   onChange,
+  showButton = true,
   language: propLanguage,
   minYear: propMinYear,
   maxYear: propMaxYear,
@@ -102,7 +103,11 @@ function DatePicker({
   }, [error])
 
   useEscapeKey(createEscapeHandler(closeCalendar, inputRef))
-  useOutsideInteractions(calendarRef, buttonRef, closeCalendar)
+  useOutsideInteractions(
+    calendarRef,
+    showButton ? buttonRef : null,
+    closeCalendar,
+  )
 
   // 6.5 Handlers
   const onDateSelect = handleDateSelect(
@@ -169,8 +174,12 @@ function DatePicker({
           onChange={handleInputChange}
           maxLength={10}
         />
-
-        <CalendarButton ref={buttonRef} onClick={onToggleCalendarVisibility} />
+        {showButton && (
+          <CalendarButton
+            ref={buttonRef}
+            onClick={onToggleCalendarVisibility}
+          />
+        )}
       </div>
       {error && <p className={styles.errorMessage}>{error}</p>}
       {showCalendar && (

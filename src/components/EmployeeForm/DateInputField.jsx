@@ -3,15 +3,17 @@ import styles from './EmployeeForm.module.css'
 // import DatePicker from '@5sensprod/react-custom-datepicker'
 import DatePicker from '../DatePicker'
 
-const DateInputField = ({ name, value, label, onChange, error }) => {
+const DateInputField = ({ name, value, label, onChange, className, error }) => {
   return (
-    <div className={styles.label}>
+    <div className={`${styles.label} ${className}`}>
       <label htmlFor={`${name}DateInput`}>{label}</label>
       <DatePicker
+        showButton={true}
         id={`${name}DateInput`}
         name={name}
         value={value}
         onChange={onChange}
+        className={className}
         designType={'default'}
         yearBlockSize={16}
         useIcons={true}
@@ -26,7 +28,6 @@ const DateInputField = ({ name, value, label, onChange, error }) => {
           borderRadius: '0',
         }}
       />
-
       {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   )
