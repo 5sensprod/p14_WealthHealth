@@ -141,3 +141,10 @@
     background-color: #4646467d;
     color: #ffffff;
 }
+
+@media (max-width: 410px) {
+    .calendar {
+      /* font-size: 22px; */
+      width: auto;
+    }
+  }

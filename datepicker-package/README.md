@@ -180,9 +180,11 @@ Vous pouvez personnaliser le comportement et l'apparence du DatePicker avec les 
     - `'neuro'`: Design effet neurmorphism.
     - `'glass'`: Design effet glassmorphism.
 
-## Exemple en direct intégré
+## Exemple en direct
 
-    [![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/priceless-rubin-554zjg?file=/src/App.js)
+Pour voir un exemple en direct de l'utilisation du composant react-custom-datepicker, cliquez sur le badge ci-dessous :
+
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/priceless-rubin-554zjg)
 
 ## Contribution
 
