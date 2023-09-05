@@ -28,7 +28,8 @@ const Calendar = forwardRef(
     const translations = getTranslations(language)
 
     // Design Styles
-    const { selectedStyles, designClass } = useDesignStyles(designType)
+    const { selectedStyles, designClass, rootClass } =
+      useDesignStyles(designType)
 
     // Year Logic
     const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic(
@@ -56,10 +57,8 @@ const Calendar = forwardRef(
 
     return (
       <div
-        className={`${selectedStyles.calendar} ${
-          designClass && alternativeStyles[designClass]
-            ? alternativeStyles[designClass]
-            : ''
+        className={` ${selectedStyles.calendar}  ${rootClass} ${
+          designClass ? alternativeStyles[designClass] : ''
         }`}
         ref={ref}
       >
@@ -102,7 +101,7 @@ const Calendar = forwardRef(
           viewedDate={viewedDate}
           currentDate={currentDate}
           yearBlockSize={dateProps.yearBlockSize}
-          designClass={selectedStyles[designClass]}
+          designType={designType}
         />
       </div>
     )

@@ -2,8 +2,11 @@ import React, { useRef, useState, useEffect } from 'react'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/dateNavigations'
 import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
+import useDesignStyles from '../hooks/useDesignStyles'
+import alternativeStyles from '../AlternativeCalendar.module.css'
 
 function DaysView({
+  designType,
   totalSlots,
   chooseDate,
   reorderedDays,
@@ -15,6 +18,17 @@ function DaysView({
   const daysRefs = useRef([])
   const [hasBeenHovered, setHasBeenHovered] = useState(false)
   const [changedMonth, setChangedMonth] = useState(null)
+
+  const {
+    selectedStyles,
+    designClass,
+    dayClass,
+    grayedDayClass,
+    // daysContainerClass,
+    activeClass,
+    todayClass,
+    headerClass,
+  } = useDesignStyles(designType)
 
   const resetHoveredState = () => setHasBeenHovered(false)
 
@@ -65,9 +79,14 @@ function DaysView({
   }
 
   return (
-    <div className={styles.daysContainer} onMouseLeave={resetHoveredState}>
+    <div
+      className={`${selectedStyles.daysContainer} ${
+        designClass ? alternativeStyles[designClass] : ''
+      }`}
+      onMouseLeave={resetHoveredState}
+    >
       {reorderedDays.map((day) => (
-        <div className={styles.header} key={day}>
+        <div className={`${selectedStyles.header} ${headerClass}`} key={day}>
           {day}
         </div>
       ))}
@@ -86,17 +105,19 @@ function DaysView({
 
         let highlightedClass = ''
         if (isSelectedDate && !hasBeenHovered) {
-          highlightedClass = styles.active
+          highlightedClass = activeClass || styles.active
         } else if (todayIsThisDay && !hasBeenHovered) {
-          highlightedClass = styles.today
+          highlightedClass = todayClass || styles.today
         }
 
-        const dayClass = day.isGrayed ? styles.grayedDay : styles.day
+        const dayClassname = day.isGrayed
+          ? `${styles.grayedDay} ${grayedDayClass}`
+          : `${styles.day} ${dayClass}`
 
         return (
           <div
             key={index}
-            className={`${dayClass} ${highlightedClass}`}
+            className={`${dayClassname} ${highlightedClass}`}
             onClick={(event) => {
               event.stopPropagation()
               if (!day.isGrayed) chooseDate(day.number)

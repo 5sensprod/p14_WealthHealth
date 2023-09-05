@@ -13,7 +13,23 @@ const useDesignStyles = (designType = 'default') => {
     designClass = 'glass'
   }
 
-  return { selectedStyles, designClass }
+  const dayClass = alternativeStyles[`${designClass}Day`]
+  const grayedDayClass = alternativeStyles[`${designClass}GrayedDay`]
+  const daysContainerClass = alternativeStyles[`${designClass}DaysContainer`]
+  const activeClass = alternativeStyles[`${designClass}Active`]
+  const headerClass = alternativeStyles[`${designClass}Header`]
+  const todayClass = alternativeStyles[`${designClass}Today`]
+
+  return {
+    selectedStyles,
+    designClass,
+    dayClass,
+    grayedDayClass,
+    daysContainerClass,
+    activeClass,
+    todayClass,
+    headerClass,
+  }
 }
 
 export default useDesignStyles
