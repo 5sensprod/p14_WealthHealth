@@ -69,23 +69,23 @@
 .glassHeadersContainer {
     position: relative;
     display: flex;
-    color: #490e0e;
 }
 
 .glassHeader {
     text-transform: lowercase;
     text-align: center;
     padding: 8px 8px;
-    font-size: 14px;
+    font-size: 16px;
     background: rgba(118, 170, 213, 0.156);
     box-shadow: 0 4px 16px 0 rgba(20, 20, 20, 0.10);
     backdrop-filter: blur(8px);
-    color: rgb(9, 9, 9);
+    color: rgba(9, 9, 9, 0.623);
     cursor: default;
     position: relative;
+
 }
 
-.glassHeader::after{
+/* .glassHeader::after{
     content: '';
     position: absolute;
     height: 80%;
@@ -97,7 +97,7 @@
     border-radius: 15%;
     box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.2), inset 5px 5px 9px rgba(94,104,121,0.3);
     backdrop-filter: blur(.8px);
-  }
+  } */
 
 /* .glassHeader:hover {
     text-transform: lowercase;
@@ -169,6 +169,19 @@
     /* border-radius: 5px; */
     color: #0000007e;
 }
+.glassGrayedDay::after{
+    content: '';
+    position: absolute;
+    height: 80%;
+    width: 80%;
+    /* background-color: rgba(4, 5, 31, 0.178); */
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    /* border-radius: 15%;
+    box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.2), inset 5px 5px 9px rgba(94,104,121,0.3); */
+    /* backdrop-filter: blur(.6px); */
+  }
 
 
 
