@@ -1,9 +1,20 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import InputField from './InputField'
 import SelectField from './SelectField'
 import { states } from '../../data/states'
 import styles from './EmployeeForm.module.css'
 
+/**
+ * Composant représentant un ensemble de champs pour saisir une adresse.
+ * Il contient des champs pour la rue, la ville, l'état et le code postal.
+ *
+ * @component
+ * @param {Object} formData - Les données du formulaire contenant les informations de l'adresse.
+ * @param {Function} handleChange - La fonction à appeler lors de la modification de la valeur d'un champ.
+ * @param {Object} errors - Les erreurs associées à chaque champ.
+ * @returns {React.ReactNode} Les champs d'adresse rendus.
+ */
 const AddressFields = ({ formData, handleChange, errors }) => {
   return (
     <fieldset className={styles.fieldsetContainer}>
@@ -51,6 +62,22 @@ const AddressFields = ({ formData, handleChange, errors }) => {
       />
     </fieldset>
   )
+}
+
+AddressFields.propTypes = {
+  formData: PropTypes.shape({
+    street: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    zipCode: PropTypes.string,
+  }).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  errors: PropTypes.shape({
+    street: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    zipCode: PropTypes.string,
+  }),
 }
 
 export default AddressFields
