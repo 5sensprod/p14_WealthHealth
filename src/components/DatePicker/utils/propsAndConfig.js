@@ -4,6 +4,16 @@ import {
 } from '../config/defaultConfig'
 import { applyYearConfig } from './dateNavigations'
 
+/**
+ * Valide et renvoie le format de date fourni.
+ *
+ * Cette fonction vérifie si le format de date fourni est valide.
+ * Si le format de date n'est pas valide, elle utilise le format par défaut.
+ *
+ * @function
+ * @param {string} dateFormat - Le format de date à valider.
+ * @returns {string} - Un format de date valide.
+ */
 function validateDateFormat(dateFormat) {
   const validFormat = DEFAULT_CONFIG.DATE_FORMATS[dateFormat]
 
@@ -17,6 +27,17 @@ function validateDateFormat(dateFormat) {
   return validFormat
 }
 
+/**
+ * Traite et valide les propriétés de configuration pour le composant DatePicker.
+ *
+ * Cette fonction reçoit des propriétés de configuration et renvoie des propriétés validées.
+ * Elle effectue des vérifications de base pour s'assurer que les propriétés fournies sont valides.
+ * Si une propriété n'est pas valide, elle utilise la valeur par défaut de cette propriété.
+ *
+ * @function
+ * @param {Object} configProps - Les propriétés de configuration à traiter et à valider.
+ * @returns {Object} - Les propriétés de configuration validées.
+ */
 export const handlePropsAndConfig = (configProps) => {
   const {
     useIcons,
