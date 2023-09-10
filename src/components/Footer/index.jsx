@@ -2,11 +2,11 @@ import React from 'react'
 import styles from './Footer.module.css'
 
 /**
- * A component that represents the footer of the application.
- * It displays a copyright notice for Wealth Health.
+ * Composant représentant le pied de page de l'application.
+ * Il affiche un avis de droit d'auteur pour Wealth Health.
  *
  * @component
- * @returns {React.ReactNode} The rendered footer with the copyright notice.
+ * @returns {React.ReactNode} Le pied de page rendu avec l'avis de droit d'auteur.
  */
 
 const Footer = () => {

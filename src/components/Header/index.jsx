@@ -4,11 +4,11 @@ import Navigation from '../Navigation'
 import styles from './Header.module.css'
 
 /**
- * A component that represents the main header of the application.
- * It incorporates the application's logo and primary navigation.
+ * Composant représentant l'en-tête principal de l'application.
+ * Il intègre le logo de l'application ainsi que la navigation principale.
  *
  * @component
- * @returns {React.ReactNode} The rendered header containing the logo and primary navigation.
+ * @returns {React.ReactNode} L'en-tête rendu contenant le logo et la navigation principale.
  */
 
 const Header = () => {
