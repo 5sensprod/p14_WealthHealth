@@ -1,6 +1,17 @@
 import styles from '../Calendar.module.css'
 import alternativeStyles from '../AlternativeCalendar.module.css'
 
+/**
+ * Hook personnalisé pour obtenir les styles en fonction du type de design spécifié.
+ *
+ * Ce hook fournit un ensemble de styles basé sur le type de design choisi pour le calendrier.
+ * Il prend en charge les designs 'default', 'neuro', et 'glass' et retourne
+ * un objet contenant les styles et classes CSS associés à ce design.
+ *
+ * @function
+ * @param {string} designType - Le type de design à utiliser (par défaut : 'default').
+ * @returns {Object} Un objet contenant les styles et classes CSS associés au design choisi.
+ */
 const useDesignStyles = (designType = 'default') => {
   let selectedStyles = styles
   let designClass = ''
