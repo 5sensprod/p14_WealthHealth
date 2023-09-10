@@ -14,6 +14,14 @@ import { useDispatch } from 'react-redux'
 import { addEmployee } from '../../slices/employeeSlice'
 import ModalComponent from '../Modal'
 
+/**
+ * Composant représentant le formulaire pour créer un nouvel employé.
+ * Il comprend des champs d'entrée pour les détails de l'employé, une validation de formulaire
+ * et une modal pour confirmer la création de l'employé.
+ *
+ * @component
+ * @returns {React.ReactNode} Le formulaire de création d'employé rendu.
+ */
 const EmployeeForm = () => {
   const dispatch = useDispatch()
 
