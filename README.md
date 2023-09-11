@@ -50,3 +50,15 @@ npm start
 ```
 
 Votre application devrait maintenant s'exécuter localement à l'adresse http://localhost:3000/
+
+## Accès en Ligne 🌐
+
+### Application
+
+L'application est accessible en ligne à l'adresse :
+[https://5sensprod.github.io/p14_WealthHealth](https://5sensprod.github.io/p14_WealthHealth)
+
+### Documentation
+
+La documentation du projet est consultable à l'adresse :
+[https://5sensprod.github.io/p14_WealthHealth/docs](https://5sensprod.github.io/p14_WealthHealth/docs)
