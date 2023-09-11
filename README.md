@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# HRnet - WealthHealth 🚀
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+WealthHealth est une importante société financière utilisant une application interne, HRnet, pour gérer les dossiers de ses employés. L'objectif principal de ce projet est de moderniser HRnet en le convertissant entièrement en React, en remplaçant l'ancienne version qui utilisait principalement jQuery.
 
-## Available Scripts
+## Objectifs du Projet 🎯
 
-In the project directory, you can run:
+- Convertir entièrement l'application HRnet en React.
+- Remplacer les plugins jQuery par des composants React modernes.
+- Introduire un système de gestion d'état.
+- Effectuer des tests de performance et comparer l'ancienne et la nouvelle version.
 
-### `npm start`
+## Remplacement des Plugins jQuery 🔄
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Voici la liste des plugins jQuery originaux et leurs remplacements en React :
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Sélecteur de date :**
+  - _Original_ : Plugin jQuery de sélection de date
+  - _Remplacement_ : DatePicker personnalisé développé spécifiquement pour ce projet.
+- **Fenêtre modale :**
+  - _Original_ : jQuery.modal.js
+  - _Remplacement_ : React Modal
+- **Menus déroulants :**
+  - _Original_ : Plugin jQuery pour les menus déroulants
+  - _Remplacement_ : React Select
+- **Tables de données :**
+  - _Original_ : Plugin jQuery pour les tables de données
+  - _Remplacement_ : React Table
 
-### `npm test`
+## Prérequis 🚨
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Pour faire fonctionner l'application HRnet, assurez-vous d'avoir les technologies suivantes installées :
 
-### `npm run build`
+- **Node.js** : version recommandée (la version mentionnée dans votre package.json)
+- **Git**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation et Lancement 🚀
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clonage du dépôt :**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+git clone https://github.com/5sensprod/p14_WealthHealt
+cd p14_WealthHealth
+npm install
+```
 
-### `npm run eject`
+2. **Lancement de l'application :**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Votre application devrait maintenant s'exécuter localement à l'adresse http://localhost:3000/
