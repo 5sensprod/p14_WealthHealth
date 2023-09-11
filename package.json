@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run generate-docs",
     "test": "react-scripts test",
     "generate-docs": "jsdoc -c jsdoc.json",
     "eject": "react-scripts eject",
