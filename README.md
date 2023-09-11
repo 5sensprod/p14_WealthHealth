@@ -1,7 +1,13 @@
-![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white&style=flat)
-![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=redux&logoColor=white&style=flat)
-![React Router](https://img.shields.io/badge/-React_Router-CA4245?logo=react-router&logoColor=white&style=flat)
-![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white&style=flat)
+![Custom DatePicker](https://img.shields.io/badge/Custom_DatePicker-1.1.0-brightgreen)
+![Redux Toolkit](https://img.shields.io/badge/-Redux_Toolkit-764ABC?logo=redux&logoColor=white)
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white)
+![React Router](https://img.shields.io/badge/-React_Router-CA4245?logo=react-router&logoColor=white)
+![React Datepicker](https://img.shields.io/badge/React_Datepicker-4.16.0-brightgreen)
+![React Modal](https://img.shields.io/badge/React_Modal-3.16.1-brightgreen)
+![React Redux](https://img.shields.io/badge/-React_Redux-764ABC?logo=redux&logoColor=white)
+![React Select](https://img.shields.io/badge/React_Select-5.7.4-brightgreen)
+![React Table](https://img.shields.io/badge/React_Table-7.8.0-brightgreen)
+![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=redux&logoColor=white)
 
 # HRnet - WealthHealth 🚀
 
