@@ -1,6 +1,13 @@
 import { DEFAULT_CONFIG } from '../config/defaultConfig'
 
-// Fonction pour les configurations d'années
+/**
+ * Traite la configuration de l'année. Si elle est définie comme une chaîne, elle essaie de la résoudre en une valeur numérique.
+ *
+ * @function
+ * @param {(string|number)} yearConfig - La configuration de l'année, qui peut être une chaîne ou un nombre.
+ * @param {number} currentYear - L'année actuelle.
+ * @returns {(number|null)} - L'année traitée ou `null` si la configuration est invalide.
+ */
 const processYearConfig = (yearConfig, currentYear) => {
   if (typeof yearConfig === 'number') return yearConfig
 
@@ -23,11 +30,28 @@ const adjustDate = (currentDate, yearAdjustment, monthAdjustment) => {
   return new Date(year, month)
 }
 
+/**
+ * Applique la configuration de l'année et la traite.
+ *
+ * @function
+ * @param {(string|number)} yearConfig - La configuration de l'année.
+ * @param {number} currentYear - L'année actuelle.
+ * @returns {(number|null)} - L'année traitée ou `null`.
+ */
 export const applyYearConfig = (yearConfig, currentYear) => {
   return processYearConfig(yearConfig, currentYear)
 }
 
-export const goToNextMonth = (currentDate, minYear, maxYear) => {
+/**
+ * Navigue vers le mois suivant.
+ *
+ * @function
+ * @param {Date} currentDate - La date actuelle.
+ * @param {number} minYear - L'année minimale autorisée.
+ * @param {number} maxYear - L'année maximale autorisée.
+ * @returns {Date} - La date du mois suivant.
+ */
+const goToNextMonth = (currentDate, minYear, maxYear) => {
   const nextDate = adjustDate(
     currentDate,
     currentDate.getMonth() === 11 ? 1 : 0,
@@ -39,7 +63,7 @@ export const goToNextMonth = (currentDate, minYear, maxYear) => {
   return nextDate
 }
 
-export const goToPreviousMonth = (currentDate, minYear, maxYear) => {
+const goToPreviousMonth = (currentDate, minYear, maxYear) => {
   const prevDate = adjustDate(
     currentDate,
     currentDate.getMonth() === 0 ? -1 : 0,
@@ -51,7 +75,7 @@ export const goToPreviousMonth = (currentDate, minYear, maxYear) => {
   return prevDate
 }
 
-export const goToNextYear = (currentDate, minYear, maxYear) => {
+const goToNextYear = (currentDate, minYear, maxYear) => {
   const nextDate = adjustDate(currentDate, 1, 0)
   if (nextDate.getFullYear() > applyYearConfig(maxYear)) {
     return new Date(applyYearConfig(maxYear), currentDate.getMonth())
@@ -59,7 +83,7 @@ export const goToNextYear = (currentDate, minYear, maxYear) => {
   return nextDate
 }
 
-export const goToPreviousYear = (currentDate, minYear, maxYear) => {
+const goToPreviousYear = (currentDate, minYear, maxYear) => {
   const prevDate = adjustDate(currentDate, -1, 0)
   if (prevDate.getFullYear() < applyYearConfig(minYear)) {
     return new Date(applyYearConfig(minYear), currentDate.getMonth())
@@ -67,12 +91,7 @@ export const goToPreviousYear = (currentDate, minYear, maxYear) => {
   return prevDate
 }
 
-export const goToPreviousYearBlock = (
-  yearsBlock,
-  minYear,
-  maxYear,
-  yearBlockSize,
-) => {
+const goToPreviousYearBlock = (yearsBlock, minYear, maxYear, yearBlockSize) => {
   const blockSize = yearBlockSize || DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
   const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
@@ -94,12 +113,7 @@ export const goToPreviousYearBlock = (
   )
 }
 
-export const goToNextYearBlock = (
-  yearsBlock,
-  minYear,
-  maxYear,
-  yearBlockSize,
-) => {
+const goToNextYearBlock = (yearsBlock, minYear, maxYear, yearBlockSize) => {
   const blockSize = yearBlockSize || DEFAULT_CONFIG.YEAR_BLOCK_SIZE
   const minProcessedYear = applyYearConfig(minYear, new Date().getFullYear())
   const maxProcessedYear = applyYearConfig(maxYear, new Date().getFullYear())
@@ -115,6 +129,19 @@ export const goToNextYearBlock = (
   )
 }
 
+/**
+ * Calcule la nouvelle date basée sur la vue et la direction actuelles.
+ *
+ * @function
+ * @param {string} view - La vue actuelle (jours, mois ou années).
+ * @param {string} direction - La direction de navigation (précédente ou suivante).
+ * @param {Array<number>} yearsBlock - Le bloc d'années actuel.
+ * @param {Date} prev - La date précédente.
+ * @param {number} minYear - L'année minimale autorisée.
+ * @param {number} maxYear - L'année maximale autorisée.
+ * @param {number} yearBlockSize - La taille du bloc d'années.
+ * @returns {object} - Un objet contenant la nouvelle date et le nouveau bloc d'années.
+ */
 export const calculateNewDate = (
   view,
   direction,
@@ -167,6 +194,18 @@ export const calculateNewDate = (
   return { newDate, newYearBlock }
 }
 
+/**
+ * Gère les touches de navigation pour faciliter la navigation dans le calendrier.
+ *
+ * @function
+ * @param {Event} e - L'événement clavier.
+ * @param {number} index - L'index actuel.
+ * @param {number} maxIndex - L'index maximum.
+ * @param {function} action - L'action à exécuter lors de la sélection d'un élément.
+ * @param {Array<HTMLElement>} refsArray - Le tableau de références des éléments interactifs.
+ * @param {function} getItem - Une fonction pour obtenir un élément basé sur un index.
+ * @param {function} closeCalendar - Une fonction pour fermer le calendrier.
+ */
 export function handleNavigationKeys(
   e,
   index,

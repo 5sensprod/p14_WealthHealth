@@ -37,7 +37,7 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
         language="fr"
         // dateFormat="ISO"
         manualInputEnabled={true}
-        minYear={'auto-10'}
+        // minYear={'auto-10'}
         maxYear={2030}
         customStyles={{
           backgroundColor: 'transparent',
