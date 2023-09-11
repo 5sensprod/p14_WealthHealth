@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/utils/propsAndConfig.js</title>
+    <title>JSDoc: Source: components/DatePicker/src/views/DaysView.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/utils/propsAndConfig.js</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/views/DaysView.jsx</h1>
 
     
 
@@ -26,167 +26,172 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import {
-  DEFAULT_CONFIG,
-  CONFIG_VALIDATION_RULES,
-} from '../config/defaultConfig'
-import { applyYearConfig } from './dateNavigations'
+            <pre class="prettyprint source linenums"><code>import React, { useRef, useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import styles from '../Calendar.module.css'
+import { handleNavigationKeys } from '../utils/dateNavigations'
+import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
+import useDesignStyles from '../hooks/useDesignStyles'
+import alternativeStyles from '../AlternativeCalendar.module.css'
 
 /**
- * Valide et renvoie le format de date fourni.
+ * Vue des jours dans le calendrier.
  *
- * Cette fonction vérifie si le format de date fourni est valide.
- * Si le format de date n'est pas valide, elle utilise le format par défaut.
- *
- * @function
- * @param {string} dateFormat - Le format de date à valider.
- * @returns {string} - Un format de date valide.
+ * @param {Object} props - Propriétés pour DaysView.
+ * @param {string} props.designType - Type de design utilisé pour le calendrier.
+ * @param {Array} props.totalSlots - Liste des jours dans le mois actuel.
+ * @param {Function} props.chooseDate - Fonction appelée lorsqu'une date est sélectionnée.
+ * @param {Array} props.reorderedDays - Liste des jours de la semaine réordonnés en fonction de la configuration.
+ * @param {Function} props.setCurrentMonth - Fonction pour définir le mois actuellement visualisé.
+ * @param {Date} props.currentMonth - Le mois actuellement visualisé.
+ * @param {Date} props.selectedDate - La date actuellement sélectionnée.
  */
-function validateDateFormat(dateFormat) {
-  const validFormat = DEFAULT_CONFIG.DATE_FORMATS[dateFormat]
+function DaysView({
+  designType,
+  totalSlots,
+  chooseDate,
+  reorderedDays,
+  setCurrentMonth,
+  currentMonth,
+  selectedDate,
+  // viewedDate = null,
+}) {
+  const daysRefs = useRef([])
+  const [hasBeenHovered, setHasBeenHovered] = useState(false)
+  const [changedMonth, setChangedMonth] = useState(null)
 
-  if (!validFormat) {
-    console.info(
-      `Invalid format key: ${dateFormat}. Defaulting to DEFAULT format.`,
-    )
-    return DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT]
-  }
-
-  return validFormat
-}
-
-/**
- * Traite et valide les propriétés de configuration pour le calendrier.
- *
- * @function
- * @param {object} configProps - Les propriétés de configuration fournies pour le calendrier.
- * @param {boolean} configProps.useIcons - Indique si des icônes doivent être utilisées.
- * @param {string} configProps.dateFormat - Format de date à utiliser.
- * @param {object} configProps.customStyles - Styles personnalisés à appliquer.
- * @param {number} configProps.startOfWeek - Le jour de début de la semaine.
- * @param {boolean} configProps.manualInputEnabled - Indique si l'entrée manuelle est activée.
- * @param {number} configProps.minYear - L'année minimale à afficher.
- * @param {number} configProps.maxYear - L'année maximale à afficher.
- * @param {string} configProps.language - Langue à utiliser pour le calendrier.
- * @param {number} configProps.yearBlockSize - Taille du bloc d'années.
- * @param {string} configProps.designType - Type de design à utiliser.
- */
-export const handlePropsAndConfig = (configProps) => {
   const {
-    useIcons,
-    dateFormat,
-    customStyles,
-    startOfWeek,
-    manualInputEnabled,
-    minYear,
-    maxYear,
-    language,
-    yearBlockSize,
-    designType,
-  } = {
-    ...DEFAULT_CONFIG,
-    ...configProps,
-  }
+    selectedStyles,
+    designClass,
+    dayClass,
+    grayedDayClass,
+    // daysContainerClass,
+    activeClass,
+    todayClass,
+    headerClass,
+  } = useDesignStyles(designType)
 
-  const currentYear = new Date().getFullYear()
+  const resetHoveredState = () => setHasBeenHovered(false)
 
-  const getProcessedValue = (
-    originalValue,
-    defaultValue,
-    processingFunc,
-    configKey,
-    currentYear,
-  ) => {
-    if (originalValue !== undefined) {
-      let processedValue = processingFunc
-        ? processingFunc(originalValue, currentYear)
-        : originalValue
+  const handleDayHover = () => setHasBeenHovered(true)
 
-      const rule = CONFIG_VALIDATION_RULES[configKey]
+  const today = new Date()
 
-      if (Array.isArray(rule) &amp;&amp; !rule.includes(processedValue)) {
-        console.info(
-          `Invalid value "${processedValue}" for ${configKey}. Defaulting to "${defaultValue}".`,
-        )
-        return defaultValue
-      }
-
-      // Si la valeur est null (indicateur d'erreur de processYearConfig)
-      if (processedValue === null) {
-        console.info(
-          `Invalid format for "${originalValue}" in ${configKey}. Defaulting to "${defaultValue}".`,
-        )
-        return defaultValue
-      }
-
-      // Si aucune des validations ci-dessus n'a échoué
-      return processedValue
+  useEffect(() => {
+    if (changedMonth === 'next') {
+      daysRefs.current[0]?.focus()
+    } else if (changedMonth === 'prev') {
+      daysRefs.current[daysRefs.current.length - 1]?.focus()
     }
-    return defaultValue
+  }, [changedMonth])
+
+  const handleDayKeyDown = (e, index) => {
+    if (e.key === 'Tab') {
+      let direction
+      if (e.shiftKey &amp;&amp; index === 0) {
+        e.preventDefault()
+        direction = BACKWARD
+        setCurrentMonth(updateMonth(currentMonth, direction))
+        setChangedMonth('prev')
+        return
+      }
+
+      if (!e.shiftKey &amp;&amp; index === totalSlots.length - 1) {
+        direction = 'forward'
+        setCurrentMonth(updateMonth(currentMonth, direction))
+        setChangedMonth('next')
+        return
+      }
+
+      const result = handleTabKey(e, totalSlots[index], index, currentMonth)
+      if (result.direction) {
+        e.preventDefault()
+        setCurrentMonth(updateMonth(currentMonth, result.direction))
+      }
+    } else {
+      handleNavigationKeys(
+        e,
+        index,
+        totalSlots.length - 1,
+        (selectedIndex) => chooseDate(totalSlots[selectedIndex].number),
+        daysRefs.current,
+      )
+    }
   }
 
-  return {
-    language: getProcessedValue(
-      language,
-      DEFAULT_CONFIG.LANGUAGE,
-      null,
-      'LANGUAGE',
-    ),
-    startOfWeek: getProcessedValue(
-      startOfWeek,
-      DEFAULT_CONFIG.START_OF_WEEK,
-      null,
-      'START_OF_WEEK',
-    ),
-    designType: getProcessedValue(
-      designType,
-      DEFAULT_CONFIG.DESIGN_TYPE,
-      null,
-      'DESIGN_TYPE',
-    ),
+  return (
+    &lt;div
+      className={`${selectedStyles.daysContainer} ${
+        designClass ? alternativeStyles[designClass] : ''
+      }`}
+      onMouseLeave={resetHoveredState}
+    >
+      {reorderedDays.map((day) => (
+        &lt;div className={`${selectedStyles.header} ${headerClass}`} key={day}>
+          {day}
+        &lt;/div>
+      ))}
+      {totalSlots.map((day, index) => {
+        const todayIsThisDay =
+          !day.isGrayed &amp;&amp;
+          today.getDate() === day.number &amp;&amp;
+          today.getMonth() === currentMonth.getMonth() &amp;&amp;
+          today.getFullYear() === currentMonth.getFullYear()
 
-    customStyles,
+        const isSelectedDate =
+          !day.isGrayed &amp;&amp;
+          selectedDate.getDate() === day.number &amp;&amp;
+          selectedDate.getMonth() === currentMonth.getMonth() &amp;&amp;
+          selectedDate.getFullYear() === currentMonth.getFullYear()
 
-    manualInputEnabled: getProcessedValue(
-      manualInputEnabled,
-      DEFAULT_CONFIG.MANUAL_INPUT_ENABLED,
-      null,
-      'MANUAL_INPUT_ENABLED',
-    ),
+        let highlightedClass = ''
+        if (isSelectedDate &amp;&amp; !hasBeenHovered) {
+          highlightedClass = activeClass || styles.active
+        } else if (todayIsThisDay &amp;&amp; !hasBeenHovered) {
+          highlightedClass = todayClass || styles.today
+        }
 
-    minYear: getProcessedValue(
-      minYear,
-      DEFAULT_CONFIG.MIN_YEAR,
-      applyYearConfig,
-      'MIN_YEAR',
-      currentYear,
-    ),
-    maxYear: getProcessedValue(
-      maxYear,
-      DEFAULT_CONFIG.MAX_YEAR,
-      applyYearConfig,
-      'MAX_YEAR',
-      currentYear,
-    ),
+        const dayClassname = day.isGrayed
+          ? `${styles.grayedDay} ${grayedDayClass}`
+          : `${styles.day} ${dayClass}`
 
-    yearBlockSize: getProcessedValue(
-      yearBlockSize,
-      DEFAULT_CONFIG.YEAR_BLOCK_SIZE,
-    ),
-    useIcons: getProcessedValue(
-      useIcons,
-      DEFAULT_CONFIG.USE_ICONS,
-      null,
-      'USE_ICONS',
-    ),
-
-    dateFormat: getProcessedValue(
-      dateFormat,
-      DEFAULT_CONFIG.DATE_FORMATS[DEFAULT_CONFIG.DATE_FORMAT],
-      validateDateFormat,
-    ),
-  }
+        return (
+          &lt;div
+            key={index}
+            className={`${dayClassname} ${highlightedClass}`}
+            onClick={(event) => {
+              event.stopPropagation()
+              if (!day.isGrayed) chooseDate(day.number)
+            }}
+            onKeyDown={(e) => handleDayKeyDown(e, index)}
+            onMouseEnter={handleDayHover}
+            ref={(el) => (daysRefs.current[index] = el)}
+            tabIndex={day.isGrayed ? -1 : 0}
+          >
+            {day.number}
+          &lt;/div>
+        )
+      })}
+    &lt;/div>
+  )
 }
+
+DaysView.propTypes = {
+  designType: PropTypes.string.isRequired,
+  totalSlots: PropTypes.arrayOf(
+    PropTypes.shape({
+      number: PropTypes.number,
+      isGrayed: PropTypes.bool,
+    }),
+  ).isRequired,
+  chooseDate: PropTypes.func.isRequired,
+  reorderedDays: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setCurrentMonth: PropTypes.func.isRequired,
+  currentMonth: PropTypes.instanceOf(Date).isRequired,
+  selectedDate: PropTypes.instanceOf(Date).isRequired,
+}
+
+export default DaysView
 </code></pre>
         </article>
     </section>
@@ -203,7 +208,7 @@ export const handlePropsAndConfig = (configProps) => {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

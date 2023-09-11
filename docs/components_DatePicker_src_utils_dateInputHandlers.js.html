@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/Calendar.jsx</title>
+    <title>JSDoc: Source: components/DatePicker/src/utils/dateInputHandlers.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/Calendar.jsx</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/utils/dateInputHandlers.js</h1>
 
     
 
@@ -26,132 +26,178 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useState, forwardRef } from 'react'
-import styles from './Calendar.module.css'
-import NavSelector from './NavSelector'
-import DateGrid from './DateGrid'
-import getTranslations from './utils/translate'
-import useCalendarLogic from './hooks/useCalendarLogic'
-import useYearLogic from './hooks/useYearLogic'
-import useDesignStyles from './hooks/useDesignStyles'
-import { chooseDate } from './utils/dateFunctions'
-import alternativeStyles from './AlternativeCalendar.module.css'
+            <pre class="prettyprint source linenums"><code>/**
+ * Met à jour la valeur d'entrée avec la nouvelle valeur.
+ *
+ * @function
+ * @param {function} setInput - Fonction de mise à jour de la valeur d'entrée.
+ * @param {string} newValue - Nouvelle valeur à définir.
+ */
+export const updateInput = (setInput, newValue) => {
+  setInput(newValue)
+}
 
 /**
- * Composant Calendar pour afficher un calendrier interactif.
+ * Gère un champ d'entrée vide.
  *
- * @component
- * @param {function} selectDate - Fonction pour sélectionner une date.
- * @param {function} closeCalendar - Fonction pour fermer le calendrier.
- * @param {boolean} useIcons - Indique si des icônes doivent être utilisées.
- * @param {string} language - Langue pour les traductions.
- * @param {Array&lt;string>} reorderedDays - Jours réorganisés.
- * @param {number} startOfWeek - Jour de début de la semaine.
- * @param {string} designType - Type de design pour le calendrier.
- * @param {boolean} showButton - Indique si le bouton doit être affiché.
- * @param {Object} dateProps - Autres propriétés relatives à la date.
- * @returns {React.Element} - Renvoie le composant Calendar.
+ * Cette fonction réinitialise la date sélectionnée et supprime toute erreur.
+ *
+ * @function
+ * @param {string} name - Nom du champ d'entrée.
+ * @param {function} onChange - Fonction de changement.
+ * @param {function} setError - Fonction de définition de l'erreur.
+ * @param {function} setSelectedDate - Fonction de mise à jour de la date sélectionnée.
  */
-const Calendar = forwardRef(
+export const handleEmptyInput = (name, onChange, setError, setSelectedDate) => {
+  setError(null)
+  onChange({ target: { name, value: '' } })
+  setSelectedDate(new Date())
+}
+
+/**
+ * Gère une date valide.
+ *
+ * Cette fonction met à jour la date sélectionnée et déclenche un événement onChange avec la date formatée pour l'hôte.
+ *
+ * @function
+ * @param {string} newValue - Nouvelle valeur de la date.
+ * @param {string} name - Nom du champ d'entrée.
+ * @param {function} onChange - Fonction de changement.
+ * @param {function} setError - Fonction de définition de l'erreur.
+ * @param {function} setSelectedDate - Fonction de mise à jour de la date sélectionnée.
+ * @param {function} convertFormattedStringToDate - Fonction de conversion de la date formatée en objet Date.
+ * @param {string} dateFormat - Format de la date.
+ */
+export const handleValidDate = (
+  newValue,
+  name,
+  onChange,
+  setError,
+  setSelectedDate,
+  convertFormattedStringToDate,
+  dateFormat,
+) => {
+  setError(null)
+  const dateObject = convertFormattedStringToDate(newValue, dateFormat)
+  setSelectedDate(dateObject)
+
+  // Formater la date pour l'hôte en format 'YYYY-MM-DD'
+  const formattedForHost = `${dateObject.getFullYear()}-${String(
+    dateObject.getMonth() + 1,
+  ).padStart(2, '0')}-${String(dateObject.getDate()).padStart(2, '0')}`
+
+  onChange({ target: { name, value: formattedForHost } }) // nous passons cette valeur à l'hôte
+}
+
+/**
+ * Gère une date non valide.
+ *
+ * Cette fonction déclenche un événement onChange avec une valeur vide.
+ *
+ * @function
+ * @param {string} name - Nom du champ d'entrée.
+ * @param {function} onChange - Fonction de changement.
+ */
+export const handleInvalidDate = (name, onChange) => {
+  onChange({ target: { name, value: '' } })
+}
+
+/**
+ * Gère une entrée incomplète.
+ *
+ * Cette fonction met à jour la valeur d'entrée sans modifier l'état de l'erreur.
+ *
+ * @function
+ * @param {string} newValue - Nouvelle valeur de l'entrée.
+ * @param {string} name - Nom du champ d'entrée.
+ * @param {function} onChange - Fonction de changement.
+ * @param {function} setError - Fonction de définition de l'erreur.
+ */
+export const handleIncompleteInput = (newValue, name, onChange, setError) => {
+  setError(null)
+  onChange({ target: { name, value: newValue } })
+}
+
+/**
+ * Bascule la visibilité du calendrier.
+ *
+ * @function
+ * @param {function} toggleCalendar - Fonction pour basculer l'affichage du calendrier.
+ * @returns {function} - Fonction d'événement pour basculer la visibilité du calendrier.
+ */
+export const toggleCalendarVisibility = (toggleCalendar) => (event) => {
+  event.stopPropagation()
+  toggleCalendar()
+}
+
+/**
+ * Gère la sélection d'une date.
+ *
+ * Lorsqu'une date est sélectionnée, cette fonction met à jour la valeur d'entrée, la date sélectionnée et ferme le calendrier.
+ *
+ * @function
+ * @param {function} setInput - Fonction de mise à jour de la valeur d'entrée.
+ * @param {function} setSelectedDate - Fonction de mise à jour de la date sélectionnée.
+ * @param {function} closeCalendar - Fonction pour fermer le calendrier.
+ * @param {function} validate - Fonction de validation.
+ * @param {function} formatDatePickerDate - Fonction pour formater la date.
+ * @param {string} dateFormat - Format de la date.
+ * @param {function} onChange - Fonction de changement.
+ * @param {string} name - Nom du champ d'entrée.
+ * @returns {function} - Fonction d'événement pour gérer la sélection d'une date.
+ */
+export const handleDateSelect =
   (
-    {
-      selectDate,
-      closeCalendar,
-      useIcons,
-      language,
-      reorderedDays,
-      startOfWeek,
-      designType,
-      showButton = true,
-      ...dateProps
-    },
-    ref,
-  ) => {
-    // Translation utility
-    const translations = getTranslations(language)
+    setInput,
+    setSelectedDate,
+    closeCalendar,
+    validate,
+    formatDatePickerDate,
+    dateFormat,
+    onChange,
+    name,
+  ) =>
+  (date) => {
+    const actualDate = typeof date === 'string' ? new Date(date) : date
 
-    // Design Styles
-    const { selectedStyles, designClass, rootClass } =
-      useDesignStyles(designType)
+    setInput(actualDate)
+    setSelectedDate(actualDate)
+    closeCalendar()
 
-    // Year Logic
-    const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic(
-      dateProps.minYear,
-      dateProps.maxYear,
-      dateProps.yearBlockSize,
-    )
+    const formattedForDisplay = formatDatePickerDate(actualDate, dateFormat)
+    validate(formattedForDisplay)
 
-    // Calendar Logic
-    const { viewedDate, setViewedDate, totalSlots } = useCalendarLogic(
-      initialMonth,
-      dateProps.selectedDate,
-      startOfWeek,
-      dateProps.yearBlockSize,
-    )
+    // Maintenant, nous formaterons toujours la date pour l'hôte en format 'YYYY-MM-DD'
+    const formattedForHost = `${actualDate.getFullYear()}-${String(
+      actualDate.getMonth() + 1,
+    ).padStart(2, '0')}-${String(actualDate.getDate()).padStart(2, '0')}`
 
-    // Date choosing logic
-    const handleChooseDate = (day) =>
-      chooseDate(selectDate, closeCalendar, viewedDate, day)
+    onChange({
+      target: {
+        name,
+        value: formattedForHost, // nous passons cette valeur à l'hôte
+      },
+    })
+  }
 
-    // State Initializations
-    const [currentDate, setCurrentDate] = useState(new Date())
-    const [view, setView] = useState('days')
-    const [animationKey, setAnimationKey] = useState(0)
-
-    return (
-      &lt;div
-        className={` ${selectedStyles.calendar}  ${rootClass} ${
-          designClass ? alternativeStyles[designClass] : ''
-        }`}
-        ref={ref}
-      >
-        {/* Navigation Selector */}
-        &lt;div className={styles.calendarNav}>
-          &lt;NavSelector
-            currentMonth={viewedDate}
-            setViewedDate={setViewedDate}
-            months={translations.shortMonths}
-            years={years}
-            useIcons={useIcons}
-            view={view}
-            setView={setView}
-            yearsBlock={yearsBlock}
-            yearBlockSize={dateProps.yearBlockSize}
-            setYearsBlock={setYearsBlock}
-            animationKey={animationKey}
-            setAnimationKey={setAnimationKey}
-            currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
-            minYear={dateProps.minYear}
-            maxYear={dateProps.maxYear}
-          />
-        &lt;/div>
-
-        {/* Date Grid */}
-        &lt;DateGrid
-          key={`${viewedDate.getMonth()}-${viewedDate.getFullYear()}`}
-          totalSlots={totalSlots}
-          chooseDate={handleChooseDate}
-          translations={translations}
-          view={view}
-          setView={setView}
-          currentMonth={viewedDate}
-          setCurrentMonth={setViewedDate}
-          yearsBlock={yearsBlock}
-          animationKey={animationKey}
-          reorderedDays={reorderedDays}
-          selectedDate={dateProps.selectedDate}
-          viewedDate={viewedDate}
-          currentDate={currentDate}
-          yearBlockSize={dateProps.yearBlockSize}
-          designType={designType}
-        />
-      &lt;/div>
-    )
-  },
-)
-
-export default Calendar
+/**
+ * Crée un gestionnaire pour la touche Échap.
+ *
+ * Lorsque la touche Échap est enfoncée, cette fonction ferme le calendrier et retire le focus de l'entrée.
+ *
+ * @function
+ * @param {function} closeCalendar - Fonction pour fermer le calendrier.
+ * @param {Object} inputRef - Référence à l'élément d'entrée.
+ * @returns {function} - Fonction d'événement pour gérer la touche Échap.
+ */
+export const createEscapeHandler = (closeCalendar, inputRef) => {
+  return () => {
+    if (inputRef &amp;&amp; inputRef.current) {
+      inputRef.current.blur()
+    }
+    closeCalendar()
+  }
+}
 </code></pre>
         </article>
     </section>
@@ -168,7 +214,7 @@ export default Calendar
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/utils/dateInputHandlers.js</title>
+    <title>JSDoc: Source: components/DatePicker/src/utils/viewUtils.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/utils/dateInputHandlers.js</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/utils/viewUtils.js</h1>
 
     
 
@@ -26,177 +26,110 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Met à jour la valeur d'entrée avec la nouvelle valeur.
+            <pre class="prettyprint source linenums"><code>import { getDaysInMonth } from './dateFunctions'
+
+/**
+ * Constantes représentant les différentes vues du sélecteur de date.
+ */
+export const DAYS = 'days'
+export const MONTHS = 'months'
+export const YEARS = 'years'
+
+/**
+ * Passe à la vue du mois.
  *
  * @function
- * @param {function} setInput - Fonction de mise à jour de la valeur d'entrée.
- * @param {string} newValue - Nouvelle valeur à définir.
+ * @param {string} view - La vue actuelle (jours, mois ou années).
+ * @returns {string} - Retourne la vue "mois" si la vue actuelle est "jours", sinon retourne la vue actuelle.
  */
-export const updateInput = (setInput, newValue) => {
-  setInput(newValue)
+export function switchToMonthView(view) {
+  return view === DAYS ? MONTHS : view
 }
 
 /**
- * Gère un champ d'entrée vide.
- *
- * Cette fonction réinitialise la date sélectionnée et supprime toute erreur.
+ * Basculer entre la vue des années et la vue des mois.
  *
  * @function
- * @param {string} name - Nom du champ d'entrée.
- * @param {function} onChange - Fonction de changement.
- * @param {function} setError - Fonction de définition de l'erreur.
- * @param {function} setSelectedDate - Fonction de mise à jour de la date sélectionnée.
+ * @param {string} view - La vue actuelle (mois ou années).
+ * @returns {string} - Retourne la vue "années" si la vue actuelle est "mois", sinon retourne la vue "mois".
  */
-export const handleEmptyInput = (name, onChange, setError, setSelectedDate) => {
-  setError(null)
-  onChange({ target: { name, value: '' } })
-  setSelectedDate(new Date())
+export function toggleYearView(view) {
+  return view === YEARS ? MONTHS : YEARS
 }
 
 /**
- * Gère une date valide.
- *
- * Cette fonction met à jour la date sélectionnée et déclenche un événement onChange avec la date formatée pour l'hôte.
+ * Réinitialise la date à la date actuelle.
  *
  * @function
- * @param {string} newValue - Nouvelle valeur de la date.
- * @param {string} name - Nom du champ d'entrée.
- * @param {function} onChange - Fonction de changement.
- * @param {function} setError - Fonction de définition de l'erreur.
- * @param {function} setSelectedDate - Fonction de mise à jour de la date sélectionnée.
- * @param {function} convertFormattedStringToDate - Fonction de conversion de la date formatée en objet Date.
- * @param {string} dateFormat - Format de la date.
+ * @returns {Date} - La date actuelle sans l'heure, les minutes et les secondes.
  */
-export const handleValidDate = (
-  newValue,
-  name,
-  onChange,
-  setError,
-  setSelectedDate,
-  convertFormattedStringToDate,
-  dateFormat,
-) => {
-  setError(null)
-  const dateObject = convertFormattedStringToDate(newValue, dateFormat)
-  setSelectedDate(dateObject)
-
-  // Formater la date pour l'hôte en format 'YYYY-MM-DD'
-  const formattedForHost = `${dateObject.getFullYear()}-${String(
-    dateObject.getMonth() + 1,
-  ).padStart(2, '0')}-${String(dateObject.getDate()).padStart(2, '0')}`
-
-  onChange({ target: { name, value: formattedForHost } }) // nous passons cette valeur à l'hôte
+export function resetToCurrentDate() {
+  const now = new Date()
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate())
 }
 
 /**
- * Gère une date non valide.
- *
- * Cette fonction déclenche un événement onChange avec une valeur vide.
+ * Réorganise les jours de la semaine en fonction de l'index du jour de départ.
  *
  * @function
- * @param {string} name - Nom du champ d'entrée.
- * @param {function} onChange - Fonction de changement.
+ * @param {string[]} days - Tableau des jours de la semaine.
+ * @param {number} startDayIndex - Index du jour de départ (0 pour dimanche, 6 pour samedi).
+ * @returns {string[]} - Tableau des jours de la semaine réorganisé.
  */
-export const handleInvalidDate = (name, onChange) => {
-  onChange({ target: { name, value: '' } })
+export function reorderDays(days, startDayIndex) {
+  if (startDayIndex &lt; 0 || startDayIndex > 6) return days
+  return [...days.slice(startDayIndex), ...days.slice(0, startDayIndex)]
 }
 
 /**
- * Gère une entrée incomplète.
- *
- * Cette fonction met à jour la valeur d'entrée sans modifier l'état de l'erreur.
+ * Constantes représentant les directions pour naviguer entre les mois.
+ */
+export const FORWARD = 'forward'
+export const BACKWARD = 'backward'
+
+/**
+ * Met à jour le mois actuel en fonction de la direction spécifiée.
  *
  * @function
- * @param {string} newValue - Nouvelle valeur de l'entrée.
- * @param {string} name - Nom du champ d'entrée.
- * @param {function} onChange - Fonction de changement.
- * @param {function} setError - Fonction de définition de l'erreur.
+ * @param {Date} currentMonth - Le mois actuel.
+ * @param {string} direction - Direction pour la mise à jour ("forward" ou "backward").
+ * @returns {Date} - Nouveau mois après mise à jour.
  */
-export const handleIncompleteInput = (newValue, name, onChange, setError) => {
-  setError(null)
-  onChange({ target: { name, value: newValue } })
+export const updateMonth = (currentMonth, direction) => {
+  const newMonth = new Date(currentMonth)
+  const increment = direction === FORWARD ? 1 : -1
+  newMonth.setMonth(currentMonth.getMonth() + increment)
+  return newMonth
 }
 
 /**
- * Bascule la visibilité du calendrier.
+ * Gère la navigation entre les jours en utilisant la touche Tab.
  *
  * @function
- * @param {function} toggleCalendar - Fonction pour basculer l'affichage du calendrier.
- * @returns {function} - Fonction d'événement pour basculer la visibilité du calendrier.
+ * @param {Event} e - L'événement de pression de touche.
+ * @param {Object} day - L'objet jour actuel.
+ * @param {number} index - Index du jour actuel.
+ * @param {Date} currentMonth - Le mois actuel.
+ * @returns {Object} - Un objet contenant la direction pour la navigation, s'il y en a une.
  */
-export const toggleCalendarVisibility = (toggleCalendar) => (event) => {
-  event.stopPropagation()
-  toggleCalendar()
-}
+export const handleTabKey = (e, day, index, currentMonth) => {
+  const daysInCurrentMonth = getDaysInMonth(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+  )
+  const isLastDayOfCurrentMonth =
+    day.number === daysInCurrentMonth &amp;&amp; !day.isGrayed
+  const isFirstDayOfCurrentMonth = day.number === 1 &amp;&amp; !day.isGrayed
 
-/**
- * Gère la sélection d'une date.
- *
- * Lorsqu'une date est sélectionnée, cette fonction met à jour la valeur d'entrée, la date sélectionnée et ferme le calendrier.
- *
- * @function
- * @param {function} setInput - Fonction de mise à jour de la valeur d'entrée.
- * @param {function} setSelectedDate - Fonction de mise à jour de la date sélectionnée.
- * @param {function} closeCalendar - Fonction pour fermer le calendrier.
- * @param {function} validate - Fonction de validation.
- * @param {function} formatDatePickerDate - Fonction pour formater la date.
- * @param {string} dateFormat - Format de la date.
- * @param {function} onChange - Fonction de changement.
- * @param {string} name - Nom du champ d'entrée.
- * @returns {function} - Fonction d'événement pour gérer la sélection d'une date.
- */
-export const handleDateSelect =
-  (
-    setInput,
-    setSelectedDate,
-    closeCalendar,
-    validate,
-    formatDatePickerDate,
-    dateFormat,
-    onChange,
-    name,
-  ) =>
-  (date) => {
-    const actualDate = typeof date === 'string' ? new Date(date) : date
-
-    setInput(actualDate)
-    setSelectedDate(actualDate)
-    closeCalendar()
-
-    const formattedForDisplay = formatDatePickerDate(actualDate, dateFormat)
-    validate(formattedForDisplay)
-
-    // Maintenant, nous formaterons toujours la date pour l'hôte en format 'YYYY-MM-DD'
-    const formattedForHost = `${actualDate.getFullYear()}-${String(
-      actualDate.getMonth() + 1,
-    ).padStart(2, '0')}-${String(actualDate.getDate()).padStart(2, '0')}`
-
-    onChange({
-      target: {
-        name,
-        value: formattedForHost, // nous passons cette valeur à l'hôte
-      },
-    })
+  if (!e.shiftKey &amp;&amp; isLastDayOfCurrentMonth) {
+    e.preventDefault()
+    return { direction: FORWARD }
+  } else if (e.shiftKey &amp;&amp; isFirstDayOfCurrentMonth) {
+    e.preventDefault()
+    return { direction: BACKWARD }
   }
 
-/**
- * Crée un gestionnaire pour la touche Échap.
- *
- * Lorsque la touche Échap est enfoncée, cette fonction ferme le calendrier et retire le focus de l'entrée.
- *
- * @function
- * @param {function} closeCalendar - Fonction pour fermer le calendrier.
- * @param {Object} inputRef - Référence à l'élément d'entrée.
- * @returns {function} - Fonction d'événement pour gérer la touche Échap.
- */
-export const createEscapeHandler = (closeCalendar, inputRef) => {
-  return () => {
-    if (inputRef &amp;&amp; inputRef.current) {
-      inputRef.current.blur()
-    }
-    closeCalendar()
-  }
+  return {}
 }
 </code></pre>
         </article>
@@ -214,7 +147,7 @@ export const createEscapeHandler = (closeCalendar, inputRef) => {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

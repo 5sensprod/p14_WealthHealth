@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/utils/translate.js</title>
+    <title>JSDoc: Source: components/DatePicker/src/NavSelector.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/utils/translate.js</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/NavSelector.jsx</h1>
 
     
 
@@ -26,30 +26,146 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import enTranslations from '../translations/en.json'
-import frTranslations from '../translations/fr.json'
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+import PropTypes from 'prop-types'
+import { HomeIcon } from './Icons'
+import ChevronButtons from './ChevronSelector'
+import styles from './Calendar.module.css'
+import Button from './Button'
+import useKeyboardAccessibility from './hooks/useKeyboardAccessibility'
+import {
+  DAYS,
+  YEARS,
+  switchToMonthView,
+  toggleYearView,
+  resetToCurrentDate,
+} from './utils/viewUtils'
 
 /**
- * Récupère les traductions en fonction de la langue spécifiée.
+ * Sélecteur de mois.
  *
- * Cette fonction retourne un ensemble de chaînes traduites basées sur la langue choisie.
- * Actuellement, seules les traductions en anglais ("en") et en français ("fr") sont disponibles.
- *
- * @function
- * @param {string} [language='en'] - La langue pour laquelle obtenir les traductions. Par défaut, c'est l'anglais.
- * @returns {Object} - Un objet contenant les chaînes traduites pour la langue spécifiée.
+ * @param {Object} props - Propriétés du composant.
+ * @param {Date} props.currentMonth - Mois actuellement affiché.
+ * @param {Array&lt;string>} props.months - Liste des mois traduits.
+ * @param {string} props.view - Vue actuelle ('days', 'months', 'years').
+ * @param {Function} props.setView - Fonction pour changer la vue.
  */
-function getTranslations(language = 'en') {
-  switch (language) {
-    case 'fr':
-      return frTranslations
-    case 'en':
-    default:
-      return enTranslations
+function MonthSelector({ currentMonth, months, view, setView }) {
+  const handleMonthSelect = () => {
+    setView(switchToMonthView(view))
   }
+
+  const ref = useKeyboardAccessibility(handleMonthSelect)
+
+  if (view === YEARS) return null
+
+  return (
+    &lt;Button
+      ref={ref}
+      onClick={handleMonthSelect}
+      className={styles.navButton}
+      tabIndex={0}
+    >
+      {months[currentMonth.getMonth()]}
+    &lt;/Button>
+  )
 }
 
-export default getTranslations
+MonthSelector.propTypes = {
+  currentMonth: PropTypes.instanceOf(Date).isRequired,
+  months: PropTypes.arrayOf(PropTypes.string).isRequired,
+  view: PropTypes.string.isRequired,
+  setView: PropTypes.func.isRequired,
+}
+
+/**
+ * Sélecteur d'année.
+ *
+ * @param {Object} props - Propriétés du composant.
+ * @param {Date} props.currentMonth - Mois actuellement affiché.
+ * @param {string} props.view - Vue actuelle ('days', 'months', 'years').
+ * @param {Function} props.setView - Fonction pour changer la vue.
+ * @param {Array&lt;number>} props.yearsBlock - Bloc d'années actuel.
+ */
+function YearSelector({ currentMonth, view, setView, yearsBlock }) {
+  const handleYearSelect = () => {
+    setView(toggleYearView(view))
+  }
+
+  const ref = useKeyboardAccessibility(handleYearSelect)
+
+  return (
+    &lt;Button
+      ref={ref}
+      onClick={handleYearSelect}
+      className={styles.navButton}
+      tabIndex={0}
+    >
+      {view === YEARS
+        ? `${yearsBlock[0]}-${yearsBlock[yearsBlock.length - 1]}`
+        : currentMonth.getFullYear()}
+    &lt;/Button>
+  )
+}
+
+YearSelector.propTypes = {
+  currentMonth: PropTypes.instanceOf(Date).isRequired,
+  view: PropTypes.string.isRequired,
+  setView: PropTypes.func.isRequired,
+  yearsBlock: PropTypes.arrayOf(PropTypes.number).isRequired,
+}
+
+/**
+ * Bouton pour revenir à la date actuelle.
+ *
+ * @param {Object} props - Propriétés du composant.
+ * @param {Function} props.setViewedDate - Fonction pour mettre à jour la date affichée.
+ * @param {Function} props.setView - Fonction pour changer la vue.
+ * @param {Function} props.setCurrentDate - Fonction pour mettre à jour la date actuelle.
+ */
+function HomeButton({ setViewedDate, setView, setCurrentDate }) {
+  const handleHomeClick = () => {
+    const dateToday = resetToCurrentDate()
+    setViewedDate(dateToday)
+    setCurrentDate(dateToday)
+    setView(DAYS)
+  }
+
+  const ref = useKeyboardAccessibility(handleHomeClick)
+
+  return (
+    &lt;Button
+      ref={ref}
+      onClick={handleHomeClick}
+      icon={HomeIcon}
+      className={styles.navButton}
+      tabIndex={0}
+    />
+  )
+}
+
+HomeButton.propTypes = {
+  setViewedDate: PropTypes.func.isRequired,
+  setView: PropTypes.func.isRequired,
+  setCurrentDate: PropTypes.func.isRequired,
+}
+
+function NavSelector(props) {
+  return (
+    &lt;>
+      &lt;div className={styles.NavSelector}>
+        &lt;MonthSelector {...props} />
+        &lt;YearSelector {...props} />
+      &lt;/div>
+      &lt;div className={styles.homeSelector}>
+        &lt;HomeButton {...props} />
+      &lt;/div>
+      &lt;ChevronButtons {...props} />
+    &lt;/>
+  )
+}
+
+export default NavSelector
 </code></pre>
         </article>
     </section>
@@ -66,7 +182,7 @@ export default getTranslations
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

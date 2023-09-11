@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/hooks/useOutsideInteractions.js</title>
+    <title>JSDoc: Source: components/DatePicker/src/DateGrid.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/hooks/useOutsideInteractions.js</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/DateGrid.jsx</h1>
 
     
 
@@ -26,85 +26,108 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { useEffect } from 'react'
+            <pre class="prettyprint source linenums"><code>import React from 'react'
+import DaysView from './views/DaysView'
+import MonthsView from './views/MonthsView'
+import YearsView from './views/YearsView'
 
 /**
- * Hook personnalisé pour gérer les interactions en dehors d'un élément référencé.
+ * Composant DateGrid pour afficher les grilles des jours, mois ou années.
  *
- * Ce hook ajoute des écouteurs d'événements pour détecter lorsque des interactions
- * se produisent en dehors de l'élément référencé (comme un clic ou une perte de focus).
- * Lorsqu'une telle interaction est détectée, une fonction de rappel spécifiée est exécutée.
- * Ce hook est souvent utilisé pour fermer les modales, les popups ou les menus déroulants
- * lorsque l'utilisateur clique ou met le focus en dehors de ces éléments.
- *
- * @function
- * @param {React.RefObject} ref - La référence à l'élément principal que nous voulons surveiller.
- * @param {React.RefObject} buttonRef - La référence à un élément bouton qui pourrait être associé à l'élément principal (par exemple, un bouton qui déclenche une modale).
- * @param {Function} callback - La fonction de rappel à exécuter lorsque des interactions en dehors de l'élément référencé sont détectées.
+ * @component
+ * @param {Array&lt;Object>} totalSlots - Liste de tous les emplacements de jours pour le mois en cours.
+ * @param {function} chooseDate - Fonction pour choisir une date.
+ * @param {Object} translations - Traductions pour les mois et les jours.
+ * @param {string} view - Vue actuelle ("days", "months" ou "years").
+ * @param {function} setView - Fonction pour définir la vue.
+ * @param {function} setCurrentMonth - Fonction pour définir le mois en cours.
+ * @param {Date} currentMonth - Mois actuellement visualisé.
+ * @param {Array&lt;number>} yearsBlock - Bloc d'années actuel.
+ * @param {number} animationKey - Clé d'animation.
+ * @param {Array&lt;string>} reorderedDays - Jours de la semaine réorganisés.
+ * @param {function} closeCalendar - Fonction pour fermer le calendrier.
+ * @param {Date} selectedDate - Date actuellement sélectionnée.
+ * @param {Date} viewedDate - Date actuellement visualisée.
+ * @param {Date} currentDate - Date actuelle.
+ * @param {number} yearBlockSize - Taille du bloc d'années.
+ * @param {number} minYear - Année minimum.
+ * @param {number} maxYear - Année maximum.
+ * @param {string} designType - Type de design ("default" ou "alternative").
+ * @returns {React.Element} - Renvoie le composant DateGrid.
  */
-function useOutsideInteractions(ref, buttonRef, callback) {
-  useEffect(() => {
-    let timeoutId
-    let isClicking = false
+function DateGrid({
+  totalSlots,
+  chooseDate,
+  translations,
+  view,
+  setView,
+  setCurrentMonth,
+  currentMonth,
+  yearsBlock,
+  animationKey,
+  reorderedDays,
+  closeCalendar,
+  selectedDate,
+  viewedDate,
+  currentDate,
+  yearBlockSize,
+  minYear,
+  maxYear,
+  designType,
+}) {
+  const handleMonthClick = (monthIndex) => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), monthIndex))
+    setView('days')
+  }
 
-    const handleMouseUpOutside = (event) => {
-      if (
-        ref.current &amp;&amp;
-        event.target !== ref.current &amp;&amp;
-        !ref.current.contains(event.target) &amp;&amp;
-        (!buttonRef ||
-          (buttonRef.current &amp;&amp; !buttonRef.current.contains(event.target)))
-      ) {
-        callback()
-      }
-    }
+  const handleYearClick = (selectedYear) => {
+    setCurrentMonth(new Date(selectedYear, currentMonth.getMonth()))
+    setView('months')
+  }
 
-    const handleFocusOut = () => {
-      timeoutId = setTimeout(() => {
-        if (
-          !isClicking &amp;&amp;
-          ref.current &amp;&amp;
-          !ref.current.contains(document.activeElement)
-        ) {
-          callback()
-        }
-      }, 0)
-    }
+  return (
+    &lt;>
+      {view === 'days' &amp;&amp; (
+        &lt;DaysView
+          totalSlots={totalSlots}
+          chooseDate={chooseDate}
+          translations={translations}
+          reorderedDays={reorderedDays}
+          closeCalendar={closeCalendar}
+          setCurrentMonth={setCurrentMonth}
+          currentMonth={currentMonth}
+          selectedDate={selectedDate}
+          viewedDate={viewedDate}
+          currentDate={currentDate}
+          designType={designType}
+        />
+      )}
 
-    const handleFocusIn = () => {
-      clearTimeout(timeoutId)
-    }
+      {view === 'months' &amp;&amp; (
+        &lt;MonthsView
+          translations={translations}
+          handleMonthClick={handleMonthClick}
+          selectedDate={selectedDate}
+        />
+      )}
 
-    const handleClick = (event) => {
-      if (event.type === 'mousedown') {
-        isClicking = true
-      } else if (event.type === 'mouseup') {
-        isClicking = false
-      }
-    }
-
-    document.addEventListener('mouseup', handleMouseUpOutside)
-    const currentRef = ref.current
-    if (currentRef) {
-      currentRef.addEventListener('focusout', handleFocusOut)
-      currentRef.addEventListener('focusin', handleFocusIn)
-      currentRef.addEventListener('mousedown', handleClick)
-      currentRef.addEventListener('mouseup', handleClick)
-    }
-
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUpOutside)
-      if (currentRef) {
-        currentRef.removeEventListener('focusout', handleFocusOut)
-        currentRef.removeEventListener('focusin', handleFocusIn)
-        currentRef.removeEventListener('mousedown', handleClick)
-        currentRef.removeEventListener('mouseup', handleClick)
-      }
-    }
-  }, [ref, buttonRef, callback])
+      {view === 'years' &amp;&amp; (
+        &lt;YearsView
+          currentMonth={currentMonth}
+          yearsBlock={yearsBlock}
+          animationKey={animationKey}
+          handleYearClick={handleYearClick}
+          selectedDate={selectedDate}
+          yearBlockSize={yearBlockSize}
+          minYear={minYear}
+          maxYear={maxYear}
+        />
+      )}
+    &lt;/>
+  )
 }
 
-export default useOutsideInteractions
+export default DateGrid
 </code></pre>
         </article>
     </section>
@@ -121,7 +144,7 @@ export default useOutsideInteractions
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

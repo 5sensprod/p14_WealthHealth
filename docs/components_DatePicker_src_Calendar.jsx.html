@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/hooks/useDatePickerState.js</title>
+    <title>JSDoc: Source: components/DatePicker/src/Calendar.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/hooks/useDatePickerState.js</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/Calendar.jsx</h1>
 
     
 
@@ -26,103 +26,132 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { useState } from 'react'
-import { formatDatePickerDate } from '../utils/dateFunctions'
+            <pre class="prettyprint source linenums"><code>import React, { useState, forwardRef } from 'react'
+import styles from './Calendar.module.css'
+import NavSelector from './NavSelector'
+import DateGrid from './DateGrid'
+import getTranslations from './utils/translate'
+import useCalendarLogic from './hooks/useCalendarLogic'
+import useYearLogic from './hooks/useYearLogic'
+import useDesignStyles from './hooks/useDesignStyles'
+import { chooseDate } from './utils/dateFunctions'
+import alternativeStyles from './AlternativeCalendar.module.css'
 
 /**
- * Hook personnalisé pour gérer l'état et la logique d'un sélecteur de date (DatePicker).
+ * Composant Calendar pour afficher un calendrier interactif.
  *
- * Ce hook fournit des fonctions et des états pour gérer l'affichage du calendrier,
- * la valeur saisie, l'obtention et la perte de focus, ainsi que d'autres comportements associés.
- *
- * @function
- * @param {Date} initialValue - La valeur initiale du DatePicker.
- * @param {string} dateFormat - Le format de date souhaité pour l'affichage.
- * @param {Function} onClose - Fonction à appeler lorsque le calendrier est fermé.
- * @param {Function} checkError - Fonction pour vérifier les erreurs.
- * @param {Function} setError - Fonction pour définir une erreur.
- * @returns {Object} Un objet contenant l'état et les fonctions pour gérer le DatePicker.
+ * @component
+ * @param {function} selectDate - Fonction pour sélectionner une date.
+ * @param {function} closeCalendar - Fonction pour fermer le calendrier.
+ * @param {boolean} useIcons - Indique si des icônes doivent être utilisées.
+ * @param {string} language - Langue pour les traductions.
+ * @param {Array&lt;string>} reorderedDays - Jours réorganisés.
+ * @param {number} startOfWeek - Jour de début de la semaine.
+ * @param {string} designType - Type de design pour le calendrier.
+ * @param {boolean} showButton - Indique si le bouton doit être affiché.
+ * @param {Object} dateProps - Autres propriétés relatives à la date.
+ * @returns {React.Element} - Renvoie le composant Calendar.
  */
-function useDatePickerState(
-  initialValue,
-  dateFormat,
-  onClose,
-  checkError,
-  setError,
-) {
-  // Gestion de l'affichage du calendrier
-  const [showCalendar, setShowCalendar] = useState(false)
-  const [isFocused, setIsFocused] = useState(false)
-  const [lastDateBeforeHomeClick, setLastDateBeforeHomeClick] = useState(null)
+const Calendar = forwardRef(
+  (
+    {
+      selectDate,
+      closeCalendar,
+      useIcons,
+      language,
+      reorderedDays,
+      startOfWeek,
+      designType,
+      showButton = true,
+      ...dateProps
+    },
+    ref,
+  ) => {
+    // Translation utility
+    const translations = getTranslations(language)
 
-  // Gestion de la valeur saisie
-  const [inputValue, setInputValue] = useState(
-    formatDatePickerDate(initialValue, dateFormat),
-  )
+    // Design Styles
+    const { selectedStyles, designClass, rootClass } =
+      useDesignStyles(designType)
 
-  // Fonction pour basculer l'affichage du calendrier
-  function toggleCalendar() {
-    setShowCalendar((prev) => !prev)
-  }
+    // Year Logic
+    const { initialMonth, years, yearsBlock, setYearsBlock } = useYearLogic(
+      dateProps.minYear,
+      dateProps.maxYear,
+      dateProps.yearBlockSize,
+    )
 
-  // Fonction pour fermer le calendrier
-  function closeCalendar() {
-    const hasError = checkError ? checkError() : false
+    // Calendar Logic
+    const { viewedDate, setViewedDate, totalSlots } = useCalendarLogic(
+      initialMonth,
+      dateProps.selectedDate,
+      startOfWeek,
+      dateProps.yearBlockSize,
+    )
 
-    if (hasError) {
-      setInput('') // Réinitialise la valeur d'entrée en cas d'erreur
-      setError(null) // Réinitialise l'état de l'erreur
-    }
+    // Date choosing logic
+    const handleChooseDate = (day) =>
+      chooseDate(selectDate, closeCalendar, viewedDate, day)
 
-    if (onClose) {
-      onClose(hasError)
-    }
+    // State Initializations
+    const [currentDate, setCurrentDate] = useState(new Date())
+    const [view, setView] = useState('days')
+    const [animationKey, setAnimationKey] = useState(0)
 
-    setShowCalendar(false)
-  }
+    return (
+      &lt;div
+        className={` ${selectedStyles.calendar}  ${rootClass} ${
+          designClass ? alternativeStyles[designClass] : ''
+        }`}
+        ref={ref}
+      >
+        {/* Navigation Selector */}
+        &lt;div className={styles.calendarNav}>
+          &lt;NavSelector
+            currentMonth={viewedDate}
+            setViewedDate={setViewedDate}
+            months={translations.shortMonths}
+            years={years}
+            useIcons={useIcons}
+            view={view}
+            setView={setView}
+            yearsBlock={yearsBlock}
+            yearBlockSize={dateProps.yearBlockSize}
+            setYearsBlock={setYearsBlock}
+            animationKey={animationKey}
+            setAnimationKey={setAnimationKey}
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
+            minYear={dateProps.minYear}
+            maxYear={dateProps.maxYear}
+          />
+        &lt;/div>
 
-  // Fonction pour mettre à jour la valeur saisie
-  function setInput(date) {
-    if (date === '') {
-      setInputValue('') // Autoriser une valeur vide
-    } else {
-      setInputValue(formatDatePickerDate(date, dateFormat))
-    }
-  }
-  // Fonction pour gérer l'obtention du focus
-  function handleFocus() {
-    setIsFocused(true)
-    setShowCalendar(true) // Afficher le calendrier lorsque l'input obtient le focus
-  }
+        {/* Date Grid */}
+        &lt;DateGrid
+          key={`${viewedDate.getMonth()}-${viewedDate.getFullYear()}`}
+          totalSlots={totalSlots}
+          chooseDate={handleChooseDate}
+          translations={translations}
+          view={view}
+          setView={setView}
+          currentMonth={viewedDate}
+          setCurrentMonth={setViewedDate}
+          yearsBlock={yearsBlock}
+          animationKey={animationKey}
+          reorderedDays={reorderedDays}
+          selectedDate={dateProps.selectedDate}
+          viewedDate={viewedDate}
+          currentDate={currentDate}
+          yearBlockSize={dateProps.yearBlockSize}
+          designType={designType}
+        />
+      &lt;/div>
+    )
+  },
+)
 
-  // Fonction pour gérer la perte du focus
-  function handleBlur() {
-    setIsFocused(false)
-    setShowCalendar(false) // Masquer le calendrier lorsque l'input perd le focus
-    if (onClose) {
-      onClose()
-    }
-  }
-
-  function saveLastDateBeforeHomeClick(date) {
-    setLastDateBeforeHomeClick(date)
-  }
-
-  return {
-    showCalendar,
-    inputValue,
-    isFocused,
-    toggleCalendar,
-    closeCalendar,
-    setInput,
-    handleFocus,
-    handleBlur,
-    lastDateBeforeHomeClick,
-    saveLastDateBeforeHomeClick,
-  }
-}
-
-export default useDatePickerState
+export default Calendar
 </code></pre>
         </article>
     </section>
@@ -139,7 +168,7 @@ export default useDatePickerState
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

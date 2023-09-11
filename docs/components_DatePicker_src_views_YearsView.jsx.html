@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/DatePicker/views/DaysView.jsx</title>
+    <title>JSDoc: Source: components/DatePicker/src/views/YearsView.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/DatePicker/views/DaysView.jsx</h1>
+    <h1 class="page-title">Source: components/DatePicker/src/views/YearsView.jsx</h1>
 
     
 
@@ -26,172 +26,78 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useRef, useState, useEffect } from 'react'
+            <pre class="prettyprint source linenums"><code>import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/dateNavigations'
-import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
-import useDesignStyles from '../hooks/useDesignStyles'
-import alternativeStyles from '../AlternativeCalendar.module.css'
 
 /**
- * Vue des jours dans le calendrier.
+ * Vue des années dans le calendrier.
  *
- * @param {Object} props - Propriétés pour DaysView.
- * @param {string} props.designType - Type de design utilisé pour le calendrier.
- * @param {Array} props.totalSlots - Liste des jours dans le mois actuel.
- * @param {Function} props.chooseDate - Fonction appelée lorsqu'une date est sélectionnée.
- * @param {Array} props.reorderedDays - Liste des jours de la semaine réordonnés en fonction de la configuration.
- * @param {Function} props.setCurrentMonth - Fonction pour définir le mois actuellement visualisé.
- * @param {Date} props.currentMonth - Le mois actuellement visualisé.
+ * @param {Object} props - Propriétés pour YearsView.
+ * @param {Function} props.handleYearClick - Fonction appelée lorsqu'une année est sélectionnée.
  * @param {Date} props.selectedDate - La date actuellement sélectionnée.
+ * @param {Array} props.yearsBlock - Tableau contenant les années à afficher.
+ * @param {number} props.yearBlockSize - Nombre d'années à afficher.
+ * @param {number} props.minYear - Année minimale.
+ * @param {number} props.maxYear - Année maximale.
  */
-function DaysView({
-  designType,
-  totalSlots,
-  chooseDate,
-  reorderedDays,
-  setCurrentMonth,
-  currentMonth,
+function YearsView({
+  handleYearClick,
   selectedDate,
-  // viewedDate = null,
+  yearsBlock,
+  yearBlockSize,
+  minYear,
+  maxYear,
 }) {
-  const daysRefs = useRef([])
-  const [hasBeenHovered, setHasBeenHovered] = useState(false)
-  const [changedMonth, setChangedMonth] = useState(null)
+  const yearsRefs = useRef([])
 
-  const {
-    selectedStyles,
-    designClass,
-    dayClass,
-    grayedDayClass,
-    // daysContainerClass,
-    activeClass,
-    todayClass,
-    headerClass,
-  } = useDesignStyles(designType)
+  const displayedYears = yearsBlock.slice(0, yearBlockSize)
 
-  const resetHoveredState = () => setHasBeenHovered(false)
-
-  const handleDayHover = () => setHasBeenHovered(true)
-
-  const today = new Date()
-
-  useEffect(() => {
-    if (changedMonth === 'next') {
-      daysRefs.current[0]?.focus()
-    } else if (changedMonth === 'prev') {
-      daysRefs.current[daysRefs.current.length - 1]?.focus()
-    }
-  }, [changedMonth])
-
-  const handleDayKeyDown = (e, index) => {
-    if (e.key === 'Tab') {
-      let direction
-      if (e.shiftKey &amp;&amp; index === 0) {
-        e.preventDefault()
-        direction = BACKWARD
-        setCurrentMonth(updateMonth(currentMonth, direction))
-        setChangedMonth('prev')
-        return
-      }
-
-      if (!e.shiftKey &amp;&amp; index === totalSlots.length - 1) {
-        direction = 'forward'
-        setCurrentMonth(updateMonth(currentMonth, direction))
-        setChangedMonth('next')
-        return
-      }
-
-      const result = handleTabKey(e, totalSlots[index], index, currentMonth)
-      if (result.direction) {
-        e.preventDefault()
-        setCurrentMonth(updateMonth(currentMonth, result.direction))
-      }
-    } else {
-      handleNavigationKeys(
-        e,
-        index,
-        totalSlots.length - 1,
-        (selectedIndex) => chooseDate(totalSlots[selectedIndex].number),
-        daysRefs.current,
-      )
-    }
+  const handleYearKeyDown = (e, index) => {
+    handleNavigationKeys(
+      e,
+      index,
+      displayedYears.length - 1,
+      handleYearClick,
+      yearsRefs.current,
+      (i) => displayedYears[i],
+    )
   }
 
   return (
-    &lt;div
-      className={`${selectedStyles.daysContainer} ${
-        designClass ? alternativeStyles[designClass] : ''
-      }`}
-      onMouseLeave={resetHoveredState}
-    >
-      {reorderedDays.map((day) => (
-        &lt;div className={`${selectedStyles.header} ${headerClass}`} key={day}>
-          {day}
+    &lt;div className={styles.yearsContainer}>
+      {displayedYears.map((year, index) => (
+        &lt;div
+          key={year || index}
+          className={`${styles.year} ${
+            index === selectedDate.getYear() ? styles.selectedYear : ''
+          }`}
+          onClick={(event) => {
+            event.stopPropagation()
+            handleYearClick(year)
+          }}
+          onKeyDown={(e) => handleYearKeyDown(e, index)}
+          ref={(el) => (yearsRefs.current[index] = el)}
+          tabIndex={0}
+        >
+          {year}
         &lt;/div>
       ))}
-      {totalSlots.map((day, index) => {
-        const todayIsThisDay =
-          !day.isGrayed &amp;&amp;
-          today.getDate() === day.number &amp;&amp;
-          today.getMonth() === currentMonth.getMonth() &amp;&amp;
-          today.getFullYear() === currentMonth.getFullYear()
-
-        const isSelectedDate =
-          !day.isGrayed &amp;&amp;
-          selectedDate.getDate() === day.number &amp;&amp;
-          selectedDate.getMonth() === currentMonth.getMonth() &amp;&amp;
-          selectedDate.getFullYear() === currentMonth.getFullYear()
-
-        let highlightedClass = ''
-        if (isSelectedDate &amp;&amp; !hasBeenHovered) {
-          highlightedClass = activeClass || styles.active
-        } else if (todayIsThisDay &amp;&amp; !hasBeenHovered) {
-          highlightedClass = todayClass || styles.today
-        }
-
-        const dayClassname = day.isGrayed
-          ? `${styles.grayedDay} ${grayedDayClass}`
-          : `${styles.day} ${dayClass}`
-
-        return (
-          &lt;div
-            key={index}
-            className={`${dayClassname} ${highlightedClass}`}
-            onClick={(event) => {
-              event.stopPropagation()
-              if (!day.isGrayed) chooseDate(day.number)
-            }}
-            onKeyDown={(e) => handleDayKeyDown(e, index)}
-            onMouseEnter={handleDayHover}
-            ref={(el) => (daysRefs.current[index] = el)}
-            tabIndex={day.isGrayed ? -1 : 0}
-          >
-            {day.number}
-          &lt;/div>
-        )
-      })}
     &lt;/div>
   )
 }
 
-DaysView.propTypes = {
-  designType: PropTypes.string.isRequired,
-  totalSlots: PropTypes.arrayOf(
-    PropTypes.shape({
-      number: PropTypes.number,
-      isGrayed: PropTypes.bool,
-    }),
-  ).isRequired,
-  chooseDate: PropTypes.func.isRequired,
-  reorderedDays: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setCurrentMonth: PropTypes.func.isRequired,
-  currentMonth: PropTypes.instanceOf(Date).isRequired,
+YearsView.propTypes = {
+  handleYearClick: PropTypes.func.isRequired,
   selectedDate: PropTypes.instanceOf(Date).isRequired,
+  yearsBlock: PropTypes.arrayOf(PropTypes.number).isRequired,
+  yearBlockSize: PropTypes.number.isRequired,
+  minYear: PropTypes.number.isRequired,
+  maxYear: PropTypes.number.isRequired,
 }
 
-export default DaysView
+export default YearsView
 </code></pre>
         </article>
     </section>
@@ -208,7 +114,7 @@ export default DaysView
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 14:08:07 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 18:11:29 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>
