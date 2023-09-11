@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './EmployeeForm.module.css'
-import DatePicker from '@5sensprod/react-custom-datepicker'
-// import DatePicker from '../DatePicker'
+// import DatePicker from '@5sensprod/react-custom-datepicker'
+import DatePicker from '../DatePicker/src'
 
 /**
  * Composant représentant un champ d'entrée de date.
