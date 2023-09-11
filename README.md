@@ -28,31 +28,31 @@ Voici la liste des plugins jQuery originaux et leurs remplacements en React :
 
 - **Original** : Plugin jQuery de sélection de date
 - **Remplacement** : **DatePicker personnalisé développé spécifiquement pour ce projet**. Vous pouvez le trouver sur [NPM](https://www.npmjs.com/package/@5sensprod/react-custom-datepicker).
-  - Bibliothèque : `@5sensprod/react-custom-datepicker` (version ^1.1.0)
+  - Bibliothèque : `@5sensprod/react-custom-datepicker` (version v1.1.0)
 
 ### Fenêtre modale :
 
 - **Original** : jQuery.modal.js
 - **Remplacement** : [React Modal](https://reactcommunity.org/react-modal/)
-  - Bibliothèque : `react-modal` (version mentionnée dans votre package.json)
+  - Bibliothèque : `react-modal` v3.16.1
 
 ### Menus déroulants :
 
 - **Original** : Plugin jQuery pour les menus déroulants
 - **Remplacement** : [React Select](https://react-select.com/)
-  - Bibliothèque : `react-select` (version mentionnée dans votre package.json)
+  - Bibliothèque : `react-select` v5.7.4
 
 ### Tables de données :
 
 - **Original** : Plugin jQuery pour les tables de données
 - **Remplacement** : [React Table](https://react-table.tanstack.com/)
-  - Bibliothèque : `react-table` (version mentionnée dans votre package.json)
+  - Bibliothèque : `react-table` v7.8.0
 
 ## Prérequis 🚨
 
 Pour faire fonctionner l'application HRnet, assurez-vous d'avoir les technologies suivantes installées :
 
-- **Node.js** : version utilisée - 'v16.17.0'
+- **Node.js** : version utilisée v16.17.0
 - **Git**
 
 ## Installation et Lancement 🚀
