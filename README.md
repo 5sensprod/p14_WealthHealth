@@ -60,12 +60,17 @@ Pour faire fonctionner l'application HRnet, assurez-vous d'avoir les technologie
 1. **Clonage du dépôt :**
 
 ```bash
-git clone --recurse-submodules https://github.com/5sensprod/p14_WealthHealt
+git clone --recurse-submodules https://github.com/5sensprod/p14_WealthHealt.git
 cd p14_WealthHealth
+```
+
+2. **Installation des dépendances :**
+
+```bash
 npm install
 ```
 
-2. **Lancement de l'application :**
+3. **Lancement de l'application :**
 
 ```bash
 npm start
