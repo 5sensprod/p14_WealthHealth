@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
 import { formatDateWithSlashes } from '../../utils/formatDate'
 
+/**
+ * Tableau affichant une liste d'employés.
+ */
 const EmployeeTable = () => {
   const employees = useSelector((state) => state.employee.employees)
 
