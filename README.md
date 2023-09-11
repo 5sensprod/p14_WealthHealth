@@ -52,7 +52,7 @@ Voici la liste des plugins jQuery originaux et leurs remplacements en React :
 
 Pour faire fonctionner l'application HRnet, assurez-vous d'avoir les technologies suivantes installées :
 
-- **Node.js** : version recommandée (la version mentionnée dans votre package.json)
+- **Node.js** : version utilisée - 'v16.17.0'
 - **Git**
 
 ## Installation et Lancement 🚀
