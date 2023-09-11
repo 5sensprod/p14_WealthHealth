@@ -1,5 +1,6 @@
 // 1. Imports: Dependencies
 import React, { useRef, useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 // 2. Imports: Styles
 import styles from './DatePicker.module.css'
@@ -33,12 +34,25 @@ import {
   handleIncompleteInput,
 } from './utils/dateInputHandlers'
 
+/**
+ * Un composant pour choisir une date.
+ *
+ * @param {Object} props - Propriétés du DatePicker.
+ * @param {string} props.id - ID du champ d'entrée.
+ * @param {string} props.name - Nom du champ d'entrée.
+ * @param {string} props.value - La valeur actuelle du champ d'entrée.
+ * @param {Function} props.onChange - Fonction appelée lors de la modification de la valeur.
+ * @param {boolean} [props.showButton=true] - Indique si le bouton du calendrier doit être affiché.
+ * @param {string|null} [props.placeholderText=null] - Texte d'espace réservé pour le champ d'entrée.
+ */
 // 6. Component Definition
 function DatePicker({
   id,
   name,
   value,
   onChange,
+  showButton = true,
+  placeholderText = null,
   language: propLanguage,
   minYear: propMinYear,
   maxYear: propMaxYear,
@@ -102,7 +116,11 @@ function DatePicker({
   }, [error])
 
   useEscapeKey(createEscapeHandler(closeCalendar, inputRef))
-  useOutsideInteractions(calendarRef, buttonRef, closeCalendar)
+  useOutsideInteractions(
+    calendarRef,
+    showButton ? buttonRef : null,
+    closeCalendar,
+  )
 
   // 6.5 Handlers
   const onDateSelect = handleDateSelect(
@@ -159,9 +177,13 @@ function DatePicker({
           id={id}
           ref={inputRef}
           value={inputValue}
+          placeholder={
+            placeholderText !== null
+              ? placeholderText
+              : translations.placeholder
+          }
           format={dateFormat}
           onBlur={manualInputEnabled ? handleInputChange : null}
-          placeholder={translations.placeholder}
           aria-label="Selected date"
           readOnly={!manualInputEnabled}
           className={error ? styles.errorInput : ''}
@@ -169,8 +191,12 @@ function DatePicker({
           onChange={handleInputChange}
           maxLength={10}
         />
-
-        <CalendarButton ref={buttonRef} onClick={onToggleCalendarVisibility} />
+        {showButton && (
+          <CalendarButton
+            ref={buttonRef}
+            onClick={onToggleCalendarVisibility}
+          />
+        )}
       </div>
       {error && <p className={styles.errorMessage}>{error}</p>}
       {showCalendar && (
@@ -194,6 +220,23 @@ function DatePicker({
       )}
     </div>
   )
+}
+
+DatePicker.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  showButton: PropTypes.bool,
+  placeholderText: PropTypes.string,
+  language: PropTypes.string,
+  minYear: PropTypes.number,
+  maxYear: PropTypes.number,
+  manualInputEnabled: PropTypes.bool,
+  dateFormat: PropTypes.string,
+  yearBlockSize: PropTypes.number,
+  designType: PropTypes.string,
+  onClose: PropTypes.func,
 }
 
 export default DatePicker

@@ -4,6 +4,16 @@ import {
 } from '../config/defaultConfig'
 import { applyYearConfig } from './dateNavigations'
 
+/**
+ * Valide et renvoie le format de date fourni.
+ *
+ * Cette fonction vérifie si le format de date fourni est valide.
+ * Si le format de date n'est pas valide, elle utilise le format par défaut.
+ *
+ * @function
+ * @param {string} dateFormat - Le format de date à valider.
+ * @returns {string} - Un format de date valide.
+ */
 function validateDateFormat(dateFormat) {
   const validFormat = DEFAULT_CONFIG.DATE_FORMATS[dateFormat]
 
@@ -17,6 +27,22 @@ function validateDateFormat(dateFormat) {
   return validFormat
 }
 
+/**
+ * Traite et valide les propriétés de configuration pour le calendrier.
+ *
+ * @function
+ * @param {object} configProps - Les propriétés de configuration fournies pour le calendrier.
+ * @param {boolean} configProps.useIcons - Indique si des icônes doivent être utilisées.
+ * @param {string} configProps.dateFormat - Format de date à utiliser.
+ * @param {object} configProps.customStyles - Styles personnalisés à appliquer.
+ * @param {number} configProps.startOfWeek - Le jour de début de la semaine.
+ * @param {boolean} configProps.manualInputEnabled - Indique si l'entrée manuelle est activée.
+ * @param {number} configProps.minYear - L'année minimale à afficher.
+ * @param {number} configProps.maxYear - L'année maximale à afficher.
+ * @param {string} configProps.language - Langue à utiliser pour le calendrier.
+ * @param {number} configProps.yearBlockSize - Taille du bloc d'années.
+ * @param {string} configProps.designType - Type de design à utiliser.
+ */
 export const handlePropsAndConfig = (configProps) => {
   const {
     useIcons,

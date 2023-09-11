@@ -1,13 +1,26 @@
 import { useState } from 'react'
 import { formatDatePickerDate } from '../utils/dateFunctions'
 
+/**
+ * Hook personnalisé pour gérer l'état et la logique d'un sélecteur de date (DatePicker).
+ *
+ * Ce hook fournit des fonctions et des états pour gérer l'affichage du calendrier,
+ * la valeur saisie, l'obtention et la perte de focus, ainsi que d'autres comportements associés.
+ *
+ * @function
+ * @param {Date} initialValue - La valeur initiale du DatePicker.
+ * @param {string} dateFormat - Le format de date souhaité pour l'affichage.
+ * @param {Function} onClose - Fonction à appeler lorsque le calendrier est fermé.
+ * @param {Function} checkError - Fonction pour vérifier les erreurs.
+ * @param {Function} setError - Fonction pour définir une erreur.
+ * @returns {Object} Un objet contenant l'état et les fonctions pour gérer le DatePicker.
+ */
 function useDatePickerState(
   initialValue,
   dateFormat,
   onClose,
   checkError,
   setError,
-  // error,
 ) {
   // Gestion de l'affichage du calendrier
   const [showCalendar, setShowCalendar] = useState(false)

@@ -1,3 +1,7 @@
+/**
+ * Configuration par défaut du composant DatePicker.
+ * @constant {Object} DEFAULT_CONFIG
+ */
 export const DEFAULT_CONFIG = {
   YEAR_BLOCK_SIZE: 16,
   USE_ICONS: true,
@@ -18,6 +22,10 @@ export const DEFAULT_CONFIG = {
 
 const currentYear = new Date().getFullYear()
 
+/**
+ * Règles de validation pour la configuration du DatePicker.
+ * @constant {Object} CONFIG_VALIDATION_RULES
+ */
 export const CONFIG_VALIDATION_RULES = {
   LANGUAGE: ['en', 'fr'],
   START_OF_WEEK: [0, 1, 2, 3, 4, 5, 6],
