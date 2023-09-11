@@ -1,10 +1,23 @@
 import React, { useRef, useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import styles from '../Calendar.module.css'
 import { handleNavigationKeys } from '../utils/dateNavigations'
 import { updateMonth, handleTabKey, BACKWARD } from '../utils/viewUtils.js'
 import useDesignStyles from '../hooks/useDesignStyles'
 import alternativeStyles from '../AlternativeCalendar.module.css'
 
+/**
+ * Vue des jours dans le calendrier.
+ *
+ * @param {Object} props - Propriétés pour DaysView.
+ * @param {string} props.designType - Type de design utilisé pour le calendrier.
+ * @param {Array} props.totalSlots - Liste des jours dans le mois actuel.
+ * @param {Function} props.chooseDate - Fonction appelée lorsqu'une date est sélectionnée.
+ * @param {Array} props.reorderedDays - Liste des jours de la semaine réordonnés en fonction de la configuration.
+ * @param {Function} props.setCurrentMonth - Fonction pour définir le mois actuellement visualisé.
+ * @param {Date} props.currentMonth - Le mois actuellement visualisé.
+ * @param {Date} props.selectedDate - La date actuellement sélectionnée.
+ */
 function DaysView({
   designType,
   totalSlots,
@@ -133,6 +146,21 @@ function DaysView({
       })}
     </div>
   )
+}
+
+DaysView.propTypes = {
+  designType: PropTypes.string.isRequired,
+  totalSlots: PropTypes.arrayOf(
+    PropTypes.shape({
+      number: PropTypes.number,
+      isGrayed: PropTypes.bool,
+    }),
+  ).isRequired,
+  chooseDate: PropTypes.func.isRequired,
+  reorderedDays: PropTypes.arrayOf(PropTypes.string).isRequired,
+  setCurrentMonth: PropTypes.func.isRequired,
+  currentMonth: PropTypes.instanceOf(Date).isRequired,
+  selectedDate: PropTypes.instanceOf(Date).isRequired,
 }
 
 export default DaysView
