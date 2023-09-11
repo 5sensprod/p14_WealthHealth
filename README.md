@@ -89,3 +89,8 @@ L'application est accessible en ligne à l'adresse :
 
 La documentation du projet est consultable à l'adresse :
 [https://5sensprod.github.io/p14_WealthHealth/docs](https://5sensprod.github.io/p14_WealthHealth/docs)
+
+### Plugin DatePicker
+
+Le code source du plugin DatePicker personnalisé est disponible à l'adresse :
+[https://github.com/5sensprod/react-custom-datepicker](https://github.com/5sensprod/react-custom-datepicker)
