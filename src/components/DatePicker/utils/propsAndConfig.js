@@ -28,15 +28,20 @@ function validateDateFormat(dateFormat) {
 }
 
 /**
- * Traite et valide les propriétés de configuration pour le composant DatePicker.
- *
- * Cette fonction reçoit des propriétés de configuration et renvoie des propriétés validées.
- * Elle effectue des vérifications de base pour s'assurer que les propriétés fournies sont valides.
- * Si une propriété n'est pas valide, elle utilise la valeur par défaut de cette propriété.
+ * Traite et valide les propriétés de configuration pour le calendrier.
  *
  * @function
- * @param {Object} configProps - Les propriétés de configuration à traiter et à valider.
- * @returns {Object} - Les propriétés de configuration validées.
+ * @param {object} configProps - Les propriétés de configuration fournies pour le calendrier.
+ * @param {boolean} configProps.useIcons - Indique si des icônes doivent être utilisées.
+ * @param {string} configProps.dateFormat - Format de date à utiliser.
+ * @param {object} configProps.customStyles - Styles personnalisés à appliquer.
+ * @param {number} configProps.startOfWeek - Le jour de début de la semaine.
+ * @param {boolean} configProps.manualInputEnabled - Indique si l'entrée manuelle est activée.
+ * @param {number} configProps.minYear - L'année minimale à afficher.
+ * @param {number} configProps.maxYear - L'année maximale à afficher.
+ * @param {string} configProps.language - Langue à utiliser pour le calendrier.
+ * @param {number} configProps.yearBlockSize - Taille du bloc d'années.
+ * @param {string} configProps.designType - Type de design à utiliser.
  */
 export const handlePropsAndConfig = (configProps) => {
   const {

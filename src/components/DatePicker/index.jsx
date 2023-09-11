@@ -1,5 +1,6 @@
 // 1. Imports: Dependencies
 import React, { useRef, useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 // 2. Imports: Styles
 import styles from './DatePicker.module.css'
@@ -33,6 +34,17 @@ import {
   handleIncompleteInput,
 } from './utils/dateInputHandlers'
 
+/**
+ * Un composant pour choisir une date.
+ *
+ * @param {Object} props - Propriétés du DatePicker.
+ * @param {string} props.id - ID du champ d'entrée.
+ * @param {string} props.name - Nom du champ d'entrée.
+ * @param {string} props.value - La valeur actuelle du champ d'entrée.
+ * @param {Function} props.onChange - Fonction appelée lors de la modification de la valeur.
+ * @param {boolean} [props.showButton=true] - Indique si le bouton du calendrier doit être affiché.
+ * @param {string|null} [props.placeholderText=null] - Texte d'espace réservé pour le champ d'entrée.
+ */
 // 6. Component Definition
 function DatePicker({
   id,
@@ -208,6 +220,23 @@ function DatePicker({
       )}
     </div>
   )
+}
+
+DatePicker.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  showButton: PropTypes.bool,
+  placeholderText: PropTypes.string,
+  language: PropTypes.string,
+  minYear: PropTypes.number,
+  maxYear: PropTypes.number,
+  manualInputEnabled: PropTypes.bool,
+  dateFormat: PropTypes.string,
+  yearBlockSize: PropTypes.number,
+  designType: PropTypes.string,
+  onClose: PropTypes.func,
 }
 
 export default DatePicker

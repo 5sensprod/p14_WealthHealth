@@ -3,6 +3,30 @@ import DaysView from './views/DaysView'
 import MonthsView from './views/MonthsView'
 import YearsView from './views/YearsView'
 
+/**
+ * Composant DateGrid pour afficher les grilles des jours, mois ou années.
+ *
+ * @component
+ * @param {Array<Object>} totalSlots - Liste de tous les emplacements de jours pour le mois en cours.
+ * @param {function} chooseDate - Fonction pour choisir une date.
+ * @param {Object} translations - Traductions pour les mois et les jours.
+ * @param {string} view - Vue actuelle ("days", "months" ou "years").
+ * @param {function} setView - Fonction pour définir la vue.
+ * @param {function} setCurrentMonth - Fonction pour définir le mois en cours.
+ * @param {Date} currentMonth - Mois actuellement visualisé.
+ * @param {Array<number>} yearsBlock - Bloc d'années actuel.
+ * @param {number} animationKey - Clé d'animation.
+ * @param {Array<string>} reorderedDays - Jours de la semaine réorganisés.
+ * @param {function} closeCalendar - Fonction pour fermer le calendrier.
+ * @param {Date} selectedDate - Date actuellement sélectionnée.
+ * @param {Date} viewedDate - Date actuellement visualisée.
+ * @param {Date} currentDate - Date actuelle.
+ * @param {number} yearBlockSize - Taille du bloc d'années.
+ * @param {number} minYear - Année minimum.
+ * @param {number} maxYear - Année maximum.
+ * @param {string} designType - Type de design ("default" ou "alternative").
+ * @returns {React.Element} - Renvoie le composant DateGrid.
+ */
 function DateGrid({
   totalSlots,
   chooseDate,

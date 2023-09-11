@@ -23,8 +23,8 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
     <div className={`${styles.label} ${className}`}>
       <label htmlFor={`${name}DateInput`}>{label}</label>
       <DatePicker
-        placeholderText=""
-        showButton={false}
+        // placeholderText=""
+        showButton={true}
         id={`${name}DateInput`}
         name={name}
         value={value}

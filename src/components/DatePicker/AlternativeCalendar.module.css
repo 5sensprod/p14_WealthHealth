@@ -152,7 +152,8 @@
     -webkit-backdrop-filter: blur(8px);
     border-radius: 5px;
     color: aliceblue;
-  }
+}
+
 .glassToday {
     background: rgba(243, 254, 255, 0.473);
     box-shadow: 0 8px 32px 0 rgba(20, 20, 20, 0.25);
@@ -169,7 +170,8 @@
     /* border-radius: 5px; */
     color: #0000007e;
 }
-.glassGrayedDay::after{
+
+.glassGrayedDay::after {
     content: '';
     position: absolute;
     height: 80%;
@@ -181,7 +183,7 @@
     /* border-radius: 15%;
     box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.2), inset 5px 5px 9px rgba(94,104,121,0.3); */
     /* backdrop-filter: blur(.6px); */
-  }
+}
 
 
 
