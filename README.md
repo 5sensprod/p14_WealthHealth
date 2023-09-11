@@ -1,3 +1,8 @@
+![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white&style=flat)
+![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=redux&logoColor=white&style=flat)
+![React Router](https://img.shields.io/badge/-React_Router-CA4245?logo=react-router&logoColor=white&style=flat)
+![Node.js](https://img.shields.io/badge/-Node.js-339933?logo=node.js&logoColor=white&style=flat)
+
 # HRnet - WealthHealth 🚀
 
 WealthHealth est une importante société financière utilisant une application interne, HRnet, pour gérer les dossiers de ses employés. L'objectif principal de ce projet est de moderniser HRnet en le convertissant entièrement en React, en remplaçant l'ancienne version qui utilisait principalement jQuery.
@@ -13,18 +18,29 @@ WealthHealth est une importante société financière utilisant une application 
 
 Voici la liste des plugins jQuery originaux et leurs remplacements en React :
 
-- **Sélecteur de date :**
-  - _Original_ : Plugin jQuery de sélection de date
-  - _Remplacement_ : DatePicker personnalisé développé spécifiquement pour ce projet.
-- **Fenêtre modale :**
-  - _Original_ : jQuery.modal.js
-  - _Remplacement_ : React Modal
-- **Menus déroulants :**
-  - _Original_ : Plugin jQuery pour les menus déroulants
-  - _Remplacement_ : React Select
-- **Tables de données :**
-  - _Original_ : Plugin jQuery pour les tables de données
-  - _Remplacement_ : React Table
+### Sélecteur de date :
+
+- **Original** : Plugin jQuery de sélection de date
+- **Remplacement** : **DatePicker personnalisé développé spécifiquement pour ce projet**. Vous pouvez le trouver sur [NPM](https://www.npmjs.com/package/@5sensprod/react-custom-datepicker).
+  - Bibliothèque : `@5sensprod/react-custom-datepicker` (version ^1.1.0)
+
+### Fenêtre modale :
+
+- **Original** : jQuery.modal.js
+- **Remplacement** : [React Modal](https://reactcommunity.org/react-modal/)
+  - Bibliothèque : `react-modal` (version mentionnée dans votre package.json)
+
+### Menus déroulants :
+
+- **Original** : Plugin jQuery pour les menus déroulants
+- **Remplacement** : [React Select](https://react-select.com/)
+  - Bibliothèque : `react-select` (version mentionnée dans votre package.json)
+
+### Tables de données :
+
+- **Original** : Plugin jQuery pour les tables de données
+- **Remplacement** : [React Table](https://react-table.tanstack.com/)
+  - Bibliothèque : `react-table` (version mentionnée dans votre package.json)
 
 ## Prérequis 🚨
 
