@@ -181,6 +181,7 @@ const EmployeeTable = () => {
           />
         </span>{' '}
         <select
+          name="pageSize"
           value={pageSize}
           onChange={(e) => {
             setPageSize(Number(e.target.value))

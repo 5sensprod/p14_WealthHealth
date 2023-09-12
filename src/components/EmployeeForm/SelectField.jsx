@@ -23,22 +23,24 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
 
   return (
     <div className={styles.label}>
-      <label>{label}</label>
-      <Select
-        aria-label={label}
-        name={name}
-        value={options.find((option) => option.value === value)}
-        onChange={(selectedOption) => {
-          onChange({
-            target: {
-              name: name,
-              value: selectedOption ? selectedOption.value : '',
-            },
-          })
-        }}
-        options={options}
-        styles={customStyles}
-      />
+      <label>
+        {label}
+        <Select
+          aria-label={label}
+          name={name}
+          value={options.find((option) => option.value === value)}
+          onChange={(selectedOption) => {
+            onChange({
+              target: {
+                name: name,
+                value: selectedOption ? selectedOption.value : '',
+              },
+            })
+          }}
+          options={options}
+          styles={customStyles}
+        />
+      </label>
       {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   )
