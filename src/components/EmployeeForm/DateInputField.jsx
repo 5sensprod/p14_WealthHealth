@@ -30,14 +30,14 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
         value={value}
         onChange={onChange}
         className={className}
-        designType={'glass'}
+        designType={'default'}
         yearBlockSize={16}
         useIcons={true}
         startOfWeek={0}
         language="fr"
-        // dateFormat="ISO"
+        dateFormat="ISO"
         manualInputEnabled={true}
-        // minYear={'auto-10'}
+        minYear={'auto-10'}
         maxYear={2030}
         customStyles={{
           backgroundColor: 'transparent',
