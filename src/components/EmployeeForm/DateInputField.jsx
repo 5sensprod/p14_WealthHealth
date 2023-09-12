@@ -35,10 +35,10 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
         useIcons={true}
         startOfWeek={0}
         language="fr"
-        dateFormat="ISO"
+        // dateFormat="ISO"
         manualInputEnabled={true}
         minYear={'auto-10'}
-        maxYear={2030}
+        maxYear={2040}
         customStyles={{
           backgroundColor: 'transparent',
           borderRadius: '0',

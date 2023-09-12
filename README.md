@@ -28,7 +28,7 @@ Voici la liste des plugins jQuery originaux et leurs remplacements en React :
 
 - **Original** : Plugin jQuery de sélection de date
 - **Remplacement** : **DatePicker personnalisé développé spécifiquement pour ce projet**. Vous pouvez le trouver sur [NPM](https://www.npmjs.com/package/@5sensprod/react-custom-datepicker).
-  - Bibliothèque : `@5sensprod/react-custom-datepicker` (version v1.1.2)
+  - Bibliothèque : `@5sensprod/react-custom-datepicker` (version v1.1.3)
 
 ### Fenêtre modale :
 
