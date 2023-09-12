@@ -30,7 +30,7 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
         value={value}
         onChange={onChange}
         className={className}
-        designType={'neuro'}
+        designType={'glass'}
         yearBlockSize={16}
         useIcons={true}
         startOfWeek={0}
