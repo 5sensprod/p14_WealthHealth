@@ -96,7 +96,9 @@ const EmployeeTable = () => {
 
   return (
     <>
+      <label htmlFor="searchInput">Search:</label>
       <input
+        id="searchInput"
         className={styles.filterInput}
         value={filterValue}
         onChange={(e) => {
@@ -166,8 +168,9 @@ const EmployeeTable = () => {
           </strong>{' '}
         </span>
         <span>
-          | Go to page:{' '}
+          | Go to page: <label htmlFor="gotoPageInput">Go to page:</label>
           <input
+            id="gotoPageInput"
             type="number"
             defaultValue={pageIndex + 1}
             onChange={(e) => {
