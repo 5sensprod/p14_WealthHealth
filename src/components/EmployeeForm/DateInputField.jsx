@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './EmployeeForm.module.css'
-// import DatePicker from '@5sensprod/react-custom-datepicker'
-import DatePicker from '../DatePicker/src'
+import DatePicker from '@5sensprod/react-custom-datepicker'
+// import DatePicker from '../DatePicker/src'
 
 /**
  * Composant représentant un champ d'entrée de date.
@@ -23,26 +23,26 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
     <div className={`${styles.label} ${className}`}>
       <label htmlFor={`${name}DateInput`}>{label}</label>
       <DatePicker
-        // placeholderText=""
-        showButton={true}
         id={`${name}DateInput`}
         name={name}
         value={value}
         onChange={onChange}
         className={className}
-        designType={'default'}
+        minYear={'auto-93'}
+        maxYear={2040}
         yearBlockSize={16}
         useIcons={true}
         startOfWeek={0}
         language="fr"
-        // dateFormat="ISO"
+        showButton={true}
         manualInputEnabled={true}
-        minYear={'auto-10'}
-        maxYear={2040}
-        customStyles={{
-          backgroundColor: 'transparent',
-          borderRadius: '0',
-        }}
+        designType={'default'}
+        // dateFormat="ISO"
+        // placeholderText=""
+        // customStyles={{
+        //   backgroundColor: 'transparent',
+        //   borderRadius: '0',
+        // }}
       />
       {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
