@@ -46,13 +46,6 @@ const EmployeeForm = () => {
     setModalOpen(false)
   }
 
-  const [resetKey, setResetKey] = useState(0)
-
-  const handleReset = () => {
-    resetFormData()
-    setResetKey((prevKey) => prevKey + 1)
-  }
-
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -80,7 +73,6 @@ const EmployeeForm = () => {
 
       resetFormData()
       setModalOpen(true)
-      handleReset()
     }
   }
 
@@ -117,7 +109,6 @@ const EmployeeForm = () => {
         />
 
         <DateInputField
-          key={`dob-${resetKey}`}
           className={styles.dateInputField}
           name="dateOfBirth"
           label="Date of Birth"
@@ -128,7 +119,6 @@ const EmployeeForm = () => {
         />
 
         <DateInputField
-          key={`sd-${resetKey}`}
           className={styles.dateInputField}
           name="startDate"
           label="Start Date"
