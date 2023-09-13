@@ -35,7 +35,7 @@ tr:nth-child(even) td:nth-child(2) {
 
 .tableWrapper {
     overflow-x: auto;
-    max-width: 1080px;
+    max-width: 1205px;
     margin: auto;
 }
 
