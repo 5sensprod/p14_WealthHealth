@@ -18,14 +18,59 @@ import styles from './EmployeeForm.module.css'
 
 const SelectField = ({ name, value, label, options, onChange, error }) => {
   const customStyles = {
-    // Le style ici
-  }
+    valueContainer: (provided, state) => ({
+      ...provided,
+      padding: '0',
+    }),
 
+    input: (base, state) => ({
+      ...base,
+      margin: '0',
+      paddingBottom: '0',
+      paddingTop: '0',
+      color: 'transparent',
+      fontSize: '10px',
+    }),
+    control: (base, state) => ({
+      ...base,
+      borderRadius: '0',
+      minHeight: '22px',
+      height: '23px',
+      width: '171px',
+      padding: '0',
+      fontSize: '14px',
+      color: 'red',
+      border: '1px solid gray',
+      '&:hover': {
+        border: '1px solid #161616',
+      },
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isSelected ? '#d3d3d3' : base.backgroundColor,
+      color: state.isSelected ? 'white' : 'black',
+      '&:hover': {
+        backgroundColor: '#b3b3b3',
+      },
+    }),
+  }
+  const DropdownIndicator = () => null
+  const IndicatorSeparator = () => null
+
+  const customComponents = {
+    DropdownIndicator,
+    IndicatorSeparator,
+  }
   return (
     <div className={styles.label}>
       <label>
         {label}
         <Select
+          className="react-select-container"
+          classNamePrefix="react-select"
+          options={options}
+          styles={customStyles}
+          components={customComponents}
           aria-label={label}
           name={name}
           value={options.find((option) => option.value === value)}
@@ -37,8 +82,6 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
               },
             })
           }}
-          options={options}
-          styles={customStyles}
         />
       </label>
       {error && <span className={styles.errorMessage}>{error}</span>}

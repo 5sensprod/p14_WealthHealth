@@ -14,14 +14,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: left;
+}
+
+.fieldsetContainer {
+  margin: 20px 0;
+  width: 260px;
+  padding-bottom: 30px;
+}
+
+legend {
+  padding: 5px;
 }
 
 .label {
   display: flex;
   margin-top: 1rem;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
 }
 
 .labelContainer {
@@ -42,6 +53,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 171px;
   transition: background-color 0.3s;
 }
 
@@ -78,9 +90,23 @@
   width: 1px;
 }
 
-/* input  {
-    background-color: blue;
-  } */
+input  {
+  font-size: 14px;
+  }
+
+  /* Pour cacher les chevrons dans Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Pour cacher les chevrons dans Firefox */
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+}
 
 /* .dateInputField input {
     background-color: blue;

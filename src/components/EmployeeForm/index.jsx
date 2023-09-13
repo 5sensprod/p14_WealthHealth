@@ -128,24 +128,25 @@ const EmployeeForm = () => {
           error={errors.startDate}
         />
 
-        <AddressFields
-          formData={formData}
-          handleChange={handleChange}
-          errors={errors}
-        />
-
         <SelectField
+          error={errors.department}
           name="department"
           label="Department"
           value={formData.department}
           onChange={handleChange}
           options={[
-            { value: '', label: 'Please select a department' },
+            { value: '', label: 'Select a department' },
             ...departments.map((department) => ({
               value: department,
               label: department,
             })),
           ]}
+        />
+
+        <AddressFields
+          formData={formData}
+          handleChange={handleChange}
+          errors={errors}
         />
 
         <button className={styles.submitButton} type="submit">

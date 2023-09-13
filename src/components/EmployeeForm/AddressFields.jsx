@@ -44,12 +44,13 @@ const AddressFields = ({ formData, handleChange, errors }) => {
         value={formData.state}
         onChange={handleChange}
         options={[
-          { value: '', label: 'Please select a state' }, // Option de placeholder
+          { value: '', label: 'Select a state' },
           ...states.map((state) => ({
             value: state.abbreviation,
             label: state.name,
           })),
         ]}
+        error={errors.state}
       />
 
       <InputField

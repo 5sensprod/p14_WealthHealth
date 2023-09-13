@@ -21,6 +21,12 @@ const useFormErrors = (initialErrors = {}, formattedFieldNames = {}) => {
     if (!value) {
       return `${formattedFieldNames[name] || name} est requis`
     }
+    if (name === 'department' && value === '') {
+      return `Vous devez sélectionner un ${formattedFieldNames[name] || name}`
+    }
+    if (name === 'state' && value === '') {
+      return `Vous devez sélectionner un ${formattedFieldNames[name] || name}`
+    }
     // Ajout de validations supplémentaires si nécessaire
     return null
   }

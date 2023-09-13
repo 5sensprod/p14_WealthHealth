@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './EmployeeForm.module.css'
-import DatePicker from '@5sensprod/react-custom-datepicker'
-// import DatePicker from '../DatePicker/src'
+// import DatePicker from '@5sensprod/react-custom-datepicker'
+import DatePicker from '../DatePicker/src'
 
 /**
  * Composant représentant un champ d'entrée de date.
@@ -34,11 +34,11 @@ const DateInputField = ({ name, value, label, onChange, className, error }) => {
         useIcons={true}
         startOfWeek={0}
         language="fr"
-        showButton={true}
+        showButton={false}
         manualInputEnabled={true}
         designType={'default'}
         // dateFormat="ISO"
-        // placeholderText=""
+        placeholderText=""
         // customStyles={{
         //   backgroundColor: 'transparent',
         //   borderRadius: '0',
