@@ -1,6 +1,12 @@
 .bgDark {
-    background-color: #f5edff;
-  }
-  .main {
-    flex: 1;
-  }
+  background-color: #ebecf0;
+}
+
+.main {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.title {
+  margin: 40px 0;
+}

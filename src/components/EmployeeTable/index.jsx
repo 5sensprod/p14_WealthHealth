@@ -96,7 +96,7 @@ const EmployeeTable = () => {
 
   return (
     <>
-      <label htmlFor="searchInput">Search:</label>
+      <label htmlFor="searchInput"></label>
       <input
         id="searchInput"
         className={styles.filterInput}
@@ -149,50 +149,64 @@ const EmployeeTable = () => {
         <div className={styles.noDataMessage}>No matching records found</div>
       )}
       <div className={styles.pagination}>
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <span>
-          | Go to page: <label htmlFor="gotoPageInput">Go to page:</label>
-          <input
-            id="gotoPageInput"
-            type="number"
-            defaultValue={pageIndex + 1}
+        <div className={styles.paginationControls}>
+          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {'<<'}
+          </button>{' '}
+          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            {'<'}
+          </button>{' '}
+          <button onClick={() => nextPage()} disabled={!canNextPage}>
+            {'>'}
+          </button>{' '}
+          <button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {'>>'}
+          </button>{' '}
+          <span>
+            Page{' '}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{' '}
+          </span>
+        </div>
+
+        <div className={styles.paginationSettings}>
+          <span>
+            <label htmlFor="gotoPageInput">Go to page </label>
+            <input
+              id="gotoPageInput"
+              type="number"
+              defaultValue={pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                gotoPage(page)
+              }}
+              style={{ width: '30px', marginRight: '10px' }}
+            />
+          </span>{' '}
+          <select
+            name="pageSize"
+            value={pageSize}
             onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
+              setPageSize(Number(e.target.value))
             }}
-            style={{ width: '100px' }}
-          />
-        </span>{' '}
-        <select
-          name="pageSize"
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value))
-          }}
-        >
-          {[2, 4, 6, 8, 10].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+            style={{
+              fontSize: '16px',
+              color: '#2c3e50',
+              background: 'white',
+              border: '1px solid gray',
+            }}
+          >
+            {[2, 4, 6, 8, 10].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </>
   )

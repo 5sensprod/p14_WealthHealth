@@ -21,7 +21,7 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) td:nth-child(1),
 tr:nth-child(odd) td:nth-child(2) {
-    background-color: #f5edff;
+    background-color: #ebecf0;
 }
 
 tr:nth-child(even) td:nth-child(1),
@@ -33,12 +33,10 @@ tr:nth-child(even) td:nth-child(2) {
     margin-bottom: 30px;
 }
 
-.pagination {
-    margin-top: 30px;
-}
-
 .tableWrapper {
     overflow-x: auto;
+    max-width: 1080px;
+    margin: auto;
 }
 
 th:nth-child(1),
@@ -48,7 +46,6 @@ td:nth-child(2) {
     position: sticky;
     left: 0;
     z-index: 2;
-    /* Pour qu'il apparaisse au-dessus des autres cellules */
 }
 
 th:nth-child(1),
@@ -105,7 +102,7 @@ tr:nth-child(even) {
 
 tr:nth-child(odd) td:nth-child(1),
 tr:nth-child(odd) td:nth-child(2) {
-    background-color: #f5edff;
+    background-color: #ebecf0;
 }
 
 tr:nth-child(even) td:nth-child(1),
@@ -121,8 +118,25 @@ tr:nth-child(even) td:nth-child(2) {
     margin-top: 30px;
 }
 
+.pagination {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: left;
+    margin: auto;
+    max-width: 1080px;
+    padding-top: 50px;
+}
+
+.paginationSettings {
+    display: flex;
+    align-items: center;
+}
+
 .tableWrapper {
     overflow-x: auto;
+    max-width: 1080px;
 }
 
 th:nth-child(1),

@@ -30,6 +30,7 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
       paddingTop: '0',
       color: 'transparent',
       fontSize: '10px',
+      opacity: '0',
     }),
     control: (base, state) => ({
       ...base,
@@ -40,7 +41,10 @@ const SelectField = ({ name, value, label, options, onChange, error }) => {
       padding: '0',
       fontSize: '14px',
       color: 'red',
-      border: '1px solid gray',
+      border: state.isFocused ? '1px solid #002905' : '1px solid gray', // Changement ici
+      // border: state.isFocused ? '2px solid green' : '2px solid gray',
+      boxShadow: state.isFocused ? '0 0 5px #002905' : 'none',
+      // border: '1px solid gray',
       '&:hover': {
         border: '1px solid #161616',
       },
