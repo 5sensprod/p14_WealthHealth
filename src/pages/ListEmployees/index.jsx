@@ -11,9 +11,7 @@ import employeeMock from '../../data/employeeMock'
  */
 const Employees = () => (
   <main className={`${styles.main} ${styles.bgDark}`}>
-    {/* Titre de la page */}
     <h1 className={styles.title}>Employees list</h1>
-    {/* Tableau des employés. Les données proviennent d'un mock. */}
     <EmployeeTable data={employeeMock} />
   </main>
 )

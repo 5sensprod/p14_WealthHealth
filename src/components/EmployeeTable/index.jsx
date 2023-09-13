@@ -3,6 +3,7 @@ import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
 import { formatDateWithSlashes } from '../../utils/formatDate'
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 
 /**
  * Tableau affichant une liste d'employés.
@@ -118,11 +119,15 @@ const EmployeeTable = () => {
                   >
                     {column.render('Header')}
                     <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <FaCaretDown color="#002905" />
+                        ) : (
+                          <FaCaretUp color="#002905" />
+                        )
+                      ) : (
+                        ''
+                      )}
                     </span>
                   </th>
                 ))}

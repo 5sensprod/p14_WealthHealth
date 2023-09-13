@@ -1,0 +1,36 @@
+.card {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.1s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0 3px #002905;
+    transform: scale(1.02);
+}
+
+.mainNavItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.mainNavItemText {
+    margin-top: 8px;
+}
+
+.cardLink {
+    text-decoration: none;
+    color: inherit;
+}
+i {
+
+    margin-right: 16px; /* Ceci ajoute de l'espace entre l'icône et le texte */
+}

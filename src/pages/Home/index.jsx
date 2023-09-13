@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Home.module.css'
+import Card from '../../components/Card'
 
 /**
  * Composant représentant la page d'accueil de l'application RHnet.
@@ -9,7 +10,11 @@ import styles from './Home.module.css'
  */
 const Home = () => (
   <main className={styles.homeContainer}>
-    <h1>RHnet</h1>
+    <h1 className={styles.title}>RHnet</h1>
+    <div className={styles.cardsContainer}>
+      <Card icon="fa-pencil" linkTo="/add-employee" text="Create" />
+      <Card icon="fa-search" linkTo="/employees-list" text="View" />
+    </div>
   </main>
 )
 
