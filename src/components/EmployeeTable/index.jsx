@@ -2,13 +2,13 @@ import React from 'react'
 import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
-import { formatDateWithSlashes } from '../../utils/formatDate'
+import { formatDate } from '../../utils/formatDate'
 import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 
 /**
  * Tableau affichant une liste d'employés.
  */
-const EmployeeTable = () => {
+const EmployeeTable = ({ dateFormat = 'MM/DD/YYYY' }) => {
   const employees = useSelector((state) => state.employee.employees)
 
   const columns = React.useMemo(
@@ -18,12 +18,15 @@ const EmployeeTable = () => {
       {
         Header: 'Start Date',
         accessor: 'startDate',
-        Cell: ({ value }) => formatDateWithSlashes(value),
+        Cell: ({ value }) => formatDate(value, dateFormat),
       },
       {
         Header: 'Date of Birth',
         accessor: 'dateOfBirth',
-        Cell: ({ value }) => formatDateWithSlashes(value),
+        Cell: ({ value }) => {
+          console.log('Raw Value:', value)
+          return formatDate(value, dateFormat)
+        },
       },
       { Header: 'Department', accessor: 'department' },
       { Header: 'Street', accessor: 'street' },
@@ -31,7 +34,7 @@ const EmployeeTable = () => {
       { Header: 'State', accessor: 'state' },
       { Header: 'Zip Code', accessor: 'zipCode' },
     ],
-    [],
+    [dateFormat],
   )
 
   const initialState = {
