@@ -55,6 +55,7 @@ legend {
   cursor: pointer;
   width: 171px;
   transition: background-color 0.3s;
+  margin-bottom: 40px;
 }
 
 .submitButton:hover {
