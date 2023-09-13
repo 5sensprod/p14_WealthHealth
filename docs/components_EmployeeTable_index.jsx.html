@@ -31,6 +31,7 @@ import { useTable, usePagination, useSortBy, useFilters } from 'react-table'
 import { useSelector } from 'react-redux'
 import styles from './EmployeeTable.module.css'
 import { formatDateWithSlashes } from '../../utils/formatDate'
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 
 /**
  * Tableau affichant une liste d'employés.
@@ -124,7 +125,7 @@ const EmployeeTable = () => {
 
   return (
     &lt;>
-      &lt;label htmlFor="searchInput">Search:&lt;/label>
+      &lt;label htmlFor="searchInput">&lt;/label>
       &lt;input
         id="searchInput"
         className={styles.filterInput}
@@ -146,11 +147,15 @@ const EmployeeTable = () => {
                   >
                     {column.render('Header')}
                     &lt;span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          &lt;FaCaretDown color="#002905" />
+                        ) : (
+                          &lt;FaCaretUp color="#002905" />
+                        )
+                      ) : (
+                        ''
+                      )}
                     &lt;/span>
                   &lt;/th>
                 ))}
@@ -177,50 +182,64 @@ const EmployeeTable = () => {
         &lt;div className={styles.noDataMessage}>No matching records found&lt;/div>
       )}
       &lt;div className={styles.pagination}>
-        &lt;button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'&lt;&lt;'}
-        &lt;/button>{' '}
-        &lt;button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'&lt;'}
-        &lt;/button>{' '}
-        &lt;button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        &lt;/button>{' '}
-        &lt;button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        &lt;/button>{' '}
-        &lt;span>
-          Page{' '}
-          &lt;strong>
-            {pageIndex + 1} of {pageOptions.length}
-          &lt;/strong>{' '}
-        &lt;/span>
-        &lt;span>
-          | Go to page: &lt;label htmlFor="gotoPageInput">Go to page:&lt;/label>
-          &lt;input
-            id="gotoPageInput"
-            type="number"
-            defaultValue={pageIndex + 1}
+        &lt;div className={styles.paginationControls}>
+          &lt;button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+            {'&lt;&lt;'}
+          &lt;/button>{' '}
+          &lt;button onClick={() => previousPage()} disabled={!canPreviousPage}>
+            {'&lt;'}
+          &lt;/button>{' '}
+          &lt;button onClick={() => nextPage()} disabled={!canNextPage}>
+            {'>'}
+          &lt;/button>{' '}
+          &lt;button
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {'>>'}
+          &lt;/button>{' '}
+          &lt;span>
+            Page{' '}
+            &lt;strong>
+              {pageIndex + 1} of {pageOptions.length}
+            &lt;/strong>{' '}
+          &lt;/span>
+        &lt;/div>
+
+        &lt;div className={styles.paginationSettings}>
+          &lt;span>
+            &lt;label htmlFor="gotoPageInput">Go to page &lt;/label>
+            &lt;input
+              id="gotoPageInput"
+              type="number"
+              defaultValue={pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                gotoPage(page)
+              }}
+              style={{ width: '30px', marginRight: '10px' }}
+            />
+          &lt;/span>{' '}
+          &lt;select
+            name="pageSize"
+            value={pageSize}
             onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
+              setPageSize(Number(e.target.value))
             }}
-            style={{ width: '100px' }}
-          />
-        &lt;/span>{' '}
-        &lt;select
-          name="pageSize"
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value))
-          }}
-        >
-          {[2, 4, 6, 8, 10].map((pageSize) => (
-            &lt;option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            &lt;/option>
-          ))}
-        &lt;/select>
+            style={{
+              fontSize: '16px',
+              color: '#2c3e50',
+              background: 'white',
+              border: '1px solid gray',
+            }}
+          >
+            {[2, 4, 6, 8, 10].map((pageSize) => (
+              &lt;option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              &lt;/option>
+            ))}
+          &lt;/select>
+        &lt;/div>
       &lt;/div>
     &lt;/>
   )
@@ -243,7 +262,7 @@ export default EmployeeTable
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Sep 12 2023 17:03:32 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Sep 13 2023 13:23:22 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>
