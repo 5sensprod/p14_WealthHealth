@@ -20,12 +20,12 @@ const EmployeeTable = () => {
         accessor: 'startDate',
         Cell: ({ value }) => formatDateWithSlashes(value),
       },
-      { Header: 'Department', accessor: 'department' },
       {
         Header: 'Date of Birth',
         accessor: 'dateOfBirth',
         Cell: ({ value }) => formatDateWithSlashes(value),
       },
+      { Header: 'Department', accessor: 'department' },
       { Header: 'Street', accessor: 'street' },
       { Header: 'City', accessor: 'city' },
       { Header: 'State', accessor: 'state' },
